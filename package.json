@@ -1,0 +1,15 @@
+{
+    "description": "Pure JS RDF store implementation, runnable on MCUs with JerryScript.",
+    "author": "Victor Charpenay <victor.charpenay@siemens.com>",
+    "keywords": [
+        "sparql",
+        "rdf",
+        "json-ld"
+    ],
+    "devDependencies": {
+        "mocha": "3.0.x"
+    },
+    "scripts": {
+        "test": "mocha"
+    }
+}
