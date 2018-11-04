@@ -98,51 +98,67 @@ module.exports = (function() {
 	 */
 	urdf.query = function(obj) {
 		var _query = function(q, s, bindings) {
-			// TODO return if signatures differ
+			var signature = Object.keys(q);
 
-			for (var p in s) {
-				if (p !== '@id' && s[p] !== undefined) {
-					// TODO use Array.reduce() instead
-					for (var i in q[p]) {
-						var o = q[p][i];
-
-						if (urdf.isLiteral(o)) {
-							// TODO pattern matching
-						} else {
-							if (urdf.isVariable(o)) {
-								var matches = s[p].map(function(n) {
-									// indexed by variable name
-									return { [urdf.lexicalForm(o)]: { ['@id']: n['@id'] } };
-								});
-
-								if (bindings.length === 0) {
-									bindings = matches;
+			// TODO take 'require all' flag into account (default: true)
+			var includes = signature.every(function (p) {
+				return p === '@id' || s[p] !== undefined;
+			});
+			
+			if (!includes) {
+				bindings = [];
+			} else {
+				bindings = signature.reduce(function(b, p) {
+					if (b === []) {
+						return b;
+					} else {
+						if (p !== '@id' && s[p] !== undefined) {
+							for (var i in q[p]) {
+								// TODO use q[p].reduce()
+								var o = q[p][i];
+		
+								if (urdf.isLiteral(o)) {
+									// TODO pattern matching
 								} else {
-									// Cartesian product
-									var product = [];
-									
-									matches.forEach(function(m) {
-										bindings.forEach(function(b) {
-											product.push(urdf.merge(b, m));
+									if (urdf.isVariable(o)) {
+										var matches = s[p].map(function(n) {
+											// indexed by variable name
+											return { [urdf.lexicalForm(o)]: { ['@id']: n['@id'] } };
 										});
-									});
-									
-									bindings = product;
-								}
-								
-								// TODO join if bindings already available
-							} else {
-								var exists = s[p].some(function(n) {
-									return n['@id'] === o['@id'];
-								});
-								
-								if (!exists) {
-									return [];
+		
+										if (b === null) {
+											b = matches;
+										} else {
+											// Cartesian product
+											var product = [];
+											
+											matches.forEach(function(m) {
+												b.forEach(function(b) {
+													product.push(urdf.merge(b, m));
+												});
+											});
+											
+											b = product;
+										}
+										
+										// TODO join if bindings already available
+									} else {
+										var exists = s[p].some(function(n) {
+											return n['@id'] === o['@id'];
+										});
+										
+										if (!exists) {
+											b = [];
+										}
+									}
 								}
 							}
 						}
+
+						// TODO recursive call
+						return b;
 					}
-				}
+				}, null);
 			}
 			
 			return bindings;
