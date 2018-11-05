@@ -75,9 +75,15 @@ describe('urdf.query()', ()=> {
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should join compatible mappings', () => {
+    it('should join compatible mappings (subject-subject)', () => {
         load('lubm-s34.json');
         let [actual, expected] = query('curriculum.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should join compatible mappings (subject-object)', () => {
+        load('thing.json');
+        let [actual, expected] = query('celsius-properties.json');
         assert.deepStrictEqual(actual, expected);
     });
 });

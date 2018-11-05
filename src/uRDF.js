@@ -130,6 +130,8 @@ module.exports = (function() {
 							return s[p].reduce(function(bq, o) {
 								if (p === '@type') {
 									o = { '@id': o };
+								} else {
+									o = urdf.find(o['@id']);
 								}
 
 								return bq.concat(_query(qo, o, bp));
