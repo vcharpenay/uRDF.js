@@ -21,6 +21,9 @@
 		"http://www.w3c.org/wot/td#hasProperty": [
 			{
 				"@id": "http://example.org/sensor1/temp"
+			},
+			{
+				"@id": "http://example.org/sensor1/onoff"
 			}
 		]
 	},
@@ -46,9 +49,22 @@
 		]
 	},
 	{
+		"@id": "http://example.org/sensor1/onoff",
+		"@type": [
+			"http://www.w3.org/ns/ssn/Property",
+			"https://w3id.org/saref#OnOffState"
+		]
+	},
+	{
 		"@id": "http://www.w3.org/ns/ssn/Property"
 	},
 	{
 		"@id": "http://www.w3.org/ns/sosa/Sensor"
+	},
+	{
+		"@id": "https://w3id.org/saref#TemperatureSensor"
+	},
+	{
+		"@id": "https://w3id.org/saref#OnOffState"
 	}
 ]

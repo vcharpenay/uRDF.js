@@ -86,8 +86,8 @@ module.exports = (function() {
 	 * Runs a JSON-LD frame object with nesting,
 	 * interpreted as a query, against the µRDF store
 	 * (blank nodes = variables). The input frame can
-	 * contain the @reverse keyword and the root object
-	 * must not be a variable.
+	 * contain the @reverse keyword but the input frame
+	 * must be a single object.
 	 *
 	 * Returns mappings as the object [{
 	 *   "var1": { "@id" }, // if IRI or blank node 
@@ -97,6 +97,14 @@ module.exports = (function() {
 	 * }].
 	 */
 	urdf.query = function(obj) {
+		var _queryAll = function(q, list, bindings) {
+			return list.reduce(function(b, o) {
+				o = urdf.find(o['@id']);
+				// TODO check if o is null
+				return b.concat(_query(q, o, bindings));
+			}, []);
+		};
+
 		var _query = function(q, s, bindings) {
 			if (!urdf.match(q, s)) {
 				return [];
@@ -123,34 +131,28 @@ module.exports = (function() {
 						return b;
 					} else {
 						return q[p].reduce(function(bp, qo) {
+							var l = s[p];
+
 							if (p === '@type') {
 								qo = { '@id': qo };
+								l = l.map(function(o) {
+									return { '@id': o };
+								});
 							}
 
-							return s[p].reduce(function(bq, o) {
-								if (p === '@type') {
-									o = { '@id': o };
-								} else {
-									o = urdf.find(o['@id']);
-								}
-
-								return bq.concat(_query(qo, o, bp));
-							}, []);
+							return _queryAll(qo, l, bp);
 						}, b);
 					}
 				}, bindings);
 			}
 		};
 		
-		// TODO build query plan by restructuring query
-		
-		var n = urdf.find(obj['@id']);
-		
-		if (n === null) {
-			return [];
-		} else {
-			return _query(obj, n, []);
-		}
+		// TODO optimize query plan (query rewriting)		
+		var init = urdf.isVariable(obj) ? urdf.store : [{
+			'@id': obj['@id']
+		}];
+
+		return _queryAll(obj, init, []);
 	};
 
 	/**

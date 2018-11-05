@@ -69,9 +69,15 @@ describe('urdf.query()', ()=> {
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should exclude incompatible mappings in joins', () => {
+    it('should correctly process a pattern starting with a variable', () => {
         load('thing.json');
         let [actual, expected] = query('properties.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should exclude incompatible mappings in joins', () => {
+        load('thing.json');
+        let [actual, expected] = query('no-property.json');
         assert.deepStrictEqual(actual, expected);
     });
 
