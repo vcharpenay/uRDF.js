@@ -98,10 +98,8 @@ module.exports = (function() {
 	 */
 	urdf.query = function(obj) {
 		var _query = function(q, s, bindings) {
-			console.log(bindings);
 			if (!urdf.match(q, s)) {
-				bindings = [];
-				return bindings;
+				return [];
 			} else {
 				if (urdf.isVariable(q)) {
 					let cur = {
@@ -109,7 +107,7 @@ module.exports = (function() {
 					};
 
 					if (bindings.length === 0) {
-						bindings.push(cur);
+						bindings = [cur];
 					} else {
 						bindings = bindings.map(function(b) {
 							return urdf.merge(cur, b);
@@ -118,16 +116,24 @@ module.exports = (function() {
 						});
 					}
 				}
-	
+
 				return urdf.signature(q).reduce(function(b, p) {
 					// TODO take 'require all' flag into account (default: true)
 					if (p === '@id' || s[p] === undefined) {
 						return b;
 					} else {
 						return q[p].reduce(function(bp, qo) {
-							return s[p].reduce(function(bt, o) {
-								return _query(qo, o, bt);
-							}, bp);
+							if (p === '@type') {
+								qo = { '@id': qo };
+							}
+
+							return s[p].reduce(function(bq, o) {
+								if (p === '@type') {
+									o = { '@id': o };
+								}
+
+								return bq.concat(_query(qo, o, bp));
+							}, []);
 						}, b);
 					}
 				}, bindings);
@@ -150,7 +156,7 @@ module.exports = (function() {
 	 * and signatures (list of properties). The last parameter
 	 * is a 'require all' flag, specifying whether all of the
 	 * properties of n should match those of q (all = true) or
-	 * at least one (all = false). Default is true.
+	 * at least one (all = false). If not provided, all = true.
 	 * 
 	 * Returns true if the identifier and the signature of n
 	 * matches q, false otherwise.

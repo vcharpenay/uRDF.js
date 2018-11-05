@@ -43,11 +43,26 @@ describe('urdf.query()', ()=> {
         load('thing.json');
         let q = query('unit.json');
         let res = urdf.query(q);
-        assert.deepEqual(res, [{
+        assert.deepStrictEqual(res, [{
             'unit': {
                 '@id': 'http://data.nasa.gov/qudt/owl/unit#DegreeCelsius'
             }
         }]);
+    });
+
+    it('should correctly process a single triple pattern with @type', () => {
+        load('thing.json');
+        let q = query('type.json');
+        let res = urdf.query(q);
+        assert.deepStrictEqual(new Set(res), new Set([{
+            't': {
+                '@id': 'http://www.w3.org/ns/sosa/Sensor'
+            }
+        }, {
+            't': {
+                '@id': 'https://w3id.org/saref#TemperatureSensor'
+            }
+        }]));
     });
 
     it('should correctly exclude incompatible mappings in joins', () => {

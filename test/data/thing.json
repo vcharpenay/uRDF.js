@@ -1,31 +1,54 @@
-[{
-	"@id": "_:b0"
-}, {
-	"http://example.org/isActive": [{
-		"@value": "true"
-	}]
-}, {
-	"@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
-}, {
-	"@id": "http://example.org/sensor1",
-	"@type": ["http://purl.oclc.org/NET/ssnx/ssn#SensingDevice"],
-	"http://www.w3c.org/wot/td#hasProperty": [{
-		"@id": "http://example.org/sensor1/temp"
-	}]
-}, {
-	"@id": "http://example.org/sensor1/temp",
-	"http://example.org/curVal": [{
-		"@value": "54"
-	}],
-	"@type": ["http://purl.oclc.org/NET/ssnx/ssn#Property"],
-	"http://data.nasa.gov/qudt/owl/qudt#unit": [{
-		"@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
-	}],
-	"http://example.org/state": [{
+[
+	{
 		"@id": "_:b0"
-	}]
-}, {
-	"@id": "http://purl.oclc.org/NET/ssnx/ssn#Property"
-}, {
-	"@id": "http://purl.oclc.org/NET/ssnx/ssn#SensingDevice"
-}]
+	},
+	{
+		"http://example.org/isActive": [
+			{
+				"@value": "true"
+			}
+		]
+	},
+	{
+		"@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+	},
+	{
+		"@id": "http://example.org/sensor1",
+		"@type": [
+			"http://www.w3.org/ns/sosa/Sensor",
+			"https://w3id.org/saref#TemperatureSensor"
+		],
+		"http://www.w3c.org/wot/td#hasProperty": [
+			{
+				"@id": "http://example.org/sensor1/temp"
+			}
+		]
+	},
+	{
+		"@id": "http://example.org/sensor1/temp",
+		"http://example.org/curVal": [
+			{
+				"@value": "54"
+			}
+		],
+		"@type": [
+			"http://www.w3.org/ns/ssn/Property"
+		],
+		"http://data.nasa.gov/qudt/owl/qudt#unit": [
+			{
+				"@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+			}
+		],
+		"http://example.org/state": [
+			{
+				"@id": "_:b0"
+			}
+		]
+	},
+	{
+		"@id": "http://www.w3.org/ns/ssn/Property"
+	},
+	{
+		"@id": "http://www.w3.org/ns/sosa/Sensor"
+	}
+]
