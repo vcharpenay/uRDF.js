@@ -1,0 +1,107 @@
+[
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssistantProfessor"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
+    },
+    {
+        "@id": "http://www.Department0.University4.edu"
+    },
+    {
+        "@id": "http://www.Department0.University4.edu/AssistantProfessor1",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University4.edu/GraduateCourse8"
+            },
+            {
+                "@id": "http://www.Department0.University4.edu/Course8"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://www.w3.org/2000/01/rdf-schema#Resource",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://www.w3.org/2002/07/owl#Thing",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssistantProfessor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University4.edu"
+            },
+            {
+                "@id": "http://www.University685.edu"
+            },
+            {
+                "@id": "http://www.University501.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University501.edu"
+            }
+        ],
+        "http://www.w3.org/2002/07/owl#sameAs": [
+            {
+                "@id": "http://www.Department0.University4.edu/AssistantProfessor1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University4.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "AssistantProfessor1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University685.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University4.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University4.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University4.edu/Course8"
+    },
+    {
+        "@id": "http://www.Department0.University4.edu/GraduateCourse8"
+    },
+    {
+        "@id": "http://www.University4.edu"
+    },
+    {
+        "@id": "http://www.University501.edu"
+    },
+    {
+        "@id": "http://www.University685.edu"
+    },
+    {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#Resource"
+    },
+    {
+        "@id": "http://www.w3.org/2002/07/owl#Thing"
+    }
+]

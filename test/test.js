@@ -15,10 +15,25 @@ before(() => {
     urdf.clear();
 });
 
+describe('urdf.clear()', () => {
+    it('should delete all nodes', () => {
+        assert.strictEqual(urdf.size(), 0);
+        load('thing.json');
+        urdf.clear();
+        assert.strictEqual(urdf.size(), 0);
+    });
+});
+
 describe('urdf.size()', () => {
     it('should return the correct number of triples', () => {
-        load('lubm-s8.json');
-        assert.strictEqual(urdf.size(), 8);
+        fs.readdirSync('test/data')
+          .filter(f => /lubm-s\d+\.json/.test(f))
+          .forEach((f) => {
+              load(f);
+              let size = Number.parseInt(f.match(/\d+/)[0]);
+              assert.strictEqual(urdf.size(), size);
+              urdf.clear();
+          });
     });
 });
 
