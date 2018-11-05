@@ -130,17 +130,17 @@ module.exports = (function() {
 					if (p === '@id' || s[p] === undefined) {
 						return b;
 					} else {
-						return q[p].reduce(function(bp, qo) {
+						return q[p].reduce(function(b2, o) {
 							var l = s[p];
 
 							if (p === '@type') {
-								qo = { '@id': qo };
-								l = l.map(function(o) {
-									return { '@id': o };
+								o = { '@id': o };
+								l = l.map(function(t) {
+									return { '@id': t };
 								});
 							}
 
-							return _queryAll(qo, l, bp);
+							return _queryAll(o, l, b2);
 						}, b);
 					}
 				}, bindings);
@@ -196,7 +196,7 @@ module.exports = (function() {
 		var b = {};
 		
 		for (var v in b1) {
-			if (b2[v] !== undefined && b2[v] !== b1[v]) {
+			if (b2[v] !== undefined && b2[v]['@id'] !== b1[v]['@id']) {
 				return null;
 			}
 

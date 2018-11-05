@@ -1,0 +1,21 @@
+{
+    "@id": "_:t",
+    "http://www.w3c.org/wot/td#hasProperty": [
+        {
+            "@id": "_:p",
+            "@type": [
+                "_:cl"
+            ]
+        }
+    ],
+    "https://w3id.org/saref#hasCommand": [
+        {
+            "@id": "_:cmd",
+            "https://w3id.org/saref#actsUpon": [
+                {
+                    "@id": "_:p"
+                }
+            ]
+        }
+    ]
+}

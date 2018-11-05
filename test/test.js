@@ -92,4 +92,10 @@ describe('urdf.query()', ()=> {
         let [actual, expected] = query('celsius-properties.json');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process graph-shaped BGPs', () => {
+        load('thing.json');
+        let [actual, expected] = query('cmd-property.json');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

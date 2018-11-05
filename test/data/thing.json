@@ -25,6 +25,11 @@
 			{
 				"@id": "http://example.org/sensor1/onoff"
 			}
+		],
+		"https://w3id.org/saref#hasCommand": [
+			{
+				"@id": "http://example.org/sensor1/cmd"
+			}
 		]
 	},
 	{
@@ -56,15 +61,36 @@
 		]
 	},
 	{
+		"@id": "http://example.org/sensor1/cmd",
+		"https://w3id.org/saref#actsUpon": [
+			{
+				"@id": "http://example.org/sensor1/onoff"
+			}
+		]
+	},
+	{
 		"@id": "http://www.w3.org/ns/ssn/Property"
 	},
 	{
 		"@id": "http://www.w3.org/ns/sosa/Sensor"
 	},
 	{
-		"@id": "https://w3id.org/saref#TemperatureSensor"
+		"@id": "https://w3id.org/saref#TemperatureSensor",
+		"http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+			{
+				"@id": "https://w3id.org/saref#Property"
+			}
+		]
 	},
 	{
-		"@id": "https://w3id.org/saref#OnOffState"
+		"@id": "https://w3id.org/saref#OnOffState",
+		"http://www.w3.org/2000/01/rdf-schema#subClassOf": [
+			{
+				"@id": "https://w3id.org/saref#Property"
+			}
+		]
+	},
+	{
+		"@id": "https://w3id.org/saref#Property"
 	}
 ]
