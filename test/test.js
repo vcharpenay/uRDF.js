@@ -39,13 +39,21 @@ describe('urdf.find()', () => {
 });
 
 describe('urdf.query()', ()=> {
-    it('should return the correct unit of measurement (°C)', () => {
+    it('should correctly process a single triple pattern', () => {
         load('thing.json');
         let q = query('unit.json');
         let res = urdf.query(q);
-        assert.strictEqual(res.length, 1);
-        assert.deepEqual(res[0]['unit'], {
-            '@id': 'http://data.nasa.gov/qudt/owl/unit#DegreeCelsius'
-        });
+        assert.deepEqual(res, [{
+            'unit': {
+                '@id': 'http://data.nasa.gov/qudt/owl/unit#DegreeCelsius'
+            }
+        }]);
+    });
+
+    it('should correctly exclude incompatible mappings in joins', () => {
+        load('thing.json');
+        let q = query('properties.json');
+        let res = urdf.query(q);
+        assert.strictEqual(res.length, 0);
     });
 });

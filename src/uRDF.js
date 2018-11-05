@@ -98,70 +98,40 @@ module.exports = (function() {
 	 */
 	urdf.query = function(obj) {
 		var _query = function(q, s, bindings) {
-			var signature = Object.keys(q);
-
-			// TODO take 'require all' flag into account (default: true)
-			var includes = signature.every(function (p) {
-				return p === '@id' || s[p] !== undefined;
-			});
-			
-			if (!includes) {
+			console.log(bindings);
+			if (!urdf.match(q, s)) {
 				bindings = [];
+				return bindings;
 			} else {
-				bindings = signature.reduce(function(b, p) {
-					if (b === []) {
+				if (urdf.isVariable(q)) {
+					let cur = {
+						[urdf.lexicalForm(q)]: { '@id': s['@id'] }
+					};
+
+					if (bindings.length === 0) {
+						bindings.push(cur);
+					} else {
+						bindings = bindings.map(function(b) {
+							return urdf.merge(cur, b);
+						}).filter(function(b) {
+							return b !== null;
+						});
+					}
+				}
+	
+				return urdf.signature(q).reduce(function(b, p) {
+					// TODO take 'require all' flag into account (default: true)
+					if (p === '@id' || s[p] === undefined) {
 						return b;
 					} else {
-						if (p !== '@id' && s[p] !== undefined) {
-							for (var i in q[p]) {
-								// TODO use q[p].reduce()
-								var o = q[p][i];
-		
-								if (urdf.isLiteral(o)) {
-									// TODO pattern matching
-								} else {
-									if (urdf.isVariable(o)) {
-										var matches = s[p].map(function(n) {
-											// indexed by variable name
-											return { [urdf.lexicalForm(o)]: { ['@id']: n['@id'] } };
-										});
-		
-										if (b === null) {
-											b = matches;
-										} else {
-											// Cartesian product
-											var product = [];
-											
-											matches.forEach(function(m) {
-												b.forEach(function(b) {
-													product.push(urdf.merge(b, m));
-												});
-											});
-											
-											b = product;
-										}
-										
-										// TODO join if bindings already available
-									} else {
-										var exists = s[p].some(function(n) {
-											return n['@id'] === o['@id'];
-										});
-										
-										if (!exists) {
-											b = [];
-										}
-									}
-								}
-							}
-						}
-
-						// TODO recursive call
-						return b;
+						return q[p].reduce(function(bp, qo) {
+							return s[p].reduce(function(bt, o) {
+								return _query(qo, o, bt);
+							}, bp);
+						}, b);
 					}
-				}, null);
+				}, bindings);
 			}
-			
-			return bindings;
 		};
 		
 		// TODO build query plan by restructuring query
@@ -176,19 +146,70 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Merges two bindings
+	 * Compares the two input objects in terms of identifiers
+	 * and signatures (list of properties). The last parameter
+	 * is a 'require all' flag, specifying whether all of the
+	 * properties of n should match those of q (all = true) or
+	 * at least one (all = false). Default is true.
+	 * 
+	 * Returns true if the identifier and the signature of n
+	 * matches q, false otherwise.
+	 */
+	urdf.match = function(q, n, all) {
+		if (urdf.isLiteral(q)) {
+			// TODO pattern matching
+		} else {
+			if (!urdf.isVariable(q) && q['@id'] !== n['@id']) {
+				return false;
+			}
+	
+			var s = urdf.signature(q);
+			var _includes = function(p) {
+				return p === '@id' || n[p] !== undefined;
+			};
+	
+			if (all === undefined) {
+				all = true;
+			}
+	
+			return all ? s.every(_includes) : s.some(_includes);
+		}
+	};
+
+	/**
+	 * Merges two bindings.
 	 *
-	 * Returns a new binding object with entries of both input objects.
+	 * Returns a new binding object with entries of both input objects
+	 * if bindings are compatible, null otherwise.
 	 */
 	urdf.merge = function(b1, b2) {
 		var b = {};
 		
-		for (var v in b1) { b[v] = b1[v]; }
-		// TODO check binding compatibility
-		for (var v in b2) { b[v] = b2[v]; }
+		for (var v in b1) {
+			if (b2[v] !== undefined && b2[v] !== b1[v]) {
+				return null;
+			}
+
+			b[v] = b1[v];
+		}
+
+		for (var v in b2) {
+			if (b[v] === undefined) {
+				b[v] = b2[v];
+			}
+		}
 		
 		return b;
 	};
+
+	/**
+	 * Returns the signature of the input node (the list of its properties).
+	 * 
+	 * TODO bitmap as in the original impl?
+	 */
+	urdf.signature = function(obj) {
+		return Object.keys(obj);
+	}
 
 	/**
 	 * Evaluates if the input object is a variable
