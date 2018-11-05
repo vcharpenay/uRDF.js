@@ -1,0 +1,7 @@
+[
+    {
+        "unit": {
+            "@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+        }
+    }
+]

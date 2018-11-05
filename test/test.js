@@ -8,7 +8,10 @@ function load(f) {
 }
 
 function query(f) {
-    return JSON.parse(fs.readFileSync('test/queries/' + f));
+    let q = JSON.parse(fs.readFileSync('test/queries/' + f));
+    let res = JSON.parse(fs.readFileSync('test/results/' + f));
+
+    return [new Set(urdf.query(q)), new Set(res)];
 }
 
 before(() => {
@@ -56,34 +59,25 @@ describe('urdf.find()', () => {
 describe('urdf.query()', ()=> {
     it('should correctly process a single triple pattern', () => {
         load('thing.json');
-        let q = query('unit.json');
-        let res = urdf.query(q);
-        assert.deepStrictEqual(res, [{
-            'unit': {
-                '@id': 'http://data.nasa.gov/qudt/owl/unit#DegreeCelsius'
-            }
-        }]);
+        let [actual, expected] = query('unit.json');
+        assert.deepStrictEqual(actual, expected);
     });
 
     it('should correctly process a single triple pattern with @type', () => {
         load('thing.json');
-        let q = query('type.json');
-        let res = urdf.query(q);
-        assert.deepStrictEqual(new Set(res), new Set([{
-            't': {
-                '@id': 'http://www.w3.org/ns/sosa/Sensor'
-            }
-        }, {
-            't': {
-                '@id': 'https://w3id.org/saref#TemperatureSensor'
-            }
-        }]));
+        let [actual, expected] = query('type.json');
+        assert.deepStrictEqual(actual, expected);
     });
 
-    it('should correctly exclude incompatible mappings in joins', () => {
+    it('should exclude incompatible mappings in joins', () => {
         load('thing.json');
-        let q = query('properties.json');
-        let res = urdf.query(q);
-        assert.strictEqual(res.length, 0);
+        let [actual, expected] = query('properties.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should join compatible mappings', () => {
+        load('lubm-s34.json');
+        let [actual, expected] = query('curriculum.json');
+        assert.deepStrictEqual(actual, expected);
     });
 });

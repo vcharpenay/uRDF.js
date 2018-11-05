@@ -1,0 +1,12 @@
+[
+    {
+        "t": {
+            "@id": "http://www.w3.org/ns/sosa/Sensor"
+        }
+    },
+    {
+        "t": {
+            "@id": "https://w3id.org/saref#TemperatureSensor"
+        }
+    }
+]
