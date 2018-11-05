@@ -1,0 +1,6 @@
+{
+    "@id": "http://example.org/sensor1",
+    "@type": [
+        "_:t"
+    ]
+}
