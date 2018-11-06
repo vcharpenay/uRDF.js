@@ -1,0 +1,11 @@
+{
+    "@id": "_:X",
+    "@type": [
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+        {
+            "@id": "http://www.Department0.University0.edu"
+        }
+    ]
+}

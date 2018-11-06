@@ -1,0 +1,35 @@
+{
+  "head": {
+    "vars": [
+      "X"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssistantProfessor0/Publication3"
+        }
+      },
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssistantProfessor0/Publication2"
+        }
+      },
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssistantProfessor0/Publication1"
+        }
+      },
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssistantProfessor0/Publication0"
+        }
+      }
+    ]
+  }
+}

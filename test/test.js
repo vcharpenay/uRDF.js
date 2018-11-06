@@ -9,7 +9,11 @@ function load(f) {
 
 function query(f) {
     let q = JSON.parse(fs.readFileSync('test/queries/' + f));
+
     let res = JSON.parse(fs.readFileSync('test/results/' + f));
+    if (typeof res !== 'array' && res.results) {
+        res = res.results.bindings;
+    }
 
     return [new Set(urdf.query(q)), new Set(res)];
 }
@@ -69,6 +73,12 @@ describe('urdf.query()', ()=> {
         assert.deepStrictEqual(actual, expected);
     });
 
+    it('should correctly process a single triple pattern with non-existing @type', () => {
+        load('thing.json');
+        let [actual, expected] = query('no-actuator.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
     it('should correctly process a pattern starting with a variable', () => {
         load('thing.json');
         let [actual, expected] = query('properties.json');
@@ -93,9 +103,35 @@ describe('urdf.query()', ()=> {
         assert.deepStrictEqual(actual, expected);
     });
 
+    it('should exclude incompatible mappings in joins', () => {
+        load('thing.json');
+        let [actual, expected] = query('no-property.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
     it('should correctly process graph-shaped BGPs', () => {
         load('thing.json');
         let [actual, expected] = query('cmd-property.json');
         assert.deepStrictEqual(actual, expected);
+    });
+});
+
+describe('urdf', () => {
+    it('should correctly process all LUBM benchmark queries', () => {
+        load('lubm-inf.json');
+        let report = [];
+        for (var i = 1; i <= 14; i++) {
+            let [actual, expected] = query('lubm-q' + i + '.json');
+            try {
+                assert.deepStrictEqual(actual, expected);
+            } catch (e) {
+                if (e instanceof assert.AssertionError) {
+                    report[i] = e;
+                } else {
+                    throw e;
+                }
+            }
+        }
+        assert.strictEqual(report.filter(e => e).length, 0);
     });
 });

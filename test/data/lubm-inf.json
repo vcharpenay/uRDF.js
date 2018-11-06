@@ -1,0 +1,2136 @@
+[
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssistantProfessor"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssociateProfessor"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Department"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#FullProfessor"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Lecturer"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University"
+    },
+    {
+        "@id": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+    },
+    {
+        "@id": "http://www.Department0.University0.edu",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Department0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+            {
+                "@id": "http://www.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Department",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssistantProfessor0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University810.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course6"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssistantProfessor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University810.edu"
+            },
+            {
+                "@id": "http://www.University624.edu"
+            },
+            {
+                "@id": "http://www.University944.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University944.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University624.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "AssistantProfessor0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssistantProfessor0/Publication0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssistantProfessor0/Publication1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssistantProfessor0/Publication2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateStudent4"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssistantProfessor0/Publication3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication3"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University410.edu"
+            },
+            {
+                "@id": "http://www.University421.edu"
+            },
+            {
+                "@id": "http://www.University875.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "AssociateProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#AssociateProfessor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University421.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University875.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University410.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0/Publication0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0/Publication1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication1"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0/Publication2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication2"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0/Publication3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication3"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0/Publication4",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication4"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course0",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course1"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course2"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course3",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course3"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course5",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course5"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course6",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course6"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course7",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course7"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course8",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course8"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Course9",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Course9"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#FullProfessor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course0"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University308.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University659.edu"
+            },
+            {
+                "@id": "http://www.University41.edu"
+            },
+            {
+                "@id": "http://www.University308.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "FullProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University41.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University659.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#headOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication1",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication1"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication2"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication3"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor0/Publication5",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateStudent6"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication5"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "FullProfessor1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University882.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#FullProfessor",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University92.edu"
+            },
+            {
+                "@id": "http://www.University759.edu"
+            },
+            {
+                "@id": "http://www.University882.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University759.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University92.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1/Publication0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateStudent6"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1/Publication1",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateStudent1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1/Publication2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1/Publication3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication3"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/FullProfessor1/Publication4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateStudent1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse0",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse1"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse2",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse2"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse3"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse5",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse5"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse6",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse6"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateCourse7",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateCourse7"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateCourse",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Work"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University150.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University150.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent1",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse2"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University995.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University995.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University701.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse0"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse7"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchAssistant",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University701.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University755.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent3"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University755.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor1"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teachingAssistantOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse5"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University659.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University659.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent5",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent5"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse6"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University37.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University37.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent6",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teachingAssistantOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#TeachingAssistant",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University814.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent6"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University814.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/GraduateStudent7",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "GraduateStudent7"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University448.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University448.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Lecturer0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Lecturer",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University296.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Lecturer0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University985.edu"
+            },
+            {
+                "@id": "http://www.University823.edu"
+            },
+            {
+                "@id": "http://www.University296.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse5"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University985.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University823.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Lecturer0/Publication0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/Lecturer0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Lecturer1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Employee",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Lecturer"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Lecturer1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+            {
+                "@id": "http://www.University125.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse6"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse7"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
+            {
+                "@id": "http://www.University771.edu"
+            },
+            {
+                "@id": "http://www.University125.edu"
+            },
+            {
+                "@id": "http://www.University374.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#mastersDegreeFrom": [
+            {
+                "@id": "http://www.University771.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom": [
+            {
+                "@id": "http://www.University374.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/Lecturer1/Publication0",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+            {
+                "@id": "http://www.Department0.University0.edu/Lecturer1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "Publication0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/ResearchGroup0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/ResearchGroup1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/ResearchGroup2",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course6"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent1",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent10",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course6"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent10"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent11",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent11"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent12",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/FullProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent12"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent13",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent13"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent14",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent14"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent15",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent15"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent16",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent16"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent17",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course0"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent17"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent2",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent3",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course6"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent3"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent4",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course3"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent4"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "http://www.Department0.University0.edu/AssociateProfessor0"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent5",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent5"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course5"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent6",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course7"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent6"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent7",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course0"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent7"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent8",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent8"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course9"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course2"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course0"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course4"
+            }
+        ],
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/UndergraduateStudent9",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/Course1"
+            },
+            {
+                "@id": "http://www.Department0.University0.edu/Course8"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "UndergraduateStudent9"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.University0.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@value": "University0"
+            }
+        ]
+    },
+    {
+        "@id": "http://www.University125.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University150.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University296.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University308.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University37.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University374.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University41.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University410.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University421.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University448.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University624.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University659.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University701.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University755.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University759.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University771.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University810.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University814.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University823.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University875.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University882.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University92.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University944.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University985.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    },
+    {
+        "@id": "http://www.University995.edu",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University",
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Organization"
+        ]
+    }
+]

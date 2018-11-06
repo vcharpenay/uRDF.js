@@ -1,0 +1,55 @@
+{
+  "head": {
+    "vars": [
+      "X",
+      "Y",
+      "Z"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/UndergraduateStudent12"
+        },
+        "Y": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/FullProfessor0"
+        },
+        "Z": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/Course1"
+        }
+      },
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/GraduateStudent7"
+        },
+        "Y": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssociateProfessor0"
+        },
+        "Z": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/GraduateCourse2"
+        }
+      },
+      {
+        "X": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/GraduateStudent1"
+        },
+        "Y": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/AssociateProfessor0"
+        },
+        "Z": {
+          "type": "uri",
+          "value": "http://www.Department0.University0.edu/GraduateCourse2"
+        }
+      }
+    ]
+  }
+}

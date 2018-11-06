@@ -1,0 +1,27 @@
+{
+    "@id": "_:X",
+    "@type": [
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent"
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+        {
+            "@id": "_:Z",
+            "@type": [
+                "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Department"
+            ],
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+                {
+                    "@id": "_:Y",
+                    "@type": [
+                        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#University"
+                    ]
+                }
+            ]
+        }
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom": [
+        {
+            "@id": "_:Y"
+        }
+    ]
+}

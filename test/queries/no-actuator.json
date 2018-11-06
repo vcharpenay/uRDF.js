@@ -1,0 +1,6 @@
+{
+    "@id": "_:t",
+    "@type": [
+        "http://www.w3.org/ns/sosa/Actuator"
+    ]
+}

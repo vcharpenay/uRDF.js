@@ -1,0 +1,24 @@
+{
+    "@id": "_:X",
+    "@type": [
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#emailAddress": [
+        {
+            "@id": "_:Z"
+        }
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf": [
+        {
+            "@id": "_:Y",
+            "@type": [
+                "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Department"
+            ],
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+                {
+                    "@id": "http://www.University0.edu"
+                }
+            ]
+        }
+    ]
+}

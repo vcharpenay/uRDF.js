@@ -97,16 +97,30 @@ module.exports = (function() {
 	 */
 	urdf.query = function(obj) {
 		var _queryAll = function(q, list, bindings) {
-			return list.reduce(function(b, o) {
+			return list.map(function(o) {
 				o = urdf.find(o['@id']);
-				// TODO check if o is null
-				return b.concat(_query(q, o, bindings));
-			}, []);
+
+				if (o === null) {
+					return null;
+				} else {
+					return _query(q, o, bindings);
+				}
+			}).reduce(function(disjunction, b) {
+				if (b === null) {
+					return disjunction;
+				} else {
+					if (disjunction === null) {
+						return b;
+					} else {
+						return disjunction.concat(b);
+					}
+				}
+			}, null);
 		};
 
 		var _query = function(q, s, bindings) {
 			if (!urdf.match(q, s)) {
-				return [];
+				return null;
 			} else {
 				if (urdf.isVariable(q)) {
 					let cur = {
@@ -128,22 +142,31 @@ module.exports = (function() {
 				}
 
 				return urdf.signature(q).reduce(function(b, p) {
-					// TODO take 'require all' flag into account (default: true)
-					if (p === '@id' || s[p] === undefined) {
+					if (b === null) {
 						return b;
 					} else {
-						return q[p].reduce(function(b2, o) {
-							var l = s[p];
-
-							if (p === '@type') {
-								o = { '@id': o };
-								l = l.map(function(t) {
-									return { '@id': t };
-								});
-							}
-
-							return _queryAll(o, l, b2);
-						}, b);
+						// TODO take 'require all' flag into account (default: true)
+						if (p === '@id' || s[p] === undefined) {
+							return b;
+						} else {
+							return q[p].reduce(function(b2, o) {
+								if (b2 === null) {
+									return b2;
+								} else {
+									// TODO process @reverse
+									var l = s[p];
+		
+									if (p === '@type') {
+										o = { '@id': o };
+										l = l.map(function(t) {
+											return { '@id': t };
+										});
+									}
+		
+									return _queryAll(o, l, b2);
+								}
+							}, b);
+						}
 					}
 				}, bindings);
 			}
@@ -166,6 +189,8 @@ module.exports = (function() {
 	 * 
 	 * Returns true if the identifier and the signature of n
 	 * matches q, false otherwise.
+	 * 
+	 * TODO include type signature?
 	 */
 	urdf.match = function(q, n, all) {
 		if (urdf.isLiteral(q)) {

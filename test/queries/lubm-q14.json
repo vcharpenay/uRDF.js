@@ -1,0 +1,6 @@
+{
+    "@id": "_:X",
+    "@type": [
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#UndergraduateStudent"
+    ]
+}

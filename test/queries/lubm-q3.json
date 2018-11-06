@@ -1,0 +1,11 @@
+{
+    "@id": "_:X",
+    "@type": [
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Publication"
+    ],
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationAuthor": [
+        {
+            "@id": "http://www.Department0.University0.edu/AssistantProfessor0"
+        }
+    ]
+}
