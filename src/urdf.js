@@ -123,22 +123,26 @@ module.exports = (function() {
 				return null;
 			} else {
 				if (urdf.isVariable(q)) {
-					let cur = {
+					bindings = _merge(bindings, [{
 						[urdf.lexicalForm(q)]: {
 							'type': 'uri',
 							'value': s['@id']
 						}
-					};
+					}]);
+				}
 
-					if (bindings.length === 0) {
-						bindings = [cur];
-					} else {
-						bindings = bindings.map(function(b) {
-							return urdf.merge(cur, b);
-						}).filter(function(b) {
-							return b !== null;
-						});
-					}
+				if (q['@type'] !== undefined) {
+					let types = s['@type'].map(function(t) {
+						return { '@id': t };
+					})
+
+					let tb = q['@type'].filter(function(t) {
+						return urdf.isVariable({ '@id': t })
+					}).reduce(function(b, t) {
+						return _queryAll({ '@id': t }, types, b);
+					}, []);
+
+					bindings = _merge(bindings, tb);
 				}
 
 				return urdf.signature(q).reduce(function(b, p) {
@@ -146,7 +150,7 @@ module.exports = (function() {
 						return b;
 					} else {
 						// TODO take 'require all' flag into account (default: true)
-						if (p === '@id' || s[p] === undefined) {
+						if (s[p] === undefined) {
 							return b;
 						} else {
 							return q[p].reduce(function(b2, o) {
@@ -156,19 +160,28 @@ module.exports = (function() {
 									// TODO process @reverse
 									var l = s[p];
 		
-									if (p === '@type') {
-										o = { '@id': o };
-										l = l.map(function(t) {
-											return { '@id': t };
-										});
-									}
-		
 									return _queryAll(o, l, b2);
 								}
 							}, b);
 						}
 					}
 				}, bindings);
+			}
+		};
+
+		var _merge = function(bs1, bs2) {
+			if (bs1.length === 0) {
+				return bs2;
+			} else if (bs2.length === 0) {
+				return bs1;
+			} else {
+				return bs1.reduce(function(aggregate, b1) {
+					return aggregate.concat(bs2.map(function(b2) {
+						return urdf.merge(b1, b2);
+					}));
+				}, []).filter(function(b) {
+					return b !== null;
+				});
 			}
 		};
 		
@@ -182,15 +195,15 @@ module.exports = (function() {
 
 	/**
 	 * Compares the two input objects in terms of identifiers
-	 * and signatures (list of properties). The last parameter
-	 * is a 'require all' flag, specifying whether all of the
-	 * properties of n should match those of q (all = true) or
-	 * at least one (all = false). If not provided, all = true.
+	 * and signatures (list of types and list of properties).
+	 * The last parameter is a 'require all' flag, specifying
+	 * whether all of the properties of n should match those of
+	 * q (all = true) or at least one (all = false). If not
+	 * provided, all = true. For type signatures, 'require
+	 * all' is always false.
 	 * 
-	 * Returns true if the identifier and the signature of n
-	 * matches q, false otherwise.
-	 * 
-	 * TODO include type signature?
+	 * Returns true if the identifier and the signatures of n
+	 * matches q (types and properties), false otherwise.
 	 */
 	urdf.match = function(q, n, all) {
 		if (urdf.isLiteral(q)) {
@@ -199,17 +212,39 @@ module.exports = (function() {
 			if (!urdf.isVariable(q) && q['@id'] !== n['@id']) {
 				return false;
 			}
-	
-			var s = urdf.signature(q);
-			var _includes = function(p) {
-				return p === '@id' || n[p] !== undefined;
+
+			var _intersects = function(a, b) {
+				if (a === undefined) {
+					return true;
+				} else if (b === undefined && a.length > 0) {
+					return false;
+				} else {
+					return a.some(function(elem) {
+						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+					});
+				}
 			};
-	
-			if (all === undefined) {
-				all = true;
+
+			if (!_intersects(q['@type'], n['@type'])) {
+				return false;
 			}
-	
-			return all ? s.every(_includes) : s.some(_includes);
+
+			var _isSubset = function(a, b) {
+				if (a === undefined) {
+					return true;
+				} else if (b === undefined && a.length > 0) {
+					return false;
+				} else {
+					return a.every(function(elem) {
+						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+					});
+				}
+			};
+
+			let sq = urdf.signature(q);
+			let sn = urdf.signature(n);
+
+			return all === false ? _interects(sq, sn) : _isSubset(sq, sn);
 		}
 	};
 
@@ -240,12 +275,13 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Returns the signature of the input node (the list of its properties).
+	 * Returns the signature of the input node
+	 * (the list of its properties, excluding @id, @type).
 	 * 
 	 * TODO bitmap as in the original impl?
 	 */
 	urdf.signature = function(obj) {
-		return Object.keys(obj);
+		return Object.keys(obj).filter(p => p !== '@id' && p !== '@type');
 	}
 
 	/**
