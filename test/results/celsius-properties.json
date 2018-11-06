@@ -1,5 +1,6 @@
 [{
     "p": {
-        "@id": "http://example.org/sensor1/temp"
+        "type": "uri",
+        "value": "http://example.org/sensor1/temp"
     } 
 }]

@@ -1,7 +1,8 @@
 [
     {
         "unit": {
-            "@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+            "type": "uri",
+            "value": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
         }
     }
 ]

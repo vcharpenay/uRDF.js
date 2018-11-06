@@ -14,6 +14,8 @@ module.exports = (function() {
 
 	/**
 	 * The µRDF store data structure.
+	 * 
+	 * TODO make private (in closure only)
 	 */
 	urdf.store = [];
 
@@ -89,12 +91,9 @@ module.exports = (function() {
 	 * contain the @reverse keyword but the input frame
 	 * must be a single object.
 	 *
-	 * Returns mappings as the object [{
-	 *   "var1": { "@id" }, // if IRI or blank node 
-	 *   "var2": { "@value" } // if literal
-	 * }, {
-	 *   // ...
-	 * }].
+	 * Returns mappings as defined by the SPARQL results
+	 * JSON format.
+	 * See https://www.w3.org/TR/sparql11-results-json/.
 	 */
 	urdf.query = function(obj) {
 		var _queryAll = function(q, list, bindings) {
@@ -111,7 +110,10 @@ module.exports = (function() {
 			} else {
 				if (urdf.isVariable(q)) {
 					let cur = {
-						[urdf.lexicalForm(q)]: { '@id': s['@id'] }
+						[urdf.lexicalForm(q)]: {
+							'type': 'uri',
+							'value': s['@id']
+						}
 					};
 
 					if (bindings.length === 0) {
@@ -196,7 +198,7 @@ module.exports = (function() {
 		var b = {};
 		
 		for (var v in b1) {
-			if (b2[v] !== undefined && b2[v]['@id'] !== b1[v]['@id']) {
+			if (b2[v] !== undefined && b2[v].value !== b1[v].value) {
 				return null;
 			}
 

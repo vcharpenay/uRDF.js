@@ -1,30 +1,38 @@
 [
     {
         "t": {
-            "@id": "http://example.org/sensor1"
+            "type": "uri",
+            "value": "http://example.org/sensor1"
         },
         "p": {
-            "@id": "http://example.org/sensor1/onoff"
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
         },
         "cl": {
-            "@id": "http://www.w3.org/ns/ssn/Property"
+            "type": "uri",
+            "value": "http://www.w3.org/ns/ssn/Property"
         },
         "cmd": {
-            "@id": "http://example.org/sensor1/cmd"
+            "type": "uri",
+            "value": "http://example.org/sensor1/cmd"
         }
     },
     {
         "t": {
-            "@id": "http://example.org/sensor1"
+            "type": "uri",
+            "value": "http://example.org/sensor1"
         },
         "p": {
-            "@id": "http://example.org/sensor1/onoff"
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
         },
         "cl": {
-            "@id": "https://w3id.org/saref#OnOffState"
+            "type": "uri",
+            "value": "https://w3id.org/saref#OnOffState"
         },
         "cmd": {
-            "@id": "http://example.org/sensor1/cmd"
+            "type": "uri",
+            "value": "http://example.org/sensor1/cmd"
         }
     }
 ]

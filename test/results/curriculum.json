@@ -1,31 +1,40 @@
 [{
     "master": {
-        "@id": "http://www.University4.edu"
+        "type": "uri",
+        "value": "http://www.University4.edu"
     },
     "bachelor": {
-        "@id": "http://www.University501.edu"
+        "type": "uri",
+        "value": "http://www.University501.edu"
     },
     "phd": {
-        "@id": "http://www.University4.edu"
+        "type": "uri",
+        "value": "http://www.University4.edu"
     }
 }, {
     "master": {
-        "@id": "http://www.University685.edu"
+        "type": "uri",
+        "value": "http://www.University685.edu"
     },
     "bachelor": {
-        "@id": "http://www.University501.edu"
+        "type": "uri",
+        "value": "http://www.University501.edu"
     },
     "phd": {
-        "@id": "http://www.University4.edu"
+        "type": "uri",
+        "value": "http://www.University4.edu"
     }
 }, {
     "master": {
-        "@id": "http://www.University501.edu"
+        "type": "uri",
+        "value": "http://www.University501.edu"
     },
     "bachelor": {
-        "@id": "http://www.University501.edu"
+        "type": "uri",
+        "value": "http://www.University501.edu"
     },
     "phd": {
-        "@id": "http://www.University4.edu"
+        "type": "uri",
+        "value": "http://www.University4.edu"
     }
 }]

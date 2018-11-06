@@ -1,8 +1,14 @@
 [
     {
-        "p": { "@id": "http://example.org/sensor1/temp" }
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        }
     },
     {
-        "p": { "@id": "http://example.org/sensor1/onoff" }
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        }
     }
 ]

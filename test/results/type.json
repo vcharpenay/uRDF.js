@@ -1,12 +1,14 @@
 [
     {
         "t": {
-            "@id": "http://www.w3.org/ns/sosa/Sensor"
+            "type": "uri",
+            "value": "http://www.w3.org/ns/sosa/Sensor"
         }
     },
     {
         "t": {
-            "@id": "https://w3id.org/saref#TemperatureSensor"
+            "type": "uri",
+            "value": "https://w3id.org/saref#TemperatureSensor"
         }
     }
 ]
