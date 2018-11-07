@@ -55,7 +55,12 @@ assert.deepStrictEqual(bindings, [
 ```
 
 All JSON-LD arguments must be
-[flattened](https://www.w3.org/TR/json-ld-api/#flattening-algorithms).
+[flattened](https://www.w3.org/TR/json-ld-api/#flattening-algorithms) and
+normalized (all properties for a node object, including `@type`, must be
+an array).
+
+This implementation can process all queries of the
+[LUBM benchmark](http://swat.cse.lehigh.edu/projects/lubm/).
 
 ## Build
 
