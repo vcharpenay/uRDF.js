@@ -1,11 +1,13 @@
-{
-    "@id": "_:X",
-    "@type": [
-        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup"
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
-        {
-            "@id": "http://www.University0.edu"
-        }
-    ]
-}
+[
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#ResearchGroup"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#subOrganizationOf": [
+            {
+                "@id": "http://www.University0.edu"
+            }
+        ]
+    }
+]

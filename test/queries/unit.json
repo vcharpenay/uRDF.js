@@ -1,8 +1,10 @@
-{
-	"@id": "http://example.org/sensor1/temp",
-	"http://data.nasa.gov/qudt/owl/qudt#unit": [
-		{
-			"@id": "_:unit"
-		}
-	]
-}
+[
+	{
+		"@id": "http://example.org/sensor1/temp",
+		"http://data.nasa.gov/qudt/owl/qudt#unit": [
+			{
+				"@id": "_:unit"
+			}
+		]
+	}
+]

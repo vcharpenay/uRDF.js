@@ -1,13 +1,18 @@
-{
-    "@id": "http://example.org/sensor1",
-    "http://www.w3c.org/wot/td#hasProperty": [
-        {
-            "@id": "_:p",
-            "http://data.nasa.gov/qudt/owl/qudt#unit": [
-                {
-                    "@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
-                }
-            ]
-        }
-    ]
-}
+[
+    {
+        "@id": "http://example.org/sensor1",
+        "http://www.w3c.org/wot/td#hasProperty": [
+            {
+                "@id": "_:p"
+            }
+        ]
+    },
+    {
+        "@id": "_:p",
+        "http://data.nasa.gov/qudt/owl/qudt#unit": [
+            {
+                "@id": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+            }
+        ]
+    }
+]

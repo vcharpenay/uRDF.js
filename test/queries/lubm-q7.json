@@ -1,0 +1,27 @@
+[
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "_:Y"
+            }
+        ]
+    },
+    {
+        "@id": "_:Y",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course"
+        ]
+    },
+    {
+        "@id": "http://www.Department0.University0.edu/AssociateProfessor0",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "_:Y"
+            }
+        ]
+    }
+]

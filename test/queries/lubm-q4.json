@@ -1,26 +1,28 @@
-{
-    "@id": "_:X",
-    "@type": [
-        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
-        {
-            "@id": "http://www.Department0.University0.edu"
-        }
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
-        {
-            "@id": "_:Y1"
-        }
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#emailAddress": [
-        {
-            "@id": "_:Y2"
-        }
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#telephone": [
-        {
-            "@id": "_:Y3"
-        }
-    ]
-}
+[
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Professor"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor": [
+            {
+                "@id": "http://www.Department0.University0.edu"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name": [
+            {
+                "@id": "_:Y1"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#emailAddress": [
+            {
+                "@id": "_:Y2"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#telephone": [
+            {
+                "@id": "_:Y3"
+            }
+        ]
+    }
+]

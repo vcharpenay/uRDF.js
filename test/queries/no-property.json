@@ -1,11 +1,16 @@
-{
-    "@id": "http://example.org/sensor1",
-    "http://www.w3c.org/wot/td#hasProperty": [
-        {
-            "@id": "_:p",
-            "@type": [
-                "http://iotschema.org/Property"
-            ]
-        }
-    ]
-}
+[
+    {
+        "@id": "_:p",
+        "@type": [
+            "http://iotschema.org/Property"
+        ]
+    },
+    {
+        "@id": "http://example.org/sensor1",
+        "http://www.w3c.org/wot/td#hasProperty": [
+            {
+                "@id": "_:p"
+            }
+        ]
+    }
+]

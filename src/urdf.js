@@ -85,26 +85,18 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Runs a JSON-LD frame object with nesting,
+	 * Processes a flattened JSON-LD frame object,
 	 * interpreted as a query, against the µRDF store
-	 * (blank nodes = variables). The input frame can
-	 * contain the @reverse keyword but the input frame
-	 * must be a single object.
+	 * (blank nodes = variables).
 	 *
 	 * Returns mappings as defined by the SPARQL results
 	 * JSON format.
 	 * See https://www.w3.org/TR/sparql11-results-json/.
 	 */
-	urdf.query = function(obj) {
-		var _queryAll = function(q, list, bindings) {
-			return list.map(function(o) {
-				o = urdf.find(o['@id']);
-
-				if (o === null) {
-					return null;
-				} else {
-					return _query(q, o, bindings);
-				}
+	urdf.query = function(frame) {
+		var _queryAll = function(f, list, bindings) {
+			return list.map(function(n) {
+				return _query(f, n, bindings);
 			}).reduce(function(disjunction, b) {
 				if (b === null) {
 					return disjunction;
@@ -118,25 +110,26 @@ module.exports = (function() {
 			}, null);
 		};
 
-		var _query = function(q, s, bindings) {
-			if (!urdf.match(q, s)) {
+		var _query = function(f, s, bindings) {
+			if (!urdf.match(f, s)) {
 				return null;
 			} else {
-				if (urdf.isVariable(q)) {
+				if (urdf.isVariable(f)) {
 					bindings = _merge(bindings, [{
-						[urdf.lexicalForm(q)]: {
+						// TODO exclude from result if no bnode label
+						[urdf.lexicalForm(f)]: {
 							'type': 'uri',
 							'value': s['@id']
 						}
 					}]);
 				}
 
-				if (q['@type'] !== undefined) {
+				if (f['@type'] !== undefined) {
 					let types = s['@type'].map(function(t) {
 						return { '@id': t };
-					})
+					});
 
-					let tb = q['@type'].filter(function(t) {
+					let tb = f['@type'].filter(function(t) {
 						return urdf.isVariable({ '@id': t })
 					}).reduce(function(b, t) {
 						return _queryAll({ '@id': t }, types, b);
@@ -145,7 +138,7 @@ module.exports = (function() {
 					bindings = _merge(bindings, tb);
 				}
 
-				return urdf.signature(q).reduce(function(b, p) {
+				return urdf.signature(f).reduce(function(b, p) {
 					if (b === null) {
 						return b;
 					} else {
@@ -153,14 +146,11 @@ module.exports = (function() {
 						if (s[p] === undefined) {
 							return b;
 						} else {
-							return q[p].reduce(function(b2, o) {
+							return f[p].reduce(function(b2, f2) {
 								if (b2 === null) {
 									return b2;
 								} else {
-									// TODO process @reverse
-									var l = s[p];
-		
-									return _queryAll(o, l, b2);
+									return _queryAll(f2, s[p], b2);
 								}
 							}, b);
 						}
@@ -175,22 +165,66 @@ module.exports = (function() {
 			} else if (bs2.length === 0) {
 				return bs1;
 			} else {
-				return bs1.reduce(function(aggregate, b1) {
-					return aggregate.concat(bs2.map(function(b2) {
-						return urdf.merge(b1, b2);
-					}));
-				}, []).filter(function(b) {
-					return b !== null;
-				});
+				return bs1.reduce(function(dis1, b1) {
+					return bs2.reduce(function(dis2, b2) {
+						var b = urdf.merge(b1, b2);
+
+						// TODO duplicated code with _queryAll()
+						if (b !== null) {
+							if (dis2 === null) {
+								dis2 = [b];
+							} else {
+								dis2.push(b);
+							}
+						}
+
+						return dis2;
+					}, dis1);
+				}, null);
 			}
 		};
-		
-		// TODO optimize query plan (query rewriting)		
-		var init = urdf.isVariable(obj) ? urdf.store : [{
-			'@id': obj['@id']
-		}];
 
-		return _queryAll(obj, init, []);
+		// TODO optimize query plan (query rewriting)
+
+		return frame.reduce(function(bindings, f) {
+			if (bindings === null) {
+				return bindings;
+			}
+
+			var nodes = [];
+
+			if (urdf.isVariable(f)) {
+				var name = urdf.lexicalForm(f);
+
+				nodes = bindings.reduce(function(uris, b) {
+					if (b[name] != undefined) {
+						var t = b[name].type;
+						var v = b[name].value;
+
+						if (t === 'uri' && uris.indexOf(v) == -1) {
+							uris.push(v);
+						}
+					};
+
+					return uris;
+				}, []).map(function(uri) {
+					return urdf.find(uri);
+				});
+
+				if (nodes.length === 0) {
+					nodes = urdf.store;
+				}
+			} else {
+				var n = urdf.find(f['@id']);
+				if (n === null) {
+					return null;
+				} else {
+					nodes.push(n);
+				}
+			}
+
+			return _queryAll(f, nodes, bindings);
+		}, []);
 	};
 
 	/**

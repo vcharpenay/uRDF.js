@@ -1,11 +1,16 @@
-{
-    "@id": "http://www.University0.edu",
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#hasAlumnus": [
-        {
-            "@id": "_:X",
-            "@type": [
-                "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
-            ]
-        }
-    ]
-}
+[
+    {
+        "@id": "http://www.University0.edu",
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#hasAlumnus": [
+            {
+                "@id": "_:X"
+            }
+        ]
+    },
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Person"
+        ]
+    }
+]

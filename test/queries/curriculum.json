@@ -1,4 +1,4 @@
-{
+[{
     "@id": "http://www.Department0.University4.edu/AssistantProfessor1",
     "http://swat.cse.lehigh.edu/onto/univ-bench.owl#degreeFrom": [
         {
@@ -15,4 +15,4 @@
             "@id": "_:phd"
         }
     ]
-}
+}]

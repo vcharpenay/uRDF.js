@@ -1,6 +1,8 @@
-{
-    "@id": "_:p",
-    "@type": [
-        "http://www.w3.org/ns/ssn/Property"
-    ]
-}
+[
+    {
+        "@id": "_:p",
+        "@type": [
+            "http://www.w3.org/ns/ssn/Property"
+        ]
+    }
+]

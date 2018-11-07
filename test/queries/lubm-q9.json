@@ -1,27 +1,35 @@
-{
-    "@id": "_:X",
-    "@type": [
-        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
-        {
-            "@id": "_:Y",
-            "@type": [
-                "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
-            ],
-            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
-                {
-                    "@id": "_:Z",
-                    "@type": [
-                        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course"
-                    ]
-                }
-            ]
-        }
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
-        {
-            "@id": "_:Z"
-        }
-    ]
-}
+[
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#advisor": [
+            {
+                "@id": "_:Y"
+            }
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "_:Z"
+            }
+        ]
+    },
+    {
+        "@id": "_:Y",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Faculty"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf": [
+            {
+                "@id": "_:Z"
+            }
+        ]
+    },
+    {
+        "@id": "_:Z",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Course"
+        ]
+    }
+]

@@ -1,11 +1,13 @@
-{
-    "@id": "_:X",
-    "@type": [
-        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
-    ],
-    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
-        {
-            "@id": "http://www.Department0.University0.edu/GraduateCourse0"
-        }
-    ]
-}
+[
+    {
+        "@id": "_:X",
+        "@type": [
+            "http://swat.cse.lehigh.edu/onto/univ-bench.owl#Student"
+        ],
+        "http://swat.cse.lehigh.edu/onto/univ-bench.owl#takesCourse": [
+            {
+                "@id": "http://www.Department0.University0.edu/GraduateCourse0"
+            }
+        ]
+    }
+]

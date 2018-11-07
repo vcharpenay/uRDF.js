@@ -18,12 +18,12 @@ function query(f) {
     return [new Set(urdf.query(q)), new Set(res)];
 }
 
-before(() => {
+before(function() {
     urdf.clear();
 });
 
-describe('urdf.clear()', () => {
-    it('should delete all nodes', () => {
+describe('urdf.clear()', function() {
+    it('should delete all nodes', function() {
         assert.strictEqual(urdf.size(), 0);
         load('thing.json');
         urdf.clear();
@@ -31,8 +31,8 @@ describe('urdf.clear()', () => {
     });
 });
 
-describe('urdf.size()', () => {
-    it('should return the correct number of triples', () => {
+describe('urdf.size()', function() {
+    it('should return the correct number of triples', function() {
         fs.readdirSync('test/data')
           .filter(f => /lubm-s\d+\.json/.test(f))
           .forEach((f) => {
@@ -44,80 +44,80 @@ describe('urdf.size()', () => {
     });
 });
 
-describe('urdf.find()', () => {
+describe('urdf.find()', function() {
     const uri = 'http://www.Department0.University4.edu/AssistantProfessor1';
 
-    it('should return the correct node', () => {
+    it('should return the correct node', function() {
         load('lubm-s8.json');
         let n = urdf.find(uri);
         assert.ok(n);
         assert.strictEqual(n['@id'], uri);
     });
 
-    it('should return null if no node found', () => {
+    it('should return null if no node found', function() {
         load('lubm-s8.json');
         assert.strictEqual(urdf.find('tag:notfound'), null);
     });
 });
 
 describe('urdf.query()', ()=> {
-    it('should correctly process a single triple pattern', () => {
+    it('should correctly process a single triple pattern', function() {
         load('thing.json');
         let [actual, expected] = query('unit.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should correctly process a single triple pattern with @type', () => {
+    it('should correctly process a single triple pattern with @type', function() {
         load('thing.json');
         let [actual, expected] = query('type.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should correctly process a single triple pattern with non-existing @type', () => {
+    it('should correctly process a single triple pattern with non-existing @type', function() {
         load('thing.json');
         let [actual, expected] = query('no-actuator.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should correctly process a pattern starting with a variable', () => {
+    it('should correctly process a pattern starting with a variable', function() {
         load('thing.json');
         let [actual, expected] = query('properties.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should exclude incompatible mappings in joins', () => {
+    it('should exclude incompatible mappings in joins', function() {
         load('thing.json');
         let [actual, expected] = query('no-property.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should join compatible mappings (subject-subject)', () => {
+    it('should join compatible mappings (subject-subject)', function() {
         load('lubm-s34.json');
         let [actual, expected] = query('curriculum.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should join compatible mappings (subject-object)', () => {
+    it('should join compatible mappings (subject-object)', function() {
         load('thing.json');
         let [actual, expected] = query('celsius-properties.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should exclude incompatible mappings in joins', () => {
+    it('should exclude incompatible mappings in joins', function() {
         load('thing.json');
         let [actual, expected] = query('no-property.json');
         assert.deepStrictEqual(actual, expected);
     });
 
-    it('should correctly process graph-shaped BGPs', () => {
+    it('should correctly process graph-shaped BGPs', function() {
         load('thing.json');
         let [actual, expected] = query('cmd-property.json');
         assert.deepStrictEqual(actual, expected);
     });
 });
 
-describe('urdf', () => {
-    it('should correctly process all LUBM benchmark queries', () => {
+describe('urdf', function() {
+    it('should correctly process all LUBM benchmark queries', function() {
         load('lubm-inf.json');
         let report = [];
         for (var i = 1; i <= 14; i++) {
