@@ -1,0 +1,9 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?X a ub:Student ;
+       ub:emailAddress ?Z ;
+       ub:memberOf ?Y .
+    ?Y a ub:Department ;
+       ub:subOrganizationOf <http://www.University0.edu> .
+}

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = (function() {
+(function() {
 	/**
 	 * Namespace declaration.
 	 */
@@ -37,7 +37,7 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Loads a flattened (and conpacted) JSON-LD document into the µRDF store.
+	 * Loads a flattened (and compacted) JSON-LD document into the µRDF store.
 	 * 
 	 * Returns true if no error occurred, false otherwise.
 	 */

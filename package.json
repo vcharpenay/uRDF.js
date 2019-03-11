@@ -6,6 +6,11 @@
         "rdf",
         "json-ld"
     ],
+    "main": "src/urdf-module.js",
+    "dependencies": {
+        "sparqljs": "2.x.x",
+        "jsonld": "1.5.x"
+    },
     "devDependencies": {
         "mocha": "3.0.x"
     },

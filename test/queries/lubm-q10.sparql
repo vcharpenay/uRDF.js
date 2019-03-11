@@ -1,0 +1,6 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?X a ub:Student ;
+       ub:takesCourse <http://www.Department0.University0.edu/GraduateCourse0> .
+}
