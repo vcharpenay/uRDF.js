@@ -117,10 +117,7 @@
 				if (urdf.isVariable(f)) {
 					bindings = _merge(bindings, [{
 						// TODO exclude from result if no bnode label
-						[urdf.lexicalForm(f)]: {
-							'type': 'uri',
-							'value': s['@id']
-						}
+						[urdf.lexicalForm(f)]: urdf.sparqlJsonForm(s)
 					}]);
 				}
 
@@ -352,6 +349,28 @@
 		if (urdf.isVariable(obj)) return obj['@id'].substring(2);
 		else if (urdf.isLiteral(obj)) return obj['@value'];
 		else return obj['@id'] ? obj['@id'] : '';
+	}
+
+	/**
+	 * Returns the SPARQL JSON form of the input object.
+	 */
+	urdf.sparqlJsonForm = function(obj) {
+		let sj = {
+			value: urdf.lexicalForm(obj)
+		};
+
+		if (urdf.isLiteral(obj)) {
+			sj.type = 'literal';
+
+			if (obj['@type']) sj.datatype = obj['@type'];
+			if (obj['@language']) sj.lang = obj['@language'];
+		} else if (urdf.isVariable(obj)) {
+			sj.type = 'bnode';
+		} else {
+			sj.type = 'uri';
+		}
+
+		return sj;
 	}
 	
 	return urdf;

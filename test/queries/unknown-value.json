@@ -1,0 +1,10 @@
+[
+    {
+        "@id": "http://example.org/sensor1/temp",
+        "http://example.org/curVal": [
+            {
+                "@id": "_:val"
+            }
+        ]
+    }
+]

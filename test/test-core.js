@@ -122,6 +122,12 @@ describe('urdf.query()', ()=> {
         let [actual, expected] = query('current-value.json');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly bind literals to variables', () => {
+        load('thing.json');
+        let [actual, expected] = query('unknown-value.json');
+        assert.deepStrictEqual(actual, expected);
+    });
 });
 
 describe('urdf', () => {
