@@ -36,4 +36,10 @@ describe('urdf.query()', () => {
         }
         assert.strictEqual(report.filter(e => e).length, 0);
     });
+
+    it('should correctly process logical operators in filter', () => {
+        load('thing');
+        let [actual, expected] = query('property-filter');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

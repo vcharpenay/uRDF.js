@@ -3,44 +3,234 @@
 // TODO derived from https://github.com/vcharpenay/STTL.js, avoid duplicates?
 
 /**
- * Known prefixes.
+ * Known namespace prefixes.
  */
-let prefixes = {};
+let ns = {
+	rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+	xsd: 'http://www.w3.org/2001/XMLSchema#'
+};
 
 /**
- * Transforms a N3.js representation of an RDF term to its JSON-LD form.
- * 
- * @param {string} the N3.js representation of the term
+ * Transforms a N3.js representation of an RDF term
+ * or a native JS value to a SPARQL JSON object.
  */
-function nodeOrValue(plain) {
-	if (!plain || typeof plain != 'string') return '';
-	
-	let capture = null;
-	if (capture = plain.match(/"([^]*)"(@.*)?(\^\^(.*))?/)) {
-		let [str, lit, lang, suffix, datatype] = capture;
+function term(plain) {
+	if (typeof plain === 'boolean') {
 		return {
-			'@value': lit,
-			'@language': lang,
-			'@type': datatype
-		}
-    } else if (plain.match(/^(([^:\/?#]+):)(\/\/([^\/?#]*))([^?#]*)(\?([^#]*))?(#(.*))?/) ||
-               plain.match(/_:(.*)/)) {
-		return {
-			'@id': plain
+			type: 'literal',
+			datatype: ns.xsd + 'boolean',
+			value: String(plain)
 		};
-	} else if (capture = plain.match(/(\w*):(.*)/)) {
-		let [str, prefix, name] = capture; 
+	} else if (typeof plain === 'number') {
 		return {
-			'@id': prefixes[prefix] + name
+			type: 'literal',
+			datatype: ns.xsd + 'decimal', // TODO detect integer
+			value: String(plain)
 		};
-	} else if (capture = plain.match(/\?(.*)/)) {
-		let [str, name] = capture; 
-		return {
-			'@id': '_:' + name
+	} else if (typeof plain === 'string') {	
+		let capture = null;
+		if (capture = plain.match(/"([^]*)"(@.*)?(\^\^(.*))?/)) {
+			let [str, lit, lang, suffix, datatype] = capture;
+			return {
+				type: 'literal',
+				value: lit,
+				lang: lang,
+				datatype: datatype
+			}
+		} else if (plain.match(/^(([^:\/?#]+):)(\/\/([^\/?#]*))([^?#]*)(\?([^#]*))?(#(.*))?/)) {
+			return {
+				type: 'uri',
+				value: plain
+			};
+		} else if (capture = plain.match(/(\w*):(.*)/)) {
+			let [str, prefix, name] = capture; 
+			return {
+				type: 'uri',
+				value: ns[prefix] + name
+			};
+		} else if (capture = plain.match(/_:(.*)/)) {
+			let [str, name] = capture; 
+			return {
+				type: 'bnode',
+				value: name
+			}
+		} else if (capture = plain.match(/\?(.+)/)) {
+			let [qmark, name] = capture;
+			return {
+				type: 'variable',
+				value: name
+			}
+		} else {
+			return {};
 		}
-	} else {
-		return {};
 	}
 }
 
-module.exports.nodeOrValue = nodeOrValue;
+/**
+ * Transforms a SPARQL JSON object to a JSON-LD term.
+ * 
+ * @param {string} term the SPARQL JSON object
+ */
+function nodeOrValue(term) {
+	switch (term.type) {
+		case 'uri':
+			return { '@id': term.value };
+
+		case 'bnode':
+		case 'variable':
+			return { '@id': '_:' + term.value };
+
+		case 'literal':
+		default:
+			return {
+				'@value': term.value,
+				'@language': term.language,
+				'@type': term.datatype
+			};
+	}
+}
+
+/**
+ * Turns a SPARQL JSON object into a native JS constant:
+ *  - xsd:boolean to Boolean
+ *  - xsd:integer to Number
+ *  - ...
+ *  - xsd:string to String
+ *  - literals with no datatype default to String (lexical value)
+ * 
+ * @param {object} term the SPARQL JSON object
+ */
+function native(term) {
+	if (term.type === 'uri') {
+		return term.value;
+	} else if (term.type === 'bnode') {
+		return '_:' + term.value;
+	} else { // all literals
+		switch (term.datatype) {
+			case ns.xsd + 'boolean':
+				return (term.value === 'true');
+			case ns.xsd + 'integer':
+			// TODO ...
+				return new Number(term.value);
+			case ns.xsd + 'string':
+			default:
+				return term.value;
+		}
+	}
+}
+
+/**
+ * Turns the input BGP into a normalized JSON-LD frame.
+ * 
+ * @param {object} bgp a BGP pattern as object (abstract syntax tree)
+ */
+function frame(bgp) {
+    return bgp.triples.reduce((f, tp) => {
+        let s = nodeOrValue(term(tp.subject));
+        let n = f.find(n => n['@id'] === s['@id']);
+        if (!n) {
+            n = s;
+            f.push(n);
+        }
+
+        let p = (tp.predicate === ns.rdf + 'type') ?
+                '@type' : tp.predicate;
+        if (!n[p]) n[p] = [];
+
+        let o = nodeOrValue(term(tp.object));
+        if (p === '@type') o = o['@id'];
+        n[p].push(o);
+
+        return f;
+    }, []);
+}
+
+function isBinaryOperator(op) {
+	return [
+		'||', '&&', '=', '!=',
+		'<', '>', '<=', '>=',
+		'*', '/', '+', '-'
+	].indexOf(op) > -1;
+}
+
+function evaluateBinaryOperation(expr, binding) {
+	let [first, second] = expr.args;
+	first = native(evaluate(first, binding));
+	second = native(evaluate(second, binding));
+
+	// TODO test whole XML operator mapping
+	// SPARQL 17.3
+
+	switch (expr.operator) {
+		// logical operators
+
+		case '||':
+			return term(first || second);
+
+		case '&&':
+			return term(first && second);
+
+		case '=':
+			return term(first === second);
+
+		case '!=':
+			return term(first != second);
+
+		case '<':
+			return term(first != second);
+
+		case '>':
+			return term(first != second);
+
+		case '<=':
+			return term(first != second);
+
+		case '>=':
+			return term(first != second);
+
+		// arithmetic operators
+
+		case '*':
+			return term(first * second);
+
+		case '/':
+			return term(first / second);
+
+		case '+':
+			return term(first + second);
+		
+		case '-':
+			return term(first - second);
+
+		default:
+			throw new Error('Unknown operator');
+	}
+}
+
+// FIXME bindingSet, not binding
+function evaluate(expr, binding) {
+    if (typeof expr === 'string') {
+        if (expr.startsWith('?')) {
+            return binding[expr.substring(1)];
+            // TODO check if no binding available?
+        } else {
+            return term(expr);
+        }
+    } else if (expr.type === 'operation') {
+		if (expr.operator === 'if') {
+				let [condition, first, second] = expr.args;
+				let bool = native(evaluate(condition, binding));
+				return evaluate(bool ? first : second, binding);
+		} else if (isBinaryOperator(expr.operator)) {
+			return evaluateBinaryOperation(expr, binding);
+		} else {
+			throw new Error('Operator not implemented: ' + expr.operator);
+		}
+    } else if (expr.type === 'function') {
+        // TODO get registered functions and execute
+    }
+}
+
+module.exports.native = native;
+module.exports.frame = frame;
+module.exports.evaluate = evaluate;

@@ -7,39 +7,51 @@ const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8')); // FIXME absolute pa
 
 const parser = new require('sparqljs').Parser();
 
+/**
+ * Loads the input JSON-LD in the µRDF store.
+ * 
+ * @param {object | array} json some JSON-LD definition(s)
+ */
 function load(json) {
     // TODO normalize, compact
     return urdf.load(json);
 }
 
+/**
+ * Evaluates a SPARQL query pattern and returns bindings.
+ * 
+ * @param {object} pattern the query pattern
+ */
+function evaluate(pattern) {
+    switch (pattern.type) {
+        case 'bgp':
+            let f = utils.frame(pattern);
+            return urdf.query(f);
+        default: throw new Error('Query pattern not supported or unknown');
+    }
+}
+
+/**
+ * Processes the input query and returns bindings as SPARQL JSON or a JSON-LD graph.
+ * 
+ * @param {string} sparql a SPARQL query as string
+ */
 function query(sparql) {
     let ast = parser.parse(sparql);
 
-    // TODO process returned bindings to 
-    let pattern = ast.where[0];
-    let f = frame(pattern);
-    return urdf.query(f);
-}
+    let operations = ast.where.filter(p => p.type != 'filter');
+    let filters = ast.where.filter(p => p.type === 'filter');
 
-function frame(bgp) {
-    return bgp.triples.reduce((f, tp) => {
-        let s = utils.nodeOrValue(tp.subject);
-        let n = f.find(n => n['@id'] === s['@id']);
-        if (!n) {
-            n = s;
-            f.push(n);
-        }
-
-        let p = (tp.predicate === 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type') ?
-                '@type' : tp.predicate;
-        if (!n[p]) n[p] = [];
-
-        let o = utils.nodeOrValue(tp.object);
-        if (p === '@type') o = o['@id'];
-        n[p].push(o);
-
-        return f;
-    }, []);
+    let results = operations
+        .map(op => evaluate(op))
+        .reduce((merged, bs) => bs); // TODO merge bindings
+    
+    return filters.reduce((res, f) => {
+        return res.filter(b => {
+            let bool = utils.evaluate(f.expression, b);
+            return utils.native(bool);
+        });
+    }, results);
 }
 
 module.exports.size = urdf.size;
