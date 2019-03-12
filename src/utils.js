@@ -217,16 +217,16 @@ function evaluateBinaryOperation(expr, binding) {
 			return term(first != second);
 
 		case '<':
-			return term(first != second);
+			return term(first > second);
 
 		case '>':
-			return term(first != second);
+			return term(first < second);
 
 		case '<=':
-			return term(first != second);
+			return term(first <= second);
 
 		case '>=':
-			return term(first != second);
+			return term(first >= second);
 
 		// arithmetic operators
 
