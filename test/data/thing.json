@@ -36,7 +36,8 @@
 		"@id": "http://example.org/sensor1/temp",
 		"http://example.org/curVal": [
 			{
-				"@value": "54"
+				"@value": "54",
+				"@type": "http://www.w3.org/2001/XMLSchema#integer"
 			}
 		],
 		"@type": [

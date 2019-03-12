@@ -2,7 +2,8 @@
     {
         "val": {
             "type": "literal",
-            "value": "54"
+            "value": "54",
+            "datatype": "http://www.w3.org/2001/XMLSchema#integer"
         }
     }
 ]

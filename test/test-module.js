@@ -42,4 +42,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('property-filter');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process arithmetic operators in filter', () => {
+        load('thing');
+        let [actual, expected] = query('property-value-filter');
+        assert.deepStrictEqual(actual, expected);
+    });
 });
