@@ -241,7 +241,15 @@
 	 */
 	urdf.match = function(q, n, all) {
 		if (urdf.isLiteral(q)) {
-			// TODO pattern matching
+			let v = q['@value'];
+			let t = q['@type'] || null;
+			let l = q['@language'] || null;
+
+			// TODO support {}
+			// TODO support range (i.e. arrays) in q
+			return (n['@value'] === v)
+				&& (n['@type'] === t || t === null)
+				&& (n['@language'] === l || l === null);
 		} else {
 			if (!urdf.isVariable(q) && q['@id'] !== n['@id']) {
 				return false;
@@ -310,12 +318,12 @@
 
 	/**
 	 * Returns the signature of the input node
-	 * (the list of its properties, excluding @id, @type).
+	 * (the list of its properties, excluding @-properties).
 	 * 
 	 * TODO bitmap as in the original impl?
 	 */
 	urdf.signature = function(obj) {
-		return Object.keys(obj).filter(p => p !== '@id' && p !== '@type');
+		return Object.keys(obj).filter(p => p[0] !== '@');
 	}
 
 	/**
@@ -325,7 +333,7 @@
 	 * Returns true if obj is a variable, false otherwise.
 	 */
 	urdf.isVariable = function(obj) {
-		return obj['@id'] !== null && obj['@id'].indexOf('_:') === 0;
+		return obj['@id'] !== undefined && obj['@id'].indexOf('_:') === 0;
 	};
 
 	/**

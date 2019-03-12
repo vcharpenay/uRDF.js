@@ -93,8 +93,8 @@ function nodeOrValue(term) {
 /**
  * Turns a SPARQL JSON object into a native JS constant:
  *  - xsd:boolean to Boolean
- *  - xsd:integer to Number
- *  - ...
+ *  - xsd:float, xsd:long, xsd:integer and derivative to Number
+ *  - xsd:dateTime, xsd:date and xsd:time to Date
  *  - xsd:string to String
  *  - literals with no datatype default to String (lexical value)
  * 
@@ -108,15 +108,55 @@ function native(term) {
 	} else { // all literals
 		switch (term.datatype) {
 			case ns.xsd + 'boolean':
-				return (term.value === 'true');
+				switch (term.value) {
+					case 'true':
+					case 'false':
+						return (term.value === 'true');
+					default:
+						throw new Error('Term is not a boolean: ' + term);
+				}
+				
+			case ns.xsd + 'decimal':
+			case ns.xsd + 'float':
+			case ns.xsd + 'double':
 			case ns.xsd + 'integer':
-			// TODO ...
-				return new Number(term.value);
+			case ns.xsd + 'nonPositiveInteger':
+			case ns.xsd + 'negativeInteger':
+			case ns.xsd + 'nonNegativeInteger':
+			case ns.xsd + 'positiveInteger':
+			case ns.xsd + 'unsignedLong':
+			case ns.xsd + 'unsignedInt':
+			case ns.xsd + 'unsignedShort':
+			case ns.xsd + 'unsignedByte':
+			case ns.xsd + 'long':
+			case ns.xsd + 'int':
+			case ns.xsd + 'short':
+			case ns.xsd + 'byte':
+				return Number(term.value);
+
+			case ns.xsd + 'dateTime':
+			case ns.xsd + 'date':
+			case ns.xsd + 'time':
+				return new Date(term.value);
+
 			case ns.xsd + 'string':
 			default:
 				return term.value;
 		}
 	}
+}
+
+/**
+ * Computes the Effective Boolean Value (EBV) of a term.
+ * 
+ * @param {object} term the term as a SPARQL JSON object
+ */
+function ebv(term) {
+	if (term.type && term.type != 'literal') {
+		throw new Error('No boolean value can be computed for term: ' + term);
+	}
+	
+	return Boolean(native(term));
 }
 
 /**
@@ -209,13 +249,13 @@ function evaluateBinaryOperation(expr, binding) {
 
 // FIXME bindingSet, not binding
 function evaluate(expr, binding) {
-    if (typeof expr === 'string') {
-        if (expr.startsWith('?')) {
-            return binding[expr.substring(1)];
-            // TODO check if no binding available?
-        } else {
-            return term(expr);
-        }
+	if (typeof expr === 'string') {
+		if (expr.startsWith('?')) {
+			return binding[expr.substring(1)];
+			// TODO check if no binding available?
+		} else {
+			return term(expr);
+		}
     } else if (expr.type === 'operation') {
 		if (expr.operator === 'if') {
 				let [condition, first, second] = expr.args;
@@ -228,9 +268,10 @@ function evaluate(expr, binding) {
 		}
     } else if (expr.type === 'function') {
         // TODO get registered functions and execute
+		throw new Error('Not implemented');
     }
 }
 
-module.exports.native = native;
+module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.evaluate = evaluate;

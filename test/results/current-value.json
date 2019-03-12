@@ -1,0 +1,8 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        }
+    }
+]

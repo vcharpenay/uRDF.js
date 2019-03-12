@@ -1,0 +1,10 @@
+[
+    {
+        "@id": "_:p",
+        "http://example.org/curVal": [
+            {
+                "@value": "54"
+            }
+        ]
+    }
+]

@@ -24,6 +24,8 @@ function load(json) {
  */
 function evaluate(pattern) {
     switch (pattern.type) {
+        // TODO union, optional
+        
         case 'bgp':
             let f = utils.frame(pattern);
             return urdf.query(f);
@@ -49,7 +51,7 @@ function query(sparql) {
     return filters.reduce((res, f) => {
         return res.filter(b => {
             let bool = utils.evaluate(f.expression, b);
-            return utils.native(bool);
+            return utils.ebv(bool);
         });
     }, results);
 }

@@ -116,6 +116,12 @@ describe('urdf.query()', ()=> {
         let [actual, expected] = query('cmd-property.json');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process literals', () => {
+        load('thing.json');
+        let [actual, expected] = query('current-value.json');
+        assert.deepStrictEqual(actual, expected);
+    });
 });
 
 describe('urdf', () => {
