@@ -61,4 +61,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('assistant-degree');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process bind patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('person-name');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

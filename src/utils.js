@@ -27,16 +27,20 @@ function term(plain) {
 			datatype: ns.xsd + 'decimal', // TODO detect integer
 			value: String(plain)
 		};
-	} else if (typeof plain === 'string') {	
+	} else if (typeof plain === 'string') {
 		let capture = null;
+
 		if (capture = plain.match(/"([^]*)"(@.*)?(\^\^(.*))?/)) {
 			let [str, lit, lang, suffix, datatype] = capture;
-			return {
+			let t = {
 				type: 'literal',
-				value: lit,
-				lang: lang,
-				datatype: datatype
-			}
+				value: lit
+			};
+
+			if (lang) t.lang = lang;
+			if (datatype) t.datatype = datatype;
+
+			return t;
 		} else if (plain.match(/^(([^:\/?#]+):)(\/\/([^\/?#]*))([^?#]*)(\?([^#]*))?(#(.*))?/)) {
 			return {
 				type: 'uri',
@@ -402,13 +406,13 @@ function evaluateStringBuiltInFunction(op, args) {
 			return term(args[0].length);
 
 		case 'substr':
-			return term(args[0].substr(args[1], args[2]));
+			return term('"' + args[0].substr(args[1], args[2]) + '"');
 
 		case 'ucase':
-			return term(args[0].toUpperCase());
+			return term('"' + args[0].toUpperCase() + '"');
 
 		case 'lcase':
-			return term(args[0].toLowerCase());
+			return term('"' + args[0].toLowerCase() + '"');
 
 		case 'strstarts':
 			return term(args[0].startsWith(args[1]));
@@ -426,10 +430,10 @@ function evaluateStringBuiltInFunction(op, args) {
 			// TODO
 
 		case 'encode_for_uri':
-			return term(encodeURIComponent(args[0]));
+			return term('"' + encodeURIComponent(args[0]) + '"');
 
 		case 'concat':
-			return term(''.concat(...args));
+			return term('"'.concat(...args.concat(['"'])));
 
 		case 'langMatches':
 			// TODO
@@ -438,7 +442,7 @@ function evaluateStringBuiltInFunction(op, args) {
 			return term(Boolean(args[0].match(new RegExp(args[1], args[2]))));
 
 		case 'replace':
-			return term(args[0].replace(args[1], new RegExp(args[2], args[3])));
+			return term('"' + args[0].replace(new RegExp(args[1], args[3]), args[2]) + '"');
 
 		default:
 			throw new Error('Unknown operator');

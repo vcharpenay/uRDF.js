@@ -1,0 +1,32 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/GraduateStudent14"
+        },
+        "name": {
+            "type": "literal",
+            "value": "GraduateStudent14"
+        }
+    }, 
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/GraduateStudent6"
+        },
+        "name": {
+            "type": "literal",
+            "value": "GraduateStudent6"
+        }
+    },
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0"
+        },
+        "name": {
+            "type": "literal",
+            "value": "FullProfessor0"
+        }
+    }
+]

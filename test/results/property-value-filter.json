@@ -1,0 +1,13 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        },
+        "val": {
+            "type": "literal",
+            "value": "54",
+            "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+        }
+    }
+]

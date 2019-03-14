@@ -1,0 +1,8 @@
+prefix td: <http://www.w3c.org/wot/td#>
+prefix sosa: <http://www.w3.org/ns/sosa/>
+prefix saref: <https://w3id.org/saref#>
+
+select * where {
+    ?p <http://example.org/curVal> ?val .
+    filter ((7 + (?val * 2) - ?val) / 2 = 30.5)
+}

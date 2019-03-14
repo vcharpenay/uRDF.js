@@ -1,0 +1,6 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    <http://www.Department0.University1.edu/FullProfessor0/Publication2> ub:publicationAuthor ?p .
+    bind (replace(str(?p), "http://www.Department0.University1.edu/", "") as ?name)
+}

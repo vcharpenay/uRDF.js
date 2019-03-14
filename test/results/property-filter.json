@@ -1,0 +1,29 @@
+[
+    {
+        "t": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        },
+        "type": {
+            "type": "uri",
+            "value": "http://www.w3.org/ns/sosa/Sensor"
+        }
+    }, {
+        "t": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        },
+        "type": {
+            "type": "uri",
+            "value": "https://w3id.org/saref#TemperatureSensor"
+        }
+    }
+]

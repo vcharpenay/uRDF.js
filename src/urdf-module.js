@@ -45,6 +45,8 @@ function evaluate(pattern) {
         // TODO union, optional
         
         case 'group':
+            // FIXME filters must be evaluated per group
+            // FIXME ignore {}
             return pattern.patterns
                 .map(p => evaluate(p))
                 .reduce((res, omega) => merge(res, omega));
@@ -66,28 +68,40 @@ function query(sparql) {
     let ast = parser.parse(sparql);
 
     let patterns = ast.where.filter(p => p.type != 'bind' && p.type != 'filter');
-    let binds = ast.where.filter(p => p.type === 'bind');
-    let filters = ast.where.filter(p => p.type === 'filter');
 
     let root = patterns.length === 1 ?
                patterns[0] : {
                    type: 'group',
                    patterns: patterns
                };
-
     let results = evaluate(root);
 
-    // results = binds.reduce((res, bind) => {
-    //     let bound = res.map(b => utils.evaluate(bind.expression, b));
-    //     // TODO to finish
-    // }, results);
+    let binds = ast.where.filter(p => p.type === 'bind');
 
-    results = filters.reduce((res, f) => {
-        return res.filter(b => {
-            let bool = utils.evaluate(f.expression, b);
-            return utils.ebv(bool);
-        });
-    }, results);
+    if (binds.length > 0) {
+        results = results.reduce((res, mu) => {
+            // note: operational semantics -> multiple definitions, last taken
+            let bindings = binds.reduce((bs, b) => {
+                let term = utils.evaluate(b.expression, mu);
+                bs[b.variable.substring(1)] = term; // TODO utils.term?
+                return bs;
+            }, {});
+            let merged = urdf.merge(mu, bindings);
+            if (merged) res.push(merged);
+            return res;
+        }, []);
+    }
+
+    let filters = ast.where.filter(p => p.type === 'filter');
+
+    if (filters) {
+        results = filters.reduce((res, f) => {
+            return res.filter(b => {
+                let bool = utils.evaluate(f.expression, b);
+                return utils.ebv(bool);
+            });
+        }, results);
+    }
 
     // TODO SELECT projection
     return results;

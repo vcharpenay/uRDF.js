@@ -2,5 +2,5 @@ prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 
 select * where {
     ?pub ub:publicationAuthor ?p .
-    filter (contains(str(?p), "GraduateStudent") && regex(str(?p), "14$"))
+    filter (contains(str(?p), "GraduateStudent") && regex(str(?p), "14"))
 }

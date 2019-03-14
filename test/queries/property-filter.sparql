@@ -1,0 +1,10 @@
+prefix td: <http://www.w3c.org/wot/td#>
+prefix sosa: <http://www.w3.org/ns/sosa/>
+prefix saref: <https://w3id.org/saref#>
+
+select * where {
+    ?t a ?type ;
+       td:hasProperty ?p .
+    filter ((?p = <http://example.org/sensor1/temp> && ?type = sosa:Sensor)
+         || (!(?p = <http://example.org/sensor1/temp>) && ?type = saref:TemperatureSensor))
+}
