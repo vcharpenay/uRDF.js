@@ -1,0 +1,58 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+        }
+    },
+    {
+        "u": {
+            "type": "uri",
+            "value": "http://www.University229.edu"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/AssociateProfessor1"
+        }
+    },
+    {
+        "u": {
+            "type": "uri",
+            "value": "http://www.University229.edu"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University14.edu/AssistantProfessor1"
+        }
+    },
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/GraduateStudent14"
+        }
+    },
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/GraduateStudent6"
+        }
+    },
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0"
+        }
+    }
+]

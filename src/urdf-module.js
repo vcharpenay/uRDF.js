@@ -51,6 +51,11 @@ function evaluate(pattern) {
                 .map(p => evaluate(p))
                 .reduce((res, omega) => merge(res, omega));
 
+        case 'union':
+            return pattern.patterns
+                .map(p => evaluate(p))
+                .reduce((res, omega) => res.concat(omega));
+
         case 'bgp':
             let f = utils.frame(pattern);
             return urdf.query(f) || [];

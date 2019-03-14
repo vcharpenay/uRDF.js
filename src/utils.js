@@ -400,7 +400,7 @@ function evaluateStringBuiltInFunction(op, args) {
 	args = args.map(arg => native(arg));
 
 	// TODO check args length depending on function arity?
-	// TODO throw error when arguments not compatible (and ignore binding)
+	// TODO throw error when arguments not compatible
 	switch (op) {
 		case 'strlen':
 			return term(args[0].length);

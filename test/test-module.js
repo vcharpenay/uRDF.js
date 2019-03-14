@@ -67,4 +67,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('person-name');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process union patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('all-persons');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

@@ -1,0 +1,9 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    { ?p a ub:Person . }
+    union
+    { ?pub ub:publicationAuthor ?p . }
+    union
+    { ?u ub:hasAlumnus ?p . }
+}
