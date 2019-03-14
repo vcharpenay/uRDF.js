@@ -1,0 +1,10 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    {
+        ?p ub:degreeFrom ?u .
+    }
+    {
+        ?p ub:mastersDegreeFrom ?u .
+    }
+}

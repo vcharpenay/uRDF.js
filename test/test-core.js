@@ -6,6 +6,7 @@ const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8'));
 
 function load(f) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f));
+    urdf.clear();
     urdf.load(data);
 }
 

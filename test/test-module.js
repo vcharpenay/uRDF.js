@@ -4,6 +4,7 @@ const urdf = require('../src/urdf-module.js');
 
 function load(f) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json'));
+    urdf.clear();
     urdf.load(data);
 }
 
@@ -52,6 +53,12 @@ describe('urdf.query()', () => {
     it('should correctly process functions on strings in filter', () => {
         load('lubm-s34');
         let [actual, expected] = query('graduate-number');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should correctly merge solution mappings from group patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('assistant-degree');
         assert.deepStrictEqual(actual, expected);
     });
 });

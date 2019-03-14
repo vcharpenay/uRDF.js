@@ -186,6 +186,12 @@ function frame(bgp) {
     }, []);
 }
 
+/**
+ * Returns an operator type for some input operator
+ * (merely to aggregate operation evaluation).
+ * 
+ * @param {string} op the operator
+ */
 function opType(op) {
 	switch (op) {
 		case '!':
@@ -239,6 +245,12 @@ function opType(op) {
 	}
 }
 
+/**
+ * See SPARQL 1.1 Query Language, section 17.3 "Operator Mapping".
+ * 
+ * @param {string} op the operator
+ * @param {array} args operands (or arguments)
+ */
 function evaluateBaseOperation(op, args) {
 	args = args.map(arg => native(arg));
 
@@ -294,6 +306,12 @@ function evaluateBaseOperation(op, args) {
 	}
 }
 
+/**
+ * See SPARQL 1.1 Query Language, section 17.4.2 "Functions on RDF Terms".
+ * 
+ * @param {string} op the operator
+ * @param {array} args operands (or arguments)
+ */
 function evaluateTermBuiltInFunction(op, args) {
 	switch (op) {
 		case 'isIRI':
@@ -368,6 +386,12 @@ function evaluateTermBuiltInFunction(op, args) {
 	}
 }
 
+/**
+ * See SPARQL 1.1 Query Language, section 17.4.3 "Functions on Strings".
+ * 
+ * @param {string} op the operator
+ * @param {array} args operands (or arguments)
+ */
 function evaluateStringBuiltInFunction(op, args) {
 	args = args.map(arg => native(arg));
 
@@ -422,6 +446,7 @@ function evaluateStringBuiltInFunction(op, args) {
 }
 
 // FIXME bindingSet, not binding
+// TODO other strategy: turn into a JS expression?
 function evaluate(expr, binding) {
 	if (typeof expr === 'string') {
 		if (expr.startsWith('?')) {
