@@ -188,6 +188,7 @@ function frame(bgp) {
 
 function opType(op) {
 	switch (op) {
+		case '!':
 		case '||':
 		case '&&':
 		case '=':
@@ -200,7 +201,7 @@ function opType(op) {
 		case '/':
 		case '+':
 		case '-':
-			return 'binary';
+			return 'base';
 
 		case 'isBlank':
 		case 'isLiteral':
@@ -238,10 +239,8 @@ function opType(op) {
 	}
 }
 
-function evaluateBinaryOperation(op, args) {
-	let [first, second] = args;
-	first = native(first);
-	second = native(second);
+function evaluateBaseOperation(op, args) {
+	args = args.map(arg => native(arg));
 
 	// TODO test whole XML operator mapping
 	// SPARQL 17.3
@@ -249,43 +248,46 @@ function evaluateBinaryOperation(op, args) {
 	switch (op) {
 		// logical operators
 
+		case '!':
+			return term(!args[0]);
+
 		case '||':
-			return term(first || second);
+			return term(args[0] || args[1]);
 
 		case '&&':
-			return term(first && second);
+			return term(args[0] && args[1]);
 
 		case '=':
-			return term(first === second);
+			return term(args[0] === args[1]);
 
 		case '!=':
-			return term(first != second);
+			return term(args[0] != args[1]);
 
 		case '<':
-			return term(first > second);
+			return term(args[0] > args[1]);
 
 		case '>':
-			return term(first < second);
+			return term(args[0] < args[1]);
 
 		case '<=':
-			return term(first <= second);
+			return term(args[0] <= args[1]);
 
 		case '>=':
-			return term(first >= second);
+			return term(args[0] >= args[1]);
 
 		// arithmetic operators
 
 		case '*':
-			return term(first * second);
+			return term(args[0] * args[1]);
 
 		case '/':
-			return term(first / second);
+			return term(args[0] / args[1]);
 
 		case '+':
-			return term(first + second);
+			return term(args[0] + args[1]);
 		
 		case '-':
-			return term(first - second);
+			return term(args[0] - args[1]);
 
 		default:
 			throw new Error('Unknown operator');
@@ -440,8 +442,8 @@ function evaluate(expr, binding) {
 			let args = expr.args.map(arg => evaluate(arg, binding));
 
 			switch (opType(op)) {
-				case 'binary':
-					return evaluateBinaryOperation(op, args);
+				case 'base':
+					return evaluateBaseOperation(op, args);
 
 				case 'termBuiltIn':
 					return evaluateTermBuiltInFunction(op, args);
