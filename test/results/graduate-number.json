@@ -1,0 +1,12 @@
+[
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/GraduateStudent14"
+        }
+    }
+]

@@ -54,6 +54,8 @@ function query(sparql) {
             return utils.ebv(bool);
         });
     }, results);
+
+    // TODO SELECT projection
 }
 
 module.exports.size = urdf.size;

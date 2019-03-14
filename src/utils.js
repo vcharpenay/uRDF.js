@@ -112,6 +112,7 @@ function native(term) {
 					case 'true':
 					case 'false':
 						return (term.value === 'true');
+						
 					default:
 						throw new Error('Term is not a boolean: ' + term);
 				}
@@ -185,23 +186,67 @@ function frame(bgp) {
     }, []);
 }
 
-function isBinaryOperator(op) {
-	return [
-		'||', '&&', '=', '!=',
-		'<', '>', '<=', '>=',
-		'*', '/', '+', '-'
-	].indexOf(op) > -1;
+function opType(op) {
+	switch (op) {
+		case '||':
+		case '&&':
+		case '=':
+		case '!=':
+		case '<':
+		case '>':
+		case '<=':
+		case '>=':
+		case '*':
+		case '/':
+		case '+':
+		case '-':
+			return 'binary';
+
+		case 'isBlank':
+		case 'isLiteral':
+		case 'isNumeric':
+		case 'str':
+		case 'lang':
+		case 'datatype':
+		case 'URI':
+		case 'IRI':	
+		case 'BNODE':
+		case 'STRDT':
+		case 'STRLANG':
+		case 'UUID':
+		case 'STRUUID':
+			return 'termBuiltIn';
+
+		case 'strlen':
+		case 'substr':
+		case 'ucase':
+		case 'lcase':
+		case 'strstarts':
+		case 'strends':
+		case 'contains':
+		case 'strbefore':
+		case 'strafter':
+		case 'encode_for_uri':
+		case 'concat':
+		case 'langMatches':
+		case 'regex':
+		case 'replace':
+			return 'stringBuiltIn';
+
+		default:
+			throw new Error('Operator unknown: ' + expr.operator);
+	}
 }
 
-function evaluateBinaryOperation(expr, binding) {
-	let [first, second] = expr.args;
-	first = native(evaluate(first, binding));
-	second = native(evaluate(second, binding));
+function evaluateBinaryOperation(op, args) {
+	let [first, second] = args;
+	first = native(first);
+	second = native(second);
 
 	// TODO test whole XML operator mapping
 	// SPARQL 17.3
 
-	switch (expr.operator) {
+	switch (op) {
 		// logical operators
 
 		case '||':
@@ -247,6 +292,133 @@ function evaluateBinaryOperation(expr, binding) {
 	}
 }
 
+function evaluateTermBuiltInFunction(op, args) {
+	switch (op) {
+		case 'isIRI':
+			return term(args[0].type === 'uri');
+		
+		case 'isBlank':
+			return term(args[0].type === 'bnode');
+
+		case 'isLiteral':
+			return term(args[0].type === 'literal');
+
+		case 'isNumeric':
+			return term(typeof native(args[0]) === 'number');
+
+		case 'str':
+			// TODO deal with bnodes?
+			return {
+				type: 'literal',
+				value: args[0].value
+			};
+
+		case 'lang':
+			return {
+				type: 'literal',
+				value: args[0].lang || ''
+			};
+
+		case 'datatype':
+			return {
+				type: 'literal',
+				value: args[0].datatype || (ns.xsd + 'string')
+			};
+
+		case 'URI':
+		case 'IRI':
+			return {
+				type: 'uri',
+				value: args[0].value // TODO resolve IRI
+			};
+
+		case 'BNODE':
+			return {
+				type: 'bnode',
+				value: args[0] ?
+					   args[0].value :
+					   // TODO not the most reliabe ID generator...
+					   Math.random().toString().substring(2)
+			};
+		
+		case 'STRDT':
+			return {
+				type: 'literal',
+				value: args[0].value,
+				datatype: args[1].value
+			};
+		
+		case 'STRLANG':
+			return {
+				type: 'literal',
+				value: args[0].value,
+				lang: args[1].value
+			};
+
+		case 'UUID':
+			// TODO
+
+		case 'STRUUID':
+			// TODO
+
+		default:
+			throw new Error('Unknown operator');
+	}
+}
+
+function evaluateStringBuiltInFunction(op, args) {
+	args = args.map(arg => native(arg));
+
+	// TODO check args length depending on function arity?
+	// TODO throw error when arguments not compatible (and ignore binding)
+	switch (op) {
+		case 'strlen':
+			return term(args[0].length);
+
+		case 'substr':
+			return term(args[0].substr(args[1], args[2]));
+
+		case 'ucase':
+			return term(args[0].toUpperCase());
+
+		case 'lcase':
+			return term(args[0].toLowerCase());
+
+		case 'strstarts':
+			return term(args[0].startsWith(args[1]));
+
+		case 'strends':
+			return term(args[0].endsWith(args[1]));
+
+		case 'contains':
+			return term(args[0].includes(args[1]));
+
+		case 'strbefore':
+			// TODO
+
+		case 'strafter':
+			// TODO
+
+		case 'encode_for_uri':
+			return term(encodeURIComponent(args[0]));
+
+		case 'concat':
+			return term(''.concat(...args));
+
+		case 'langMatches':
+			// TODO
+
+		case 'regex':
+			return term(Boolean(args[0].match(new RegExp(args[1], args[2]))));
+
+		case 'replace':
+			return term(args[0].replace(args[1], new RegExp(args[2], args[3])));
+
+		default:
+			throw new Error('Unknown operator');
+	}
+}
+
 // FIXME bindingSet, not binding
 function evaluate(expr, binding) {
 	if (typeof expr === 'string') {
@@ -258,13 +430,28 @@ function evaluate(expr, binding) {
 		}
     } else if (expr.type === 'operation') {
 		if (expr.operator === 'if') {
-				let [condition, first, second] = expr.args;
-				let bool = native(evaluate(condition, binding));
-				return evaluate(bool ? first : second, binding);
-		} else if (isBinaryOperator(expr.operator)) {
-			return evaluateBinaryOperation(expr, binding);
+			let [condition, first, second] = expr.args;
+			let bool = native(evaluate(condition, binding));
+			return evaluate(bool ? first : second, binding);
+		} else if (expr.operator === 'bound') {
+			// TODO
 		} else {
-			throw new Error('Operator not implemented: ' + expr.operator);
+			let op = expr.operator;
+			let args = expr.args.map(arg => evaluate(arg, binding));
+
+			switch (opType(op)) {
+				case 'binary':
+					return evaluateBinaryOperation(op, args);
+
+				case 'termBuiltIn':
+					return evaluateTermBuiltInFunction(op, args);
+
+				case 'stringBuiltIn':
+					return evaluateStringBuiltInFunction(op, args);
+
+				default:
+					throw new Error('Operator not implemented: ' + expr.operator);
+			}
 		}
     } else if (expr.type === 'function') {
         // TODO get registered functions and execute

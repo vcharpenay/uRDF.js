@@ -48,4 +48,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('property-value-filter');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process functions on strings in filter', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('graduate-number');
+        assert.deepStrictEqual(actual, expected);
+    });
 });
