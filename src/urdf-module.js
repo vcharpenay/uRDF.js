@@ -18,18 +18,21 @@ function load(json) {
 }
 
 /**
- * Merges solutions and return compatible mappings only.
+ * Merges solutions and returns either compatible mappings (pure join)
+ * or all mappings of first input set, merged if possible (left outer join).
  * 
  * @param {array} omega1 first set of solution mappings
  * @param {array} omega2 second set of solution mappings
+ * @param {boolean} opt optional flag for left outer join
  */
-function merge(omega1, omega2) {
-    if (!omega1.length || !omega2.length) return [];
-
+function merge(omega1, omega2, opt) {
     return omega1.reduce((omega, mu1) => {
         return omega2.reduce((omega, mu2) => {
             let mu = urdf.merge(mu1, mu2);
+
             if (mu) omega.push(mu);
+            else if (opt) omega.push(mu1);
+
             return omega;
         }, omega);
     }, []);
@@ -42,9 +45,13 @@ function merge(omega1, omega2) {
  * @param {array} mappings current mappings
  */
 function evaluateAll(patterns) {
-    // TODO reorder bind, filter, optional?
+    let main = patterns.filter(p => p.type != 'bind' && p.type != 'filter');
+    let b = patterns.filter(p => p.type === 'bind');
+    let f = patterns.filter(p => p.type === 'filter');
 
-    return patterns.reduce((omega, p) => {
+    let reordered = main.concat(b, f);
+
+    return reordered.reduce((omega, p) => {
         return evaluate(p, omega);
     }, [{}]);
 }
@@ -70,8 +77,12 @@ function evaluate(pattern, mappings) {
                 .reduce((union, omega) => union.concat(omega));
 
         case 'optional':
-            // TODO
-            break;
+            let g = {
+                type: 'group',
+                patterns: pattern.patterns
+            };
+            omega = evaluate(g, mappings);
+            return merge(mappings, omega, true);
 
         case 'bgp':
             let f = utils.frame(pattern);

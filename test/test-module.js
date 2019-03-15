@@ -74,7 +74,7 @@ describe('urdf.query()', () => {
         assert.deepStrictEqual(actual, expected);
     });
 
-    it.skip('should correctly process optional patterns', () => {
+    it('should correctly process optional patterns', () => {
         load('thing');
         let [actual, expected] = query('opt-property-value');
         assert.deepStrictEqual(actual, expected);
