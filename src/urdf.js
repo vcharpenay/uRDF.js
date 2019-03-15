@@ -122,11 +122,11 @@
 				}
 
 				if (f['@type'] !== undefined) {
-					let types = s['@type'].map(function(t) {
+					var types = s['@type'].map(function(t) {
 						return { '@id': t };
 					});
 
-					let tb = f['@type'].filter(function(t) {
+					var tb = f['@type'].filter(function(t) {
 						return urdf.isVariable({ '@id': t })
 					}).reduce(function(b, t) {
 						return _queryAll({ '@id': t }, types, b);
@@ -139,17 +139,46 @@
 					if (b === null) {
 						return b;
 					} else {
-						// TODO take 'require all' flag into account (default: true)
-						if (s[p] === undefined) {
-							return b;
-						} else {
-							return f[p].reduce(function(b2, f2) {
-								if (b2 === null) {
-									return b2;
+						if (urdf.isVariable({ '@id': p })) {
+							return urdf.signature(s).map(function(p2) {
+								return {
+									'@id': f['@id'],
+									[p2]: f[p]
+								};
+							}).concat([{
+								'@id': f['@id'],
+								'@type': f[p].map(function(t) {
+									return t['@id'];
+								})
+							}]).reduce(function(b2, f2) {
+								var b3 = _query(f2, s, b);
+
+								if (b3 != null) {
+									var p2 = urdf.signature(f2)[0] || '@type';
+									var sj = p2 === '@type' ?
+											 { type: 'uri', value: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type' } :
+											 urdf.sparqlJsonForm({ '@id': p2 })
+									b3 = _merge(b3, [{
+										[urdf.lexicalForm({ '@id': p })]: sj
+									}]);
+									return b2.concat(b3);
 								} else {
-									return _queryAll(f2, s[p], b2);
+									return b2;
 								}
-							}, b);
+							}, []);
+						} else {
+							if (s[p] === undefined) {
+								return b;
+							} else {
+								return f[p].reduce((b2, f2) => {
+									// TODO take 'require all' flag into account (default: true)
+									if (b2 === null) {
+										return b2;
+									} else {
+										return _queryAll(f2, s[p], b2);
+									}
+								}, b);
+							}
 						}
 					}
 				}, bindings);
@@ -238,9 +267,9 @@
 	 */
 	urdf.match = function(q, n, all) {
 		if (urdf.isLiteral(q)) {
-			let v = q['@value'];
-			let t = q['@type'] || null;
-			let l = q['@language'] || null;
+			var v = q['@value'];
+			var t = q['@type'] || null;
+			var l = q['@language'] || null;
 
 			// TODO support {}
 			// TODO support range (i.e. arrays) in q
@@ -280,8 +309,8 @@
 				}
 			};
 
-			let sq = urdf.signature(q);
-			let sn = urdf.signature(n);
+			var sq = urdf.signature(q);
+			var sn = urdf.signature(n);
 
 			return all === false ? _interects(sq, sn) : _isSubset(sq, sn);
 		}
@@ -320,7 +349,8 @@
 	 * TODO bitmap as in the original impl?
 	 */
 	urdf.signature = function(obj) {
-		return Object.keys(obj).filter(p => p[0] !== '@');
+		var fn = function(p) { return p[0] !== '@' };
+		return Object.keys(obj).filter(fn);
 	}
 
 	/**
@@ -355,7 +385,7 @@
 	 * Returns the SPARQL JSON form of the input object.
 	 */
 	urdf.sparqlJsonForm = function(obj) {
-		let sj = {
+		var sj = {
 			value: urdf.lexicalForm(obj)
 		};
 

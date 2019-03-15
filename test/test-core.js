@@ -129,6 +129,12 @@ describe('urdf.query()', ()=> {
         let [actual, expected] = query('unknown-value.json');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process triple patterns with unbound predicate', () => {
+        load('thing.json');
+        let [actual, expected] = query('thing-frame.json');
+        assert.deepStrictEqual(actual, expected);
+    });
 });
 
 describe('urdf', () => {
