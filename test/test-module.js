@@ -79,4 +79,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('opt-property-value');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it('should correctly process inline value patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('type-univ-pairs');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

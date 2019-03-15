@@ -8,6 +8,16 @@ const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8')); // FIXME absolute pa
 const parser = new require('sparqljs').Parser();
 
 /**
+ * Returns the name of the input variable.
+ * 
+ * @param {string} variable a variable (starting with '?')
+ */
+function name(variable) {
+    if (variable[0] != '?') throw new Error(variable + ' is not a variable');
+    return variable.substring(1);
+}
+
+/**
  * Loads the input JSON-LD in the µRDF store.
  * 
  * @param {object | array} json some JSON-LD definition(s)
@@ -89,19 +99,27 @@ function evaluate(pattern, mappings) {
             omega = urdf.query(f) || [];
             return merge(mappings, omega);
 
+        case 'values':
+            omega = pattern.values.map(map => {
+                let mu = {};
+                for (let v in map) mu[name(v)] = utils.term(map[v]);
+                return mu;
+            });
+            return merge(mappings, omega);
+
         case 'bind':
             return mappings
                 .map(mu => {
-                    // TODO utils.term?
-                    let name = pattern.variable.substring(1);
+                    let n = name(pattern.variable);
                     let binding = {
-                        [name]: utils.evaluate(pattern.expression, mu)
+                        [n]: utils.evaluate(pattern.expression, mu)
                     };
                     return urdf.merge(mu, binding);
                 })
                 .filter(mu => mu);
 
         case 'filter':
+            // TODO answer set filters
             return mappings.filter(mu => {
                 let bool = utils.evaluate(pattern.expression, mu);
                 return utils.ebv(bool);

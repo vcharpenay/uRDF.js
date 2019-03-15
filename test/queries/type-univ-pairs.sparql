@@ -1,0 +1,10 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?s a ?type .
+    optional { ?s ub:doctoralDegreeFrom ?u }
+    values (?type ?u) {
+        (ub:Publication <http://www.University501.edu>)
+        (ub:Professor <http://www.University685.edu>)
+    }
+}

@@ -1,0 +1,9 @@
+prefix ssn: <http://www.w3.org/ns/ssn/>
+prefix saref: <https://w3id.org/saref#>
+prefix ex: <http://example.org/>
+
+select * where {
+    ?p a ssn:Property .
+    optional { ?p ex:curVal ?val }
+    optional { ?c saref:actsUpon ?p }
+}

@@ -490,6 +490,7 @@ function evaluate(expr, binding) {
     }
 }
 
+module.exports.term = term;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.evaluate = evaluate;
