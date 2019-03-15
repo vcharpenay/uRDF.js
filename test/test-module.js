@@ -73,4 +73,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('all-persons');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it.skip('should correctly process optional patterns', () => {
+        load('thing');
+        let [actual, expected] = query('opt-property-value');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

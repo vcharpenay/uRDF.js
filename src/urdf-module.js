@@ -36,80 +36,84 @@ function merge(omega1, omega2) {
 }
 
 /**
- * Evaluates a SPARQL query pattern and returns bindings.
+ * Sequentially evaluates a list of SPARQL query patterns.
+ * 
+ * @param {array} patterns array of pattern objects 
+ * @param {array} mappings current mappings
+ */
+function evaluateAll(patterns) {
+    // TODO reorder bind, filter, optional?
+
+    return patterns.reduce((omega, p) => {
+        return evaluate(p, omega);
+    }, [{}]);
+}
+
+/**
+ * Evaluates a SPARQL query pattern and returns mappings.
  * 
  * @param {object} pattern the query pattern
+ * @param {array} mappings current mappings
  */
-function evaluate(pattern) {
+function evaluate(pattern, mappings) {
+    let omega = [];
+
     switch (pattern.type) {
-        // TODO union, optional
-        
         case 'group':
-            // FIXME filters must be evaluated per group
-            // FIXME ignore {}
-            return pattern.patterns
-                .map(p => evaluate(p))
-                .reduce((res, omega) => merge(res, omega));
+            return pattern.patterns.length > 0 ?
+                   evaluateAll(pattern.patterns) :
+                   mappings;
 
         case 'union':
             return pattern.patterns
-                .map(p => evaluate(p))
-                .reduce((res, omega) => res.concat(omega));
+                .map(p => evaluate(p, mappings))
+                .reduce((union, omega) => union.concat(omega));
+
+        case 'optional':
+            // TODO
+            break;
 
         case 'bgp':
             let f = utils.frame(pattern);
-            return urdf.query(f) || [];
+            omega = urdf.query(f) || [];
+            return merge(mappings, omega);
 
-        default: throw new Error('Query pattern not supported or unknown');
+        case 'bind':
+            return mappings
+                .map(mu => {
+                    // TODO utils.term?
+                    let name = pattern.variable.substring(1);
+                    let binding = {
+                        [name]: utils.evaluate(pattern.expression, mu)
+                    };
+                    return urdf.merge(mu, binding);
+                })
+                .filter(mu => mu);
+
+        case 'filter':
+            return mappings.filter(mu => {
+                let bool = utils.evaluate(pattern.expression, mu);
+                return utils.ebv(bool);
+            });
+
+        default:
+            throw new Error('Query pattern not supported or unknown');
     }
 }
 
 /**
- * Processes the input query and returns bindings as SPARQL JSON or a JSON-LD graph.
+ * Processes the input query and returns mappings as SPARQL JSON or a JSON-LD graph.
  * 
  * @param {string} sparql a SPARQL query as string
  */
 function query(sparql) {
     let ast = parser.parse(sparql);
 
-    let patterns = ast.where.filter(p => p.type != 'bind' && p.type != 'filter');
-
-    let root = patterns.length === 1 ?
-               patterns[0] : {
-                   type: 'group',
-                   patterns: patterns
-               };
-    let results = evaluate(root);
-
-    let binds = ast.where.filter(p => p.type === 'bind');
-
-    if (binds.length > 0) {
-        results = results.reduce((res, mu) => {
-            // note: operational semantics -> multiple definitions, last taken
-            let bindings = binds.reduce((bs, b) => {
-                let term = utils.evaluate(b.expression, mu);
-                bs[b.variable.substring(1)] = term; // TODO utils.term?
-                return bs;
-            }, {});
-            let merged = urdf.merge(mu, bindings);
-            if (merged) res.push(merged);
-            return res;
-        }, []);
-    }
-
-    let filters = ast.where.filter(p => p.type === 'filter');
-
-    if (filters) {
-        results = filters.reduce((res, f) => {
-            return res.filter(b => {
-                let bool = utils.evaluate(f.expression, b);
-                return utils.ebv(bool);
-            });
-        }, results);
-    }
+    let mappings = evaluateAll(ast.where);
 
     // TODO SELECT projection
-    return results;
+
+    return mappings;
 }
 
 module.exports.size = urdf.size;
