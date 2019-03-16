@@ -1,0 +1,7 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?p ub:degreeFrom ?u
+    filter not exists { ?p ub:mastersDegreeFrom ?u }
+    filter exists { ?p ub:doctoralDegreeFrom ?u }
+}

@@ -86,9 +86,15 @@ describe('urdf.query()', () => {
         assert.deepStrictEqual(actual, expected);
     });
 
-    it.only('should correctly process minus patterns', () => {
+    it('should correctly process minus patterns', () => {
         load('lubm-s34');
         let [actual, expected] = query('minus-degrees');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should correctly process filters with sub-patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('filter-degrees');
         assert.deepStrictEqual(actual, expected);
     });
 });

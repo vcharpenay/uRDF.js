@@ -125,11 +125,26 @@ function evaluate(pattern, mappings) {
             });
 
         case 'filter':
-            // TODO answer set filters
-            return mappings.filter(mu => {
-                let bool = utils.evaluate(pattern.expression, mu);
-                return utils.ebv(bool);
-            });
+            // TODO optimize 'not/exists' filter: stop at first mapping
+            switch (pattern.expression.operator) {
+                case 'exists':
+                    return mappings.filter(mu => {
+                        let p = pattern.expression.args[0];
+                        return evaluate(p, [mu]).length > 0;
+                    });
+
+                case 'notexists':
+                    return mappings.filter(mu => {
+                        let p = pattern.expression.args[0];
+                        return evaluate(p, [mu]).length === 0;
+                    });
+
+                default:
+                    return mappings.filter(mu => {
+                        let bool = utils.evaluate(pattern.expression, mu);
+                        return utils.ebv(bool);
+                    });
+            }
 
         default:
             throw new Error('Query pattern not supported or unknown');
