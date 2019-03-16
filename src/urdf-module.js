@@ -118,6 +118,12 @@ function evaluate(pattern, mappings) {
                 })
                 .filter(mu => mu);
 
+        case 'minus':
+            omega = evaluateAll(pattern.patterns);
+            return mappings.filter(mu1 => {
+                return omega.every(mu2 => !urdf.merge(mu1, mu2));
+            });
+
         case 'filter':
             // TODO answer set filters
             return mappings.filter(mu => {

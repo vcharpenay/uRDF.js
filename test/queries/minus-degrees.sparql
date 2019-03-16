@@ -1,0 +1,10 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    <http://www.Department0.University4.edu/AssistantProfessor1> ?pred ?o .
+    minus {
+        { <http://www.Department0.University4.edu/AssistantProfessor1> ?pred <http://www.University685.edu> }
+        union
+        { <http://www.Department0.University4.edu/AssistantProfessor1> ?pred ub:Person }
+    }
+}

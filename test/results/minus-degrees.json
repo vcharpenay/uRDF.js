@@ -1,0 +1,82 @@
+[
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/GraduateCourse8"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#teacherOf"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/Course8"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#name"
+        },
+        "o": {
+            "type": "literal",
+            "value": "AssistantProfessor1"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#worksFor"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#memberOf"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://www.w3.org/2002/07/owl#sameAs"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#undergraduateDegreeFrom"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.University501.edu"
+        }
+    },
+    {
+        "pred": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#doctoralDegreeFrom"
+        },
+        "o": {
+            "type": "uri",
+            "value": "http://www.University4.edu"
+        }
+    }
+]

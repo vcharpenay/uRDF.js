@@ -85,4 +85,10 @@ describe('urdf.query()', () => {
         let [actual, expected] = query('type-univ-pairs');
         assert.deepStrictEqual(actual, expected);
     });
+
+    it.only('should correctly process minus patterns', () => {
+        load('lubm-s34');
+        let [actual, expected] = query('minus-degrees');
+        assert.deepStrictEqual(actual, expected);
+    });
 });

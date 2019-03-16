@@ -180,7 +180,7 @@ function frame(bgp) {
 
         let p = (tp.predicate === ns.rdf + 'type') ?
 				'@type' : tp.predicate;
-		if (p[0] === '?') p = '_:' + name(p);
+		if (p[0] === '?') p = '_:' + p.substring(1);
         if (!n[p]) n[p] = [];
 
         let o = nodeOrValue(term(tp.object));
