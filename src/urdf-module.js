@@ -96,7 +96,7 @@ function evaluate(pattern, mappings) {
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = urdf.query(f) || [];
+            omega = urdf.query(f);
             return merge(mappings, omega);
 
         case 'values':

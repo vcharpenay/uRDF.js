@@ -1,0 +1,20 @@
+[
+    {
+        "@id": "http://example.org/sensor1",
+        "_:p1": [
+            {
+                "@id": "http://example.org/sensor1/temp"
+            }
+        ],
+        "_:p2": [
+            {
+                "@id": "https://w3id.org/saref#TemperatureSensor"
+            }
+        ],
+        "_:p3": [
+            {
+                "@id": "_:val"
+            }
+        ]
+    }
+]

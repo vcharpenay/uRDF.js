@@ -1,0 +1,92 @@
+[
+    {
+        "p1": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "p2": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "p3": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "val": {
+            "type": "uri",
+            "value": "http://www.w3.org/ns/sosa/Sensor"
+        }
+    }, 
+    {
+        "p1": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "p2": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "p3": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "val": {
+            "type": "uri",
+            "value": "https://w3id.org/saref#TemperatureSensor"
+        }
+    }, 
+    {
+        "p1": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "p2": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "p3": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "val": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        }
+    }, 
+    {
+        "p1": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "p2": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "p3": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "val": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        }
+    }, 
+    {
+        "p1": {
+            "type": "uri",
+            "value": "http://www.w3c.org/wot/td#hasProperty"
+        },
+        "p2": {
+            "type": "uri",
+            "value": "http://www.w3.org/1999/02/22-rdf-syntax-ns#type"
+        },
+        "p3": {
+            "type": "uri",
+            "value": "https://w3id.org/saref#hasCommand"
+        },
+        "val": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/cmd"
+        }
+    }
+]
