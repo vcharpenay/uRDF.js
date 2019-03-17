@@ -18,13 +18,26 @@ function name(variable) {
 }
 
 /**
+ * Provides a Promise-based wrapper for core clear function.
+ */
+function clear() {
+    return new Promise((resolve, reject) => {
+        urdf.clear();
+        resolve();
+    });
+}
+
+/**
  * Loads the input JSON-LD in the µRDF store.
  * 
  * @param {object | array} json some JSON-LD definition(s)
  */
 function load(json) {
     // TODO normalize, compact
-    return urdf.load(json);
+    return new Promise((resolve, reject) => {
+        urdf.load(json);
+        resolve();
+    });
 }
 
 /**
@@ -157,16 +170,18 @@ function evaluate(pattern, mappings) {
  * @param {string} sparql a SPARQL query as string
  */
 function query(sparql) {
-    let ast = parser.parse(sparql);
-
-    let mappings = evaluateAll(ast.where);
-
-    // TODO SELECT projection
-
-    return mappings;
+    return new Promise((resolve, reject) => {
+        let ast = parser.parse(sparql);
+    
+        let mappings = evaluateAll(ast.where);
+    
+        // TODO SELECT projection
+    
+        resolve(mappings);
+    });
 }
 
 module.exports.size = urdf.size;
-module.exports.clear = urdf.clear;
+module.exports.clear = clear;
 module.exports.load = load;
 module.exports.query = query;
