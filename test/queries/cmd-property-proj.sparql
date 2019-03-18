@@ -1,0 +1,9 @@
+prefix td: <http://www.w3c.org/wot/td#>
+prefix saref: <https://w3id.org/saref#>
+
+select ?p ?cmd where {
+    ?t td:hasProperty ?p ;
+       saref:hasCommand ?cmd .
+    ?p a ?cl .
+    ?cmd saref:actsUpon ?p .
+}

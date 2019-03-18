@@ -1,0 +1,22 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        },
+        "cmd": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/cmd"
+        }
+    },
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        },
+        "cmd": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/cmd"
+        }
+    }
+]

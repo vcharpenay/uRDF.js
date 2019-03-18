@@ -83,4 +83,10 @@ describe('urdf.query()', () => {
         return load('lubm-s34')
         .then(() => query('filter-degrees'));
     });
+
+    it('should correctly perform simple select projection', () => {
+        return load('thing')
+        .then(() => query('cmd-property-proj'));
+    });
+
 });

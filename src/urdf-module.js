@@ -165,6 +165,28 @@ function evaluate(pattern, mappings) {
 }
 
 /**
+ * Projects input mappings onto the given variables.
+ * 
+ * @param {array} vars a list of variables (starting with '?')
+ * @param {array} mappings a list of mappings
+ */
+function project(vars, mappings) {
+    if (vars.some(v => v === '*')) return mappings;
+    
+    vars = vars.map(name);
+
+    return mappings.map(mu1 => {
+        let mu2 = {};
+
+        for (let name in mu1) {
+            if (vars.indexOf(name) > -1) mu2[name] = mu1[name];
+        }
+
+        return mu2;
+    });
+}
+
+/**
  * Processes the input query and returns mappings as SPARQL JSON or a JSON-LD graph.
  * 
  * @param {string} sparql a SPARQL query as string
@@ -175,7 +197,7 @@ function query(sparql) {
     
         let mappings = evaluateAll(ast.where);
     
-        // TODO SELECT projection
+        mappings = project(ast.variables, mappings);
     
         resolve(mappings);
     });
