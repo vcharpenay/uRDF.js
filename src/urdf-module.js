@@ -129,7 +129,7 @@ function evaluate(pattern, mappings) {
                     };
                     return urdf.merge(mu, binding);
                 })
-                .filter(mu => mu);
+                .filter(mu => Object.keys(mu).length > 0);
 
         case 'minus':
             omega = evaluateAll(pattern.patterns);
@@ -172,14 +172,14 @@ function evaluate(pattern, mappings) {
  */
 function project(vars, mappings) {
     if (vars.some(v => v === '*')) return mappings;
-    
-    vars = vars.map(name);
+
+    let names = vars.map(name);
 
     return mappings.map(mu1 => {
         let mu2 = {};
 
-        for (let name in mu1) {
-            if (vars.indexOf(name) > -1) mu2[name] = mu1[name];
+        for (let n in mu1) {
+            if (names.indexOf(n) > -1) mu2[n] = mu1[n];
         }
 
         return mu2;

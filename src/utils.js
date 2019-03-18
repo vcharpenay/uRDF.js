@@ -24,7 +24,7 @@ function term(plain) {
 	} else if (typeof plain === 'number') {
 		return {
 			type: 'literal',
-			datatype: ns.xsd + 'decimal', // TODO detect integer
+			datatype: ns.xsd + (Number.isInteger(plain) ? 'integer' : 'decimal'),
 			value: String(plain)
 		};
 	} else if (typeof plain === 'string') {
@@ -298,6 +298,7 @@ function evaluateBaseOperation(op, args) {
 			return term(args[0] * args[1]);
 
 		case '/':
+			// TODO if both integers, return integer
 			return term(args[0] / args[1]);
 
 		case '+':

@@ -278,6 +278,8 @@
 	 */
 	urdf.merge = function(μ1, μ2) {
 		var μ = {};
+
+		// TODO datatype, lang
 		
 		for (var v in μ1) {
 			if (μ2[v] !== undefined && μ2[v].value !== μ1[v].value) {
