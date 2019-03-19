@@ -10,14 +10,15 @@ function load(f) {
 function query(f) {
     let q = fs.readFileSync('test/queries/' + f + '.sparql', 'utf-8');
 
-    let res = JSON.parse(fs.readFileSync('test/results/' + f + '.json'));
-    if (typeof res !== 'array' && res.results) {
-        res = res.results.bindings;
+    let expected = JSON.parse(fs.readFileSync('test/results/' + f + '.json'));
+    if (typeof expected !== 'array' && expected.results) {
+        expected = expected.results.bindings;
     }
 
-    return urdf.query(q).then((m) => {
-        let actual = new Set(m);
-        let expected = new Set(res);
+    return urdf.query(q).then((actual) => {
+        if (expected instanceof Array) expected = new Set(expected);
+        if (actual instanceof Array) actual = new Set(actual);
+        
         assert.deepStrictEqual(actual, expected);
     });
 }
@@ -102,5 +103,10 @@ describe('urdf.query()', () => {
     it('should correctly evaluate select expressions', () => {
         return load('thing')
         .then(() => query('property-value-expr'));
+    });
+
+    it('should correctly answer ask queries', () => {
+        return load('lubm-s34')
+        .then(() => query('is-doctor'));
     });
 });

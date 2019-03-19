@@ -206,10 +206,21 @@ function query(sparql) {
         let ast = parser.parse(sparql);
     
         let mappings = evaluateAll(ast.where);
-    
-        mappings = project(ast.variables, mappings);
-    
-        resolve(mappings);
+
+        switch (ast.queryType) {
+            case 'SELECT':
+                mappings = project(ast.variables, mappings);
+                resolve(mappings);
+
+            case 'ASK':
+                // TODO stop after first mapping found
+                resolve(mappings.length > 0);
+
+            case 'CONSTRUCT':
+            case 'DESCRIBE':
+            default:
+                reject(new Error('Not implemented'));
+        }
     });
 }
 

@@ -522,22 +522,22 @@ function evaluateDateTimeBuiltInFunction(op, args) {
 			return term(new Date());
 
 		case 'year':
-			return term(args[0].getUTCFullYear());
+			return term(args[0].getFullYear());
 
 		case 'month':
-			return term(args[0].getUTCMonth() + 1);
+			return term(args[0].getMonth() + 1);
 
 		case 'day':
-			return term(args[0].getUTCDate());
+			return term(args[0].getDate());
 
 		case 'hours':
-			return term(args[0].getUTCHours());
+			return term(args[0].getHours());
 
 		case 'minutes':
-			return term(args[0].getUTCMinutes());
+			return term(args[0].getMinutes());
 
 		case 'seconds':
-			return term(args[0].getUTCSeconds() + (args[0].getUTCMilliseconds() / 1000));
+			return term(args[0].getSeconds() + (args[0].getMilliseconds() / 1000));
 
 		case 'timezone':
 			// TODO add datatype
