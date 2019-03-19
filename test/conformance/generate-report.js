@@ -101,7 +101,7 @@ const rootDir = 'test/conformance/sparql11-test-suite';
 fs.readdirSync(rootDir)
 .map(f => rootDir + '/' + f)
 .filter(f => fs.statSync(f).isDirectory())
-.filter(f => f.endsWith('functions'))
+.filter(f => !f.endsWith('entailment') && !f.endsWith('property-path'))
 .reduce((chain, dir) => {
     return chain
     .then(() => readTurtleFile(dir + '/manifest.ttl', 'file:' + dir + '/'))

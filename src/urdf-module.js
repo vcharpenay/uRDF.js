@@ -18,6 +18,19 @@ function name(variable) {
 }
 
 /**
+ * Computes whether two solution mappings intersect, i.e. whether:
+ *  - their domains (sets of variables) overlap and
+ *  - their intersection is a valid mapping.
+ * 
+ * @param {object} mu1 first solution mapping
+ * @param {object} mu2 second solution mappoing
+ */
+function intersect(mu1, mu2) {
+    if (!Object.keys(mu1).some(v => mu2[v])) return false;
+    else return Boolean(urdf.merge(mu1, mu2));
+}
+
+/**
  * Provides a Promise-based wrapper for core clear function.
  */
 function clear() {
@@ -134,7 +147,7 @@ function evaluate(pattern, mappings) {
         case 'minus':
             omega = evaluateAll(pattern.patterns);
             return mappings.filter(mu1 => {
-                return omega.every(mu2 => !urdf.merge(mu1, mu2));
+                return !omega.some(mu2 => intersect(mu1, mu2));
             });
 
         case 'filter':
@@ -204,7 +217,14 @@ function project(vars, mappings) {
 function query(sparql) {
     return new Promise((resolve, reject) => {
         let ast = parser.parse(sparql);
-    
+
+        // query rewriting
+        // TODO put select expressions as binds in where clause
+        if (ast.values) ast.where.push({
+            type: 'values',
+            values: ast.values
+        });
+
         let mappings = evaluateAll(ast.where);
 
         switch (ast.queryType) {

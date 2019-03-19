@@ -18,7 +18,7 @@ function query(f) {
     return urdf.query(q).then((actual) => {
         if (expected instanceof Array) expected = new Set(expected);
         if (actual instanceof Array) actual = new Set(actual);
-        
+
         assert.deepStrictEqual(actual, expected);
     });
 }
