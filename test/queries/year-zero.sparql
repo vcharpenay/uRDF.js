@@ -1,0 +1,8 @@
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+
+select * where {
+    bind (xsd:dateTime("1970-01-01") as ?d)
+    filter (year(?d) = 1970
+        || month(?d) = 1
+        || month(?d) = 1)
+}

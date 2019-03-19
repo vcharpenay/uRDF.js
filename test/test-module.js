@@ -54,6 +54,11 @@ describe('urdf.query()', () => {
         .then(() => query('property-value-math'));
     });
 
+    it('should correctly process functions on dates and times in filter', () => {
+        return load('thing')
+        .then(() => query('year-zero'));
+    });
+
     it('should correctly merge solution mappings from group patterns', () => {
         return load('lubm-s34')
         .then(() => query('assistant-degree'));

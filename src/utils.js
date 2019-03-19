@@ -27,6 +27,12 @@ function term(plain) {
 			datatype: ns.xsd + (Number.isInteger(plain) ? 'integer' : 'decimal'),
 			value: String(plain)
 		};
+	} else if (plain instanceof Date) {
+		return {
+			type: 'literal',
+			datatype: ns.xsd + 'dateTime',
+			value: plain.toISOString()
+		};
 	} else if (typeof plain === 'string') {
 		let capture = null;
 
@@ -252,7 +258,18 @@ function opType(op) {
 		case 'ceil':
 		case 'floor':
 		case 'rand':
-			return 'numericsBuiltIn';
+			return 'numericBuiltIn';
+		
+		case 'now':
+		case 'year':
+		case 'month':
+		case 'day':
+		case 'hours':
+		case 'minutes':
+		case 'seconds':
+		case 'timezone':
+		case 'tz':
+			return 'dateTimeBuiltIn';
 
 		default:
 			throw new Error('Operator unknown: ' + expr.operator);
@@ -467,7 +484,7 @@ function evaluateStringBuiltInFunction(op, args) {
  * @param {string} op the operator
  * @param {array} args operands (or arguments)
  */
-function evaluateNumericsBuiltInFunction(op, args) {
+function evaluateNumericBuiltInFunction(op, args) {
 	args = args.map(arg => native(arg));
 
 	switch (op) {
@@ -488,6 +505,78 @@ function evaluateNumericsBuiltInFunction(op, args) {
 
 		default:
 			throw new Error('Unknown operator');
+	}
+}
+
+/**
+ * See SPARQL 1.1 Query Language, section 17.4.5 "Functions on Dates and Times".
+ * 
+ * @param {string} op the operator
+ * @param {array} args operands (or arguments)
+ */
+function evaluateDateTimeBuiltInFunction(op, args) {
+	args = args.map(arg => native(arg));
+
+	switch (op) {
+		case 'now':
+			return term(new Date());
+
+		case 'year':
+			return term(args[0].getUTCFullYear());
+
+		case 'month':
+			return term(args[0].getUTCMonth() + 1);
+
+		case 'day':
+			return term(args[0].getUTCDate());
+
+		case 'hours':
+			return term(args[0].getUTCHours());
+
+		case 'minutes':
+			return term(args[0].getUTCMinutes());
+
+		case 'seconds':
+			return term(args[0].getUTCSeconds() + (args[0].getUTCMilliseconds() / 1000));
+
+		case 'timezone':
+			// TODO add datatype
+			return term(args[0].getTimezoneOffset());
+
+		case 'tz':
+			// TODO as string 'hh:mm' or 'Z'
+			return term(args[0].getTimezoneOffset());
+
+		default:
+			throw new Error('Unknown operator');
+	}
+}
+
+/**
+ * 
+ * @param {string} fn the function IRI as a string
+ * @param {*} args operands (or arguments)
+ */
+function evaluateConstructorFunction(fn, args) {
+	// TODO throw error if incompatible arg and if |args| > 1
+	let arg = term(args[0]);
+
+	switch (fn) {
+		case ns.xsd + 'boolean':
+		case ns.xsd + 'double':
+		case ns.xsd + 'float':
+		case ns.xsd + 'decimal':
+		case ns.xsd + 'integer':
+		case ns.xsd + 'dateTime':
+		case ns.xsd + 'string':
+			return {
+				type: 'literal',
+				datatype: fn,
+				value: arg.value
+			};
+
+		default:
+			throw new Error('Unknown function');
 	}
 }
 
@@ -522,16 +611,23 @@ function evaluate(expr, binding) {
 				case 'stringBuiltIn':
 					return evaluateStringBuiltInFunction(op, args);
 
-				case 'numericsBuiltIn':
-					return evaluateNumericsBuiltInFunction(op, args);
+				case 'numericBuiltIn':
+					return evaluateNumericBuiltInFunction(op, args);
+
+				case 'dateTimeBuiltIn':
+					return evaluateDateTimeBuiltInFunction(op, args);
 
 				default:
 					throw new Error('Operator not implemented: ' + expr.operator);
 			}
 		}
-    } else if (expr.type === 'function') {
-        // TODO get registered functions and execute
-		throw new Error('Not implemented');
+    } else if (expr.type === 'functionCall') {
+		if (expr.function.startsWith(ns.xsd)) {
+			return evaluateConstructorFunction(expr.function, expr.args);
+		} else {
+			// TODO get registered functions and execute
+			throw new Error('Not implemented');
+		}
     }
 }
 

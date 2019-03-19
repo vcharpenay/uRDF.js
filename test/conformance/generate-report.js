@@ -101,6 +101,7 @@ const rootDir = 'test/conformance/sparql11-test-suite';
 fs.readdirSync(rootDir)
 .map(f => rootDir + '/' + f)
 .filter(f => fs.statSync(f).isDirectory())
+.filter(f => f.endsWith('functions'))
 .reduce((chain, dir) => {
     return chain
     .then(() => readTurtleFile(dir + '/manifest.ttl', 'file:' + dir + '/'))
@@ -117,8 +118,11 @@ fs.readdirSync(rootDir)
             // TODO XML2JSON
             return chain;
         } else {
-            let testReport = { name: t.name.value };
-            report.push(testReport)
+            let testReport = {
+                location: t.query.value,
+                name: t.name.value
+            };
+            report.push(testReport);
 
             return chain
             
@@ -167,9 +171,15 @@ fs.readdirSync(rootDir)
 })
 
 .then(report => {
+    fs.writeFileSync('test/conformance/report.json', JSON.stringify(report));
+    return report;
+})
+
+.then(report => {
     let passed = report.filter(t => t.passed).length;
     let total = report.length;
-    let summary = passed + '/' + total + ' (' + (passed/total*100) + '%) tests passed.';
+    let ratio = Math.round(passed/total*1000)/10;
+    let summary = passed + '/' + total + ' (' + ratio + '%) tests passed.';
 
     let rows = report
     .map(t => {
