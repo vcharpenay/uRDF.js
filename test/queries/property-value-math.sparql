@@ -1,0 +1,10 @@
+prefix td: <http://www.w3c.org/wot/td#>
+prefix sosa: <http://www.w3.org/ns/sosa/>
+prefix saref: <https://w3id.org/saref#>
+
+select * where {
+    ?p <http://example.org/curVal> ?val .
+    filter (ceil((?val + 3) / 7) = 9
+        && floor((?val + 3) / 7) = 8
+        && round((?val + 3) / 7) = 8)
+}

@@ -49,6 +49,11 @@ describe('urdf.query()', () => {
         .then(() => query('graduate-number'));
     });
 
+    it('should correctly process functions on numerics in filter', () => {
+        return load('thing')
+        .then(() => query('property-value-math'));
+    });
+
     it('should correctly merge solution mappings from group patterns', () => {
         return load('lubm-s34')
         .then(() => query('assistant-degree'));
@@ -89,7 +94,7 @@ describe('urdf.query()', () => {
         .then(() => query('cmd-property-proj'));
     });
 
-    it.only('should correctly evaluate select expressions', () => {
+    it('should correctly evaluate select expressions', () => {
         return load('thing')
         .then(() => query('property-value-expr'));
     });

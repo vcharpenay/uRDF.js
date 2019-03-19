@@ -214,19 +214,21 @@ function opType(op) {
 		case '-':
 			return 'base';
 
-		case 'isBlank':
-		case 'isLiteral':
-		case 'isNumeric':
+		case 'isuri':
+		case 'isiri':
+		case 'isblank':
+		case 'isliteral':
+		case 'isnumeric':
 		case 'str':
 		case 'lang':
 		case 'datatype':
-		case 'URI':
-		case 'IRI':	
+		case 'uri':
+		case 'iri':
 		case 'BNODE':
-		case 'STRDT':
-		case 'STRLANG':
-		case 'UUID':
-		case 'STRUUID':
+		case 'strdt':
+		case 'strlang':
+		case 'uuid':
+		case 'struuid':
 			return 'termBuiltIn';
 
 		case 'strlen':
@@ -240,10 +242,17 @@ function opType(op) {
 		case 'strafter':
 		case 'encode_for_uri':
 		case 'concat':
-		case 'langMatches':
+		case 'langmatches':
 		case 'regex':
 		case 'replace':
 			return 'stringBuiltIn';
+
+		case 'abs':
+		case 'round':
+		case 'ceil':
+		case 'floor':
+		case 'rand':
+			return 'numericsBuiltIn';
 
 		default:
 			throw new Error('Operator unknown: ' + expr.operator);
@@ -320,16 +329,17 @@ function evaluateBaseOperation(op, args) {
  */
 function evaluateTermBuiltInFunction(op, args) {
 	switch (op) {
-		case 'isIRI':
+		case 'isuri':
+		case 'isiri':
 			return term(args[0].type === 'uri');
 		
-		case 'isBlank':
+		case 'isblank':
 			return term(args[0].type === 'bnode');
 
-		case 'isLiteral':
+		case 'isliteral':
 			return term(args[0].type === 'literal');
 
-		case 'isNumeric':
+		case 'isnumeric':
 			return term(typeof native(args[0]) === 'number');
 
 		case 'str':
@@ -351,8 +361,8 @@ function evaluateTermBuiltInFunction(op, args) {
 				value: args[0].datatype || (ns.xsd + 'string')
 			};
 
-		case 'URI':
-		case 'IRI':
+		case 'uri':
+		case 'iri':
 			return {
 				type: 'uri',
 				value: args[0].value // TODO resolve IRI
@@ -364,27 +374,27 @@ function evaluateTermBuiltInFunction(op, args) {
 				value: args[0] ?
 					   args[0].value :
 					   // TODO not the most reliabe ID generator...
-					   Math.random().toString().substring(2)
+					   'gen_' + Math.random().toString().substring(2)
 			};
 		
-		case 'STRDT':
+		case 'strdt':
 			return {
 				type: 'literal',
 				value: args[0].value,
 				datatype: args[1].value
 			};
 		
-		case 'STRLANG':
+		case 'strlang':
 			return {
 				type: 'literal',
 				value: args[0].value,
 				lang: args[1].value
 			};
 
-		case 'UUID':
+		case 'uuid':
 			// TODO
 
-		case 'STRUUID':
+		case 'struuid':
 			// TODO
 
 		default:
@@ -426,10 +436,10 @@ function evaluateStringBuiltInFunction(op, args) {
 			return term(args[0].includes(args[1]));
 
 		case 'strbefore':
-			// TODO
+			return term(args[0].substring(0, args[0].indexOf(args[1])));
 
 		case 'strafter':
-			// TODO
+		return term(args[0].substring(args[0].indexOf(args[1]), args[0].length));
 
 		case 'encode_for_uri':
 			return term('"' + encodeURIComponent(args[0]) + '"');
@@ -437,14 +447,44 @@ function evaluateStringBuiltInFunction(op, args) {
 		case 'concat':
 			return term('"'.concat(...args.concat(['"'])));
 
-		case 'langMatches':
-			// TODO
+		case 'langmatches':
+			return term(args[0] === args[1] || args[1] === '*');
 
 		case 'regex':
 			return term(Boolean(args[0].match(new RegExp(args[1], args[2]))));
 
 		case 'replace':
 			return term('"' + args[0].replace(new RegExp(args[1], args[3]), args[2]) + '"');
+
+		default:
+			throw new Error('Unknown operator');
+	}
+}
+
+/**
+ * See SPARQL 1.1 Query Language, section 17.4.4 "Functions on Numerics".
+ * 
+ * @param {string} op the operator
+ * @param {array} args operands (or arguments)
+ */
+function evaluateNumericsBuiltInFunction(op, args) {
+	args = args.map(arg => native(arg));
+
+	switch (op) {
+		case 'abs':
+			return term(Math.abs(args[0]));
+
+		case 'round':
+			return term(Math.round(args[0]));
+
+		case 'ceil':
+			return term(Math.ceil(args[0]));
+
+		case 'floor':
+			return term(Math.floor(args[0]));
+		
+		case 'rand':
+			return term(Math.random());
 
 		default:
 			throw new Error('Unknown operator');
@@ -481,6 +521,9 @@ function evaluate(expr, binding) {
 
 				case 'stringBuiltIn':
 					return evaluateStringBuiltInFunction(op, args);
+
+				case 'numericsBuiltIn':
+					return evaluateNumericsBuiltInFunction(op, args);
 
 				default:
 					throw new Error('Operator not implemented: ' + expr.operator);
