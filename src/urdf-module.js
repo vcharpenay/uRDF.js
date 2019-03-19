@@ -5,6 +5,8 @@ const fs = require('fs');
 const utils = require('./utils.js');
 const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8')); // FIXME absolute path?
 
+const n3 = require('n3');
+const processor = require('jsonld').promises;
 const parser = new require('sparqljs').Parser();
 
 /**
@@ -31,6 +33,23 @@ function intersect(mu1, mu2) {
 }
 
 /**
+ * Finds a given node and returns it.
+ * 
+ * @param {string} id a node identifier (an IRI)
+ */
+function find(id) {
+    return new Promise((resolve, reject) => {
+        let node = urdf.find(id);
+
+        // TODO deal with compacted form when time comes
+        // TODO return copy instead of actual object?
+        // TODO do not reject if node not found?
+        if (node) resolve(node);
+        else reject(new Error('Node not found'));
+    });
+}
+
+/**
  * Provides a Promise-based wrapper for core clear function.
  */
 function clear() {
@@ -41,16 +60,50 @@ function clear() {
 }
 
 /**
- * Loads the input JSON-LD in the µRDF store.
+ * Loads the input definitions in the µRDF store.
  * 
- * @param {object | array} json some JSON-LD definition(s)
+ * @param {object | array | string} data some JSON-LD definition(s)
+ * or some RDF triples serialialized as a string
+ * @param {object} opts options as an object (passed to N3.js)
  */
-function load(json) {
-    // TODO normalize, compact
+function load(data, opts) {
     return new Promise((resolve, reject) => {
-        urdf.load(json);
-        resolve();
-    });
+        switch (typeof data) {
+            case 'string':
+                const def = { format: 'application/n-quads' };
+
+                let p = new n3.Parser(opts);
+                let w = new n3.Writer(def);
+
+                // TODO use stream API...?
+                p.parse(data, (err, quad) => {
+                    if (err) reject(err);
+
+                    else if (quad) w.addQuad(quad);
+
+                    else w.end((err, nquads) => {
+                        if (err) reject(err);
+
+                        else processor.fromRDF(nquads, def)
+                             .then(json => resolve(json))
+                             .catch(e => reject(e));
+                    });
+                });
+                break;
+
+            case 'object':
+            case 'array':
+                resolve(data);
+                break;
+
+            default:
+                reject(new Error('Invalid JSON-LD or RDF definition'));
+        }
+    })
+
+    // TODO normalize, compact
+    .then(json => processor.expand(json))
+    .then(json => urdf.load(json));
 }
 
 /**
@@ -235,9 +288,11 @@ function query(sparql) {
             case 'ASK':
                 // TODO stop after first mapping found
                 resolve(mappings.length > 0);
+            
+            case 'DESCRIBE':
+                // TODO use urdf.find
 
             case 'CONSTRUCT':
-            case 'DESCRIBE':
             default:
                 reject(new Error('Not implemented'));
         }
@@ -245,6 +300,7 @@ function query(sparql) {
 }
 
 module.exports.size = urdf.size;
+module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;
 module.exports.query = query;

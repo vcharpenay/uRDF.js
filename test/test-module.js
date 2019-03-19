@@ -3,7 +3,7 @@ const fs = require('fs');
 const urdf = require('../src/urdf-module.js');
 
 function load(f) {
-    let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json'));
+    let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json', 'utf-8'));
     return urdf.clear().then(() => urdf.load(data));
 }
 
@@ -22,6 +22,19 @@ function query(f) {
         assert.deepStrictEqual(actual, expected);
     });
 }
+
+describe('urdf.load()', () => {
+    it('should correctly process arbitrary JSON-LD', () => {
+        return load('thing-compact')
+        .then(() => urdf.find('https://w3id.org/saref#TemperatureSensor'));
+    });
+
+    it('should accept input RDF if Turtle or N-Triples', () => {
+        let data = fs.readFileSync('test/data/thing-turtle.ttl', 'utf-8');
+        return urdf.load(data, { format: 'text/turtle' })
+        .then(() => urdf.find('https://w3id.org/saref#TemperatureSensor'));
+    });
+});
 
 describe('urdf.query()', () => {
     it('should correctly parse and process all LUBM benchmark queries', () => {

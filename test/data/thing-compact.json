@@ -1,0 +1,78 @@
+{
+    "@context": {
+      "saref": "https://w3id.org/saref#",
+      "ex": "http://example.org/",
+      "qudt": "http://data.nasa.gov/qudt/owl/unit#",
+      "sosa": "http://www.w3.org/ns/sosa/",
+      "ssn": "http://www.w3.org/ns/ssn/",
+      "td": "http://www.w3c.org/wot/td#",
+      "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+      "xsd": "http://www.w3.org/2001/XMLSchema#",
+      "td:hasProperty": {
+        "@type": "@vocab"
+      },
+      "td:hasCommand": {
+        "@type": "@vocab"
+      },
+      "http://data.nasa.gov/qudt/owl/qudt#unit": {
+        "@type": "@vocab"
+      },
+      "ex:curVal": {
+        "@type": "xsd:integer"
+      },
+      "ex:state": {
+        "@type": "@vocab"
+      },
+      "saref:actsUpon": {
+        "@type": "@vocab"
+      },
+      "rdfs:subClassOf": {
+        "@type": "@vocab"
+      }
+    },
+    "@graph": [
+      {
+        "ex:isActive": "true"
+      },
+      {
+        "@id": "ex:sensor1",
+        "@type": [
+          "sosa:Sensor",
+          "saref:TemperatureSensor"
+        ],
+        "td:hasProperty": [
+          "ex:sensor1/temp",
+          "ex:sensor1/onoff"
+        ],
+        "saref:hasCommand": {
+          "@id": "ex:sensor1/cmd"
+        }
+      },
+      {
+        "@id": "ex:sensor1/temp",
+        "@type": "ssn:Property",
+        "http://data.nasa.gov/qudt/owl/qudt#unit": "qudt:DegreeCelsius",
+        "ex:curVal": "54",
+        "ex:state": "_:b0"
+      },
+      {
+        "@id": "ex:sensor1/onoff",
+        "@type": [
+          "ssn:Property",
+          "saref:OnOffState"
+        ]
+      },
+      {
+        "@id": "ex:sensor1/cmd",
+        "saref:actsUpon": "ex:sensor1/onoff"
+      },
+      {
+        "@id": "saref:TemperatureSensor",
+        "rdfs:subClassOf": "saref:Property"
+      },
+      {
+        "@id": "saref:OnOffState",
+        "rdfs:subClassOf": "saref:Property"
+      }
+    ]
+  }
