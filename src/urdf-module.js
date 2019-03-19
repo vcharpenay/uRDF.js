@@ -167,13 +167,18 @@ function evaluate(pattern, mappings) {
 /**
  * Projects input mappings onto the given variables.
  * 
- * @param {array} vars a list of variables (starting with '?')
+ * @param {array} vars a list of variables (starting with '?') or expressions with binding
  * @param {array} mappings a list of mappings
  */
 function project(vars, mappings) {
     if (vars.some(v => v === '*')) return mappings;
 
-    let names = vars.map(name);
+    let names = vars
+        .filter(v => typeof v === 'string')
+        .map(name);
+
+    let exprs = vars
+        .filter(v => typeof v === 'object');
 
     return mappings.map(mu1 => {
         let mu2 = {};
@@ -181,6 +186,11 @@ function project(vars, mappings) {
         for (let n in mu1) {
             if (names.indexOf(n) > -1) mu2[n] = mu1[n];
         }
+
+        exprs.forEach(expr => {
+            let n = name(expr.variable);
+            mu2[n] = utils.evaluate(expr.expression, mu1);
+        });
 
         return mu2;
     });

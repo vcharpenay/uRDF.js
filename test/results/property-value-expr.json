@@ -1,0 +1,14 @@
+[
+    {
+        "val": {
+            "type": "literal",
+            "value": "54",
+            "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        "expr": {
+            "type": "literal",
+            "value": "30.5",
+            "datatype": "http://www.w3.org/2001/XMLSchema#decimal"
+        }
+    }
+]

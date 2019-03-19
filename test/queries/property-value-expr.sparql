@@ -1,0 +1,7 @@
+prefix td: <http://www.w3c.org/wot/td#>
+prefix sosa: <http://www.w3.org/ns/sosa/>
+prefix saref: <https://w3id.org/saref#>
+
+select ?val ((7 + (?val * 2) - ?val) / 2 as ?expr) where {
+    ?p <http://example.org/curVal> ?val .
+}

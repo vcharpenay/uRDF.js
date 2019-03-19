@@ -89,4 +89,8 @@ describe('urdf.query()', () => {
         .then(() => query('cmd-property-proj'));
     });
 
+    it.only('should correctly evaluate select expressions', () => {
+        return load('thing')
+        .then(() => query('property-value-expr'));
+    });
 });
