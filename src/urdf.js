@@ -1,6 +1,6 @@
 'use strict';
 
-(function() {
+module.exports = (function() {
 	/**
 	 * Namespace declaration.
 	 */

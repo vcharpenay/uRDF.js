@@ -17,6 +17,7 @@
         "xml-js": "1.6.x"
     },
     "scripts": {
-        "test": "mocha"
+        "test": "mocha",
+        "browserify": "browserify src/urdf-module.js -o src/urdf-browser.js -s urdf"
     }
 }

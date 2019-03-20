@@ -1,8 +1,6 @@
 const assert = require('assert');
 const fs = require('fs');
-
-// FIXME absolute path?
-const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8'));
+const urdf = require('../src/urdf.js');
 
 function load(f) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f));

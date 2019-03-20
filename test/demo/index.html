@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>μRDF.js Online Demo</title>
+    <script src="js/urdf-browser.js"></script>
+    <style>
+        body > h1 {
+            text-align: center;
+        }
+
+        .grid {
+            display: flex;
+        }
+
+        .grid.h {
+            flex-direction: row;
+        }
+
+        .grid.v {
+            flex-direction: column;
+        }
+
+        .grid .grid-1-2 {
+            flex: 50%;
+        }
+
+        .grid textarea {
+            flex: 1;
+        }
+
+        .grid button {
+            flex: 1;
+            max-height: 30px;
+        }
+
+        table {
+            width: 100%;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>μRDF.js</h1>
+    <div class="grid h">
+        <div class="grid v grid-1-2">
+            <textarea id="data" rows="50"></textarea>
+            <button  onclick="load()">Load</button>
+        </div>
+        
+        <div class="grid v grid-1-2">
+            <div class="grid v grid-1-2">
+                <textarea id="query"></textarea>
+                <button onclick="query()">Query</button>
+            </div>
+            <div class="grid-1-2">
+                <table id="results"></table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const dataField = document.getElementById('data');
+        const queryField = document.getElementById('query');
+        const resultsField = document.getElementById('results');
+
+        function load() {
+            let data = JSON.parse(dataField.value);
+
+            urdf.load(data).then(() => {
+                // TODO feedback
+            });
+        }
+
+        function query() {
+            let q = queryField.value;
+
+            urdf.query(q).then(results => {
+                // deal with missing values
+                let vars = results.reduce((list, res) => {
+                    for (let v in res) {
+                        if (list.indexOf(v) === -1) list.push(v);
+                    }
+                    return list;
+                }, []);
+
+                let html = '<tr>';
+                vars.forEach(v =>  html += '<th>' + v + '</th>');
+                html += '</tr>';
+
+                results.forEach(res => {
+                    html += '<tr>';
+                    vars.forEach(v => html += '<td>' + (res[v].value || '') + '</td>');
+                    html += '</tr>';
+                });
+
+                resultsField.innerHTML = html;
+            });
+        }
+    </script>
+</body>
+
+</html>

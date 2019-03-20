@@ -3,11 +3,14 @@
 const fs = require('fs');
 
 const utils = require('./utils.js');
-const urdf = eval(fs.readFileSync('src/urdf.js', 'utf-8')); // FIXME absolute path?
+const urdf = require('./urdf.js');
 
 const n3 = require('n3');
-const processor = require('jsonld').promises;
-const parser = new require('sparqljs').Parser();
+const jsonld = require('jsonld');
+const sparqljs = require('sparqljs');
+
+const processor = jsonld.promises;
+const parser = new sparqljs.Parser();
 
 /**
  * Returns the name of the input variable.
