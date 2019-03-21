@@ -119,14 +119,17 @@ function load(data, opts) {
  */
 function merge(omega1, omega2, opt) {
     return omega1.reduce((omega, mu1) => {
-        return omega2.reduce((omega, mu2) => {
+        let omegap = omega2.reduce((omega, mu2) => {
             let mu = urdf.merge(mu1, mu2);
 
             if (mu) omega.push(mu);
-            else if (opt) omega.push(mu1);
 
             return omega;
-        }, omega);
+        }, []);
+
+        if (opt && omegap.length === 0) omegap.push(mu1);
+        
+        return omega.concat(omegap);
     }, []);
 }
 

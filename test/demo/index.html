@@ -77,7 +77,8 @@
         function query() {
             let q = queryField.value;
 
-            urdf.query(q).then(results => {
+            urdf.query(q)
+            .then(results => {
                 // deal with missing values
                 let vars = results.reduce((list, res) => {
                     for (let v in res) {
@@ -92,12 +93,13 @@
 
                 results.forEach(res => {
                     html += '<tr>';
-                    vars.forEach(v => html += '<td>' + (res[v].value || '') + '</td>');
+                    vars.forEach(v => html += '<td>' + (res[v] ? res[v].value : '') + '</td>');
                     html += '</tr>';
                 });
 
                 resultsField.innerHTML = html;
-            });
+            })
+            .catch(e => console.error(e));
         }
     </script>
 </body>
