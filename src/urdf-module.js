@@ -255,12 +255,7 @@ function evaluate(pattern, mappings) {
 function project(vars, mappings) {
     if (vars.some(v => v === '*')) return mappings;
 
-    let names = vars
-        .filter(v => typeof v === 'string')
-        .map(name);
-
-    let exprs = vars
-        .filter(v => typeof v === 'object');
+    let names = vars.map(name);
 
     return mappings.map(mu1 => {
         let mu2 = {};
@@ -269,13 +264,45 @@ function project(vars, mappings) {
             if (names.indexOf(n) > -1) mu2[n] = mu1[n];
         }
 
-        exprs.forEach(expr => {
-            let n = name(expr.variable);
-            mu2[n] = utils.evaluate(expr.expression, mu1);
-        });
-
         return mu2;
     });
+}
+
+/**
+ * Rewrites in place a SPARQL query to get an equivalent, canonical form.
+ * 
+ * @param {object} query the AST of a SPARQL query
+ */
+function rewrite(query) {
+    // move VALUES modifiers inside WHERE
+
+    if (query.values) {
+        query.where.push({
+            type: 'values',
+            values: query.values
+        });
+
+        query.values = undefined;
+    }
+
+    // replace inline expressions in SELECT with BIND patterns
+
+    if (query.variables) {
+        let names = query.variables.filter(v => typeof v === 'string');
+        let exprs = query.variables.filter(v => typeof v === 'object');
+    
+        exprs.forEach(expr => {
+            query.where.push({
+                type: 'bind',
+                variable: expr.variable,
+                expression: expr.expression
+            })
+        });
+    
+        query.variables = names.concat(exprs.map(expr => expr.variable));
+    }
+
+    return query;
 }
 
 /**
@@ -287,12 +314,7 @@ function query(sparql) {
     return new Promise((resolve, reject) => {
         let ast = parser.parse(sparql);
 
-        // query rewriting
-        // TODO put select expressions as binds in where clause
-        if (ast.values) ast.where.push({
-            type: 'values',
-            values: ast.values
-        });
+       rewrite(ast);
 
         let mappings = evaluateAll(ast.where);
 
