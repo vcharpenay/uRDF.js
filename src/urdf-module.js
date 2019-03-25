@@ -195,11 +195,16 @@ function evaluate(pattern, mappings) {
         case 'bind':
             return mappings
                 .map(mu => {
-                    let n = name(pattern.variable);
-                    let binding = {
-                        [n]: utils.evaluate(pattern.expression, mu)
-                    };
-                    return urdf.merge(mu, binding);
+                    try {
+                        let n = name(pattern.variable);
+                        let binding = {
+                            [n]: utils.evaluate(pattern.expression, mu)
+                        };
+                        return urdf.merge(mu, binding);
+                    } catch (e) {
+                        if (e instanceof utils.EvaluationError) return mu;
+                        else throw e;
+                    }
                 })
                 .filter(mu => mu);
 
@@ -226,8 +231,13 @@ function evaluate(pattern, mappings) {
 
                 default:
                     return mappings.filter(mu => {
-                        let bool = utils.evaluate(pattern.expression, mu);
-                        return utils.ebv(bool);
+                        try {
+                            let bool = utils.evaluate(pattern.expression, mu);
+                            return utils.ebv(bool);
+                        } catch (e) {
+                            if (e instanceof utils.EvaluationError) return false;
+                            else throw e;
+                        }
                     });
             }
 

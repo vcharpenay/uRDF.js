@@ -553,6 +553,7 @@ function evaluateDateTimeBuiltInFunction(op, args) {
 }
 
 /**
+ * See SPARQL 1.1 Query Language, section 17.5 "XPath Constructor Functions".
  * 
  * @param {string} fn the function IRI as a string
  * @param {*} args operands (or arguments)
@@ -585,8 +586,9 @@ function evaluateConstructorFunction(fn, args) {
 function evaluate(expr, binding) {
 	if (typeof expr === 'string') {
 		if (expr.startsWith('?')) {
-			return binding[expr.substring(1)];
-			// TODO check if no binding available?
+			let name = expr.substring(1);
+			if (binding[name]) return binding[name];
+			else throw new EvaluationError('No binding found for ' + expr);
 		} else {
 			return term(expr);
 		}
@@ -631,7 +633,21 @@ function evaluate(expr, binding) {
     }
 }
 
+/**
+ * Error occurring during evaluation of some SPARQL expression
+ * (e.g. binding missing or incompatible datatypes)
+ * 
+ * @param {string} message some error message
+ */
+function EvaluationError(message) {
+	Error.call(this, message);
+}
+
+EvaluationError.prototype = new Error();
+EvaluationError.prototype.constructor = EvaluationError;
+
 module.exports.term = term;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.evaluate = evaluate;
+module.exports.EvaluationError = EvaluationError;
