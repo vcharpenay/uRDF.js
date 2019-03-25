@@ -307,10 +307,10 @@ function evaluateBaseOperation(op, args) {
 			return term(args[0] != args[1]);
 
 		case '<':
-			return term(args[0] > args[1]);
+			return term(args[0] < args[1]);
 
 		case '>':
-			return term(args[0] < args[1]);
+			return term(args[0] > args[1]);
 
 		case '<=':
 			return term(args[0] <= args[1]);

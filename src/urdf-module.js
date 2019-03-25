@@ -201,7 +201,7 @@ function evaluate(pattern, mappings) {
                     };
                     return urdf.merge(mu, binding);
                 })
-                .filter(mu => Object.keys(mu).length > 0);
+                .filter(mu => mu);
 
         case 'minus':
             omega = evaluateAll(pattern.patterns);
