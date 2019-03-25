@@ -122,4 +122,9 @@ describe('urdf.query()', () => {
         return load('lubm-s34')
         .then(() => query('is-doctor'));
     });
+
+    it('should silently ignore bind patterns with unknown bindings', () => {
+        return urdf.clear()
+        .then(() => query('bind-unknown'));
+    });
 });

@@ -639,12 +639,9 @@ function evaluate(expr, binding) {
  * 
  * @param {string} message some error message
  */
-function EvaluationError(message) {
-	Error.call(this, message);
+class EvaluationError extends Error {
+	constructor(...args) { super(...args); }
 }
-
-EvaluationError.prototype = new Error();
-EvaluationError.prototype.constructor = EvaluationError;
 
 module.exports.term = term;
 module.exports.ebv = ebv;
