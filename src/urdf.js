@@ -116,6 +116,8 @@ module.exports = (function() {
 		var _query = function(f, n, Ω) {
 			if (!urdf.match(f, n)) {
 				return [];
+			} else if (urdf.isLiteral(f)) {
+				return Ω;
 			} else {
 				if (urdf.isVariable(f)) {
 					// TODO exclude from result if no bnode label
