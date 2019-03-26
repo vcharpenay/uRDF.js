@@ -18615,11 +18615,16 @@ function evaluate(pattern, mappings) {
         case 'bind':
             return mappings
                 .map(mu => {
-                    let n = name(pattern.variable);
-                    let binding = {
-                        [n]: utils.evaluate(pattern.expression, mu)
-                    };
-                    return urdf.merge(mu, binding);
+                    try {
+                        let n = name(pattern.variable);
+                        let binding = {
+                            [n]: utils.evaluate(pattern.expression, mu)
+                        };
+                        return urdf.merge(mu, binding);
+                    } catch (e) {
+                        if (e instanceof utils.EvaluationError) return mu;
+                        else throw e;
+                    }
                 })
                 .filter(mu => mu);
 
@@ -18646,8 +18651,13 @@ function evaluate(pattern, mappings) {
 
                 default:
                     return mappings.filter(mu => {
-                        let bool = utils.evaluate(pattern.expression, mu);
-                        return utils.ebv(bool);
+                        try {
+                            let bool = utils.evaluate(pattern.expression, mu);
+                            return utils.ebv(bool);
+                        } catch (e) {
+                            if (e instanceof utils.EvaluationError) return false;
+                            else throw e;
+                        }
                     });
             }
 
@@ -18665,12 +18675,7 @@ function evaluate(pattern, mappings) {
 function project(vars, mappings) {
     if (vars.some(v => v === '*')) return mappings;
 
-    let names = vars
-        .filter(v => typeof v === 'string')
-        .map(name);
-
-    let exprs = vars
-        .filter(v => typeof v === 'object');
+    let names = vars.map(name);
 
     return mappings.map(mu1 => {
         let mu2 = {};
@@ -18679,13 +18684,45 @@ function project(vars, mappings) {
             if (names.indexOf(n) > -1) mu2[n] = mu1[n];
         }
 
-        exprs.forEach(expr => {
-            let n = name(expr.variable);
-            mu2[n] = utils.evaluate(expr.expression, mu1);
-        });
-
         return mu2;
     });
+}
+
+/**
+ * Rewrites in place a SPARQL query to get an equivalent, canonical form.
+ * 
+ * @param {object} query the AST of a SPARQL query
+ */
+function rewrite(query) {
+    // move VALUES modifiers inside WHERE
+
+    if (query.values) {
+        query.where.push({
+            type: 'values',
+            values: query.values
+        });
+
+        query.values = undefined;
+    }
+
+    // replace inline expressions in SELECT with BIND patterns
+
+    if (query.variables) {
+        let names = query.variables.filter(v => typeof v === 'string');
+        let exprs = query.variables.filter(v => typeof v === 'object');
+    
+        exprs.forEach(expr => {
+            query.where.push({
+                type: 'bind',
+                variable: expr.variable,
+                expression: expr.expression
+            })
+        });
+    
+        query.variables = names.concat(exprs.map(expr => expr.variable));
+    }
+
+    return query;
 }
 
 /**
@@ -18697,12 +18734,7 @@ function query(sparql) {
     return new Promise((resolve, reject) => {
         let ast = parser.parse(sparql);
 
-        // query rewriting
-        // TODO put select expressions as binds in where clause
-        if (ast.values) ast.where.push({
-            type: 'values',
-            values: ast.values
-        });
+       rewrite(ast);
 
         let mappings = evaluateAll(ast.where);
 
@@ -19650,13 +19682,14 @@ function evaluateDateTimeBuiltInFunction(op, args) {
 }
 
 /**
+ * See SPARQL 1.1 Query Language, section 17.5 "XPath Constructor Functions".
  * 
  * @param {string} fn the function IRI as a string
  * @param {*} args operands (or arguments)
  */
 function evaluateConstructorFunction(fn, args) {
 	// TODO throw error if incompatible arg and if |args| > 1
-	let arg = term(args[0]);
+	let arg = args[0];
 
 	switch (fn) {
 		case ns.xsd + 'boolean':
@@ -19682,8 +19715,9 @@ function evaluateConstructorFunction(fn, args) {
 function evaluate(expr, binding) {
 	if (typeof expr === 'string') {
 		if (expr.startsWith('?')) {
-			return binding[expr.substring(1)];
-			// TODO check if no binding available?
+			let name = expr.substring(1);
+			if (binding[name]) return binding[name];
+			else throw new EvaluationError('No binding found for ' + expr);
 		} else {
 			return term(expr);
 		}
@@ -19719,8 +19753,11 @@ function evaluate(expr, binding) {
 			}
 		}
     } else if (expr.type === 'functionCall') {
+		let fn = expr.function;
+		let args = expr.args.map(arg => evaluate(arg, binding));
+
 		if (expr.function.startsWith(ns.xsd)) {
-			return evaluateConstructorFunction(expr.function, expr.args);
+			return evaluateConstructorFunction(fn, args);
 		} else {
 			// TODO get registered functions and execute
 			throw new Error('Not implemented');
@@ -19728,10 +19765,21 @@ function evaluate(expr, binding) {
     }
 }
 
+/**
+ * Error occurring during evaluation of some SPARQL expression
+ * (e.g. binding missing or incompatible datatypes)
+ * 
+ * @param {string} message some error message
+ */
+class EvaluationError extends Error {
+	constructor(...args) { super(...args); }
+}
+
 module.exports.term = term;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.evaluate = evaluate;
+module.exports.EvaluationError = EvaluationError;
 },{}],56:[function(require,module,exports){
 
 },{}],57:[function(require,module,exports){

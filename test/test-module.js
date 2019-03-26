@@ -73,6 +73,11 @@ describe('urdf.query()', () => {
         .then(() => query('year-zero'));
     });
 
+    it('should correctly process constructor functions in filter', () => {
+        return load('thing')
+        .then(() => query('property-value-cast'));
+    });
+
     it('should correctly merge solution mappings from group patterns', () => {
         return load('lubm-s34')
         .then(() => query('assistant-degree'));

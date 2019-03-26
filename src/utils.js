@@ -560,7 +560,7 @@ function evaluateDateTimeBuiltInFunction(op, args) {
  */
 function evaluateConstructorFunction(fn, args) {
 	// TODO throw error if incompatible arg and if |args| > 1
-	let arg = term(args[0]);
+	let arg = args[0];
 
 	switch (fn) {
 		case ns.xsd + 'boolean':
@@ -624,8 +624,11 @@ function evaluate(expr, binding) {
 			}
 		}
     } else if (expr.type === 'functionCall') {
+		let fn = expr.function;
+		let args = expr.args.map(arg => evaluate(arg, binding));
+
 		if (expr.function.startsWith(ns.xsd)) {
-			return evaluateConstructorFunction(expr.function, expr.args);
+			return evaluateConstructorFunction(fn, args);
 		} else {
 			// TODO get registered functions and execute
 			throw new Error('Not implemented');
