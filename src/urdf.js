@@ -14,23 +14,26 @@ module.exports = (function() {
 
 	/**
 	 * The µRDF store data structure.
-	 * 
-	 * TODO make private (in closure only)
 	 */
-	urdf.store = [];
+	var store = [];
 
 	/**
-	 * Returns the number of triples stored in the µRDF store.
+	 * Returns the number of triples stored in the µRDF store
+	 * or in the given named graph.
 	 */
-	urdf.size = function() {
+	urdf.size = function(gid) {
 		var size = 0;
 		
-		urdf.store.forEach(function(n) {
-			for (var p in n) {
-				if (p !== '@id') {
-					size += n[p].length;
+		store.forEach(function(g) {
+			if (gid !== undefined && g['@id'] !== gid) return;
+
+			g['@graph'].forEach(function(n) {
+				for (var p in n) {
+					if (p !== '@id') {
+						size += n[p].length;
+					}
 				}
-			}
+			});
 		});
 		
 		return size;
@@ -41,13 +44,24 @@ module.exports = (function() {
 	 * 
 	 * Returns true if no error occurred, false otherwise.
 	 */
-	urdf.load = function(json) {
+	urdf.load = function(json, gid) {
 		json.forEach(function(n) {
-			var s = urdf.find(n['@id']);
+			var s = urdf.find(n['@id'], gid);
 			
 			if (s === null) {
 				// TODO copy instead
-				urdf.store.push(n);
+				var g = urdf.findGraph(gid);
+
+				if (g === null) {
+					g = [];
+
+					var container = { '@graph': g };
+					if (gid !== undefined) container['@id'] = gid;
+
+					store.push(container);
+				}
+
+				g.push(n);
 			} else {
 				for (var p in n) {
 					s[p] = n[p];
@@ -61,23 +75,44 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Empties the content of the µRDF store.
+	 * Empties the content of the µRDF store or of a named graph, if provided.
 	 * 
 	 * Returns true.
 	 */
-	urdf.clear = function() {
-		urdf.store = [];
+	urdf.clear = function(gid) {
+		store = store.filter(function(g) {
+			return gid !== undefined && g['@id'] === gid;
+		});
 
 		return true;
 	};
+
+	/**
+	 * Looks for a named graph with the given identifier in the µRDF store
+	 * or the default graph if no identifier is provided.
+	 * 
+	 * Returns the graph's node list if found, the default graph otherwise.
+	 */
+	urdf.findGraph = function(gid) {
+		var graph = store.find(function(g) {
+			return gid !== undefined && g['@id'] === gid
+				|| gid === undefined && g['@id'] === undefined;
+		});
+
+		return graph === undefined ? null : graph['@graph'];
+	}
 
 	/**
 	 * Looks for the first node in the µRDF store with the given input.
 	 * 
 	 * Returns the node if found, null otherwise.
 	 */
-	urdf.find = function(id) {
-		var node = urdf.store.find(function(n) {
+	urdf.find = function(id, gid) {
+		var graph = urdf.findGraph(gid);
+
+		if (graph === null) return null;
+
+		var node = graph.find(function(n) {
 			return id === n['@id'];
 		});
 		
@@ -87,13 +122,15 @@ module.exports = (function() {
 	/**
 	 * Processes a flattened JSON-LD frame object,
 	 * interpreted as a query, against the µRDF store
-	 * (blank nodes = variables).
+	 * (blank nodes = variables). An optional graph
+	 * identifier can be given to reduce the scope of
+	 * querying.
 	 *
 	 * Returns solution mappings as defined by the
 	 * SPARQL results JSON format.
 	 * See https://www.w3.org/TR/sparql11-results-json/.
 	 */
-	urdf.query = function(frame) {
+	urdf.query = function(frame, gid) {
 		var _node = function(id) {
 			if (id === '@type') id = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 			return { '@id': id };
@@ -194,12 +231,12 @@ module.exports = (function() {
 
 					return ids;
 				}, []).map(function(id) {
-					return urdf.find(id);
+					return urdf.find(id, gid);
 				});
 
-				if (nodes.length === 0) nodes = urdf.store;
+				if (nodes.length === 0) nodes = urdf.findGraph(gid);
 			} else {
-				var n = urdf.find(f['@id']);
+				var n = urdf.find(f['@id'], gid);
 
 				if (n === null) return [];
 				else nodes.push(n);
