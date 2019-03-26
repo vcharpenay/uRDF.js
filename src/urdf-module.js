@@ -36,13 +36,14 @@ function intersect(mu1, mu2) {
 }
 
 /**
- * Finds a given node and returns it.
+ * Finds a given node (optionally in some named graph) and returns it.
  * 
  * @param {string} id a node identifier (an IRI)
+ * @param {string} gid a graph identifier (an IRI)
  */
-function find(id) {
+function find(id, gid) {
     return new Promise((resolve, reject) => {
-        let node = urdf.find(id);
+        let node = urdf.find(id, gid);
 
         // TODO deal with compacted form when time comes
         // TODO return copy instead of actual object?
@@ -54,10 +55,12 @@ function find(id) {
 
 /**
  * Provides a Promise-based wrapper for core clear function.
+ * 
+ * @param {string} gid a graph identifier (an IRI)
  */
-function clear() {
+function clear(gid) {
     return new Promise((resolve, reject) => {
-        urdf.clear();
+        urdf.clear(gid);
         resolve();
     });
 }
@@ -106,7 +109,16 @@ function load(data, opts) {
 
     // TODO normalize, compact
     .then(json => processor.expand(json))
-    .then(json => urdf.load(json));
+
+    .then(json => {
+        json
+            .filter(obj => obj['@graph'])
+            .forEach(g => urdf.load(g['@graph'], g['@id']));
+
+        urdf.load(json.filter(obj => !obj['@graph']));
+
+        return true; // TODO deal with errors (none thrown from urdf-core)
+    });
 }
 
 /**
@@ -338,6 +350,7 @@ function query(sparql) {
 }
 
 module.exports.size = urdf.size;
+module.exports.findGraph = urdf.findGraph;
 module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;

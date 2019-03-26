@@ -29,9 +29,7 @@ module.exports = (function() {
 
 			g['@graph'].forEach(function(n) {
 				for (var p in n) {
-					if (p !== '@id') {
-						size += n[p].length;
-					}
+					if (p !== '@id') size += n[p].length;
 				}
 			});
 		});

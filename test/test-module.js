@@ -24,15 +24,35 @@ function query(f) {
 }
 
 describe('urdf.load()', () => {
+    const id = 'https://w3id.org/saref#TemperatureSensor';
+    const gid = 'tag:thing.json';
+
     it('should correctly process arbitrary JSON-LD', () => {
         return load('thing-compact')
-        .then(() => urdf.find('https://w3id.org/saref#TemperatureSensor'));
+        .then(() => urdf.find(id));
+    });
+
+    it('should correctly process JSON-LD in a named graph', () => {
+        return load('thing-graph')
+        .then(() => urdf.find(id, gid))
+        .then(() => urdf.find(id))
+        .then(() => assert.fail())
+        .catch(() => true);
     });
 
     it('should accept input RDF if Turtle or N-Triples', () => {
         let data = fs.readFileSync('test/data/thing-turtle.ttl', 'utf-8');
         return urdf.load(data, { format: 'text/turtle' })
-        .then(() => urdf.find('https://w3id.org/saref#TemperatureSensor'));
+        .then(() => urdf.find(id));
+    });
+
+    it('should correctly process named graphs from N-Quads or TriG', () => {
+        let data = fs.readFileSync('test/data/thing-graph.trig', 'utf-8');
+        return urdf.load(data, { format: 'application/trig' })
+        .then(() => urdf.find(id, gid))
+        .then(() => urdf.find(id))
+        .then(() => assert.fail())
+        .catch(() => true);
     });
 });
 
