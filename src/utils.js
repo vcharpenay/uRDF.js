@@ -453,10 +453,11 @@ function evaluateStringBuiltInFunction(op, args) {
 			return term(args[0].includes(args[1]));
 
 		case 'strbefore':
-			return term(args[0].substring(0, args[0].indexOf(args[1])));
+			return term('"' + args[0].substring(0, args[0].indexOf(args[1])) + '"');
 
 		case 'strafter':
-		return term(args[0].substring(args[0].indexOf(args[1]), args[0].length));
+			let i = args[0].indexOf(args[1]) + args[1].length;
+			return term('"' + args[0].substring(i, args[0].length) + '"');
 
 		case 'encode_for_uri':
 			return term('"' + encodeURIComponent(args[0]) + '"');

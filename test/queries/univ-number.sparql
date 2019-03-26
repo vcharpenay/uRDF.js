@@ -1,0 +1,8 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?p a ub:Person ;
+       ub:degreeFrom ?u
+    bind (strafter(str(?u), "University") as ?suf)
+    bind (strbefore(?suf, ".edu") as ?nb)
+}

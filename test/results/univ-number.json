@@ -1,0 +1,56 @@
+[
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+        },
+        "u": {
+            "type": "uri",
+            "value": "http://www.University4.edu"
+        },
+        "suf": {
+            "type": "literal",
+            "value": "4.edu"
+        },
+        "nb": {
+            "type": "literal",
+            "value": "4"
+        }
+    },
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+        },
+        "u": {
+            "type": "uri",
+            "value": "http://www.University685.edu"
+        },
+        "suf": {
+            "type": "literal",
+            "value": "685.edu"
+        },
+        "nb": {
+            "type": "literal",
+            "value": "685"
+        }
+    },
+    {
+        "p": {
+            "type": "uri",
+            "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+        },
+        "u": {
+            "type": "uri",
+            "value": "http://www.University501.edu"
+        },
+        "suf": {
+            "type": "literal",
+            "value": "501.edu"
+        },
+        "nb": {
+            "type": "literal",
+            "value": "501"
+        }
+    }
+]

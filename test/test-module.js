@@ -88,6 +88,11 @@ describe('urdf.query()', () => {
         .then(() => query('person-name'));
     });
 
+    it('should correctly process strbefore/strafter in bind pattern', () => {
+        return load('lubm-s34')
+        .then(() => query('univ-number'));
+    });
+
     it('should correctly process union patterns', () => {
         return load('lubm-s34')
         .then(() => query('all-persons'));
