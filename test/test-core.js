@@ -2,13 +2,13 @@ const assert = require('assert');
 const fs = require('fs');
 const urdf = require('../src/urdf.js');
 
-function load(f) {
+function load(f, id) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f));
-    urdf.clear();
-    urdf.load(data);
+    urdf.clear(id);
+    urdf.load(data, id);
 }
 
-function query(f) {
+function query(f, id) {
     let q = JSON.parse(fs.readFileSync('test/queries/' + f));
 
     let res = JSON.parse(fs.readFileSync('test/results/' + f));
@@ -16,19 +16,44 @@ function query(f) {
         res = res.results.bindings;
     }
 
-    return [new Set(urdf.query(q)), new Set(res)];
+    return [new Set(urdf.query(q, id)), new Set(res)];
 }
 
 before(() => {
     urdf.clear();
 });
 
+describe('urdf.findGraph()', () => {
+    it('should return a named graph only if identifier given', () => {
+        let tag1 = 'tag:things.json';
+        load('thing.json', tag1);
+
+        let tag2 = 'tag:lubm-s34.json';
+        load('lubm-s34.json', tag2);
+
+        let g1 = urdf.findGraph(tag1);
+        let g2 = urdf.findGraph(tag2);
+        assert.notDeepStrictEqual(g1, g2);
+    });
+});
+
 describe('urdf.clear()', () => {
     it('should delete all nodes', () => {
-        assert.strictEqual(urdf.size(), 0);
         load('thing.json');
         urdf.clear();
         assert.strictEqual(urdf.size(), 0);
+    });
+    
+    it('should clear named graph only if identifier given', () => {
+        let tag1 = 'tag:things.json';
+        load('thing.json', tag1);
+
+        let tag2 = 'tag:lubm-s34.json';
+        load('lubm-s34.json', tag2);
+
+        urdf.clear(tag1);
+
+        assert.strictEqual(urdf.size(), 34);
     });
 });
 
@@ -42,6 +67,32 @@ describe('urdf.size()', () => {
               assert.strictEqual(urdf.size(), size);
               urdf.clear();
           });
+    });
+
+    it('should return the total number of triples if named graphs exist', () => {
+        let size = fs.readdirSync('test/data')
+          .filter(f => /lubm-s\d+\.json/.test(f))
+          .reduce((size, f) => {
+              load(f, 'tag:' + f);
+              return size += Number.parseInt(f.match(/\d+/)[0]);
+          }, 0);
+
+        assert.strictEqual(urdf.size(), size);
+    });
+
+    it('should return the number of triples for named graph only if identifier given', () => {
+        let sizes = fs.readdirSync('test/data')
+          .filter(f => /lubm-s\d+\.json/.test(f))
+          .reduce((sizes, f) => {
+              let tag = 'tag:' + f;
+              load(f, tag);
+              sizes[tag] = Number.parseInt(f.match(/\d+/)[0]);
+              return sizes;
+          }, {});
+
+        for (let id in sizes) {
+            assert.strictEqual(urdf.size(id), sizes[id]);
+        }
     });
 });
 
@@ -58,6 +109,18 @@ describe('urdf.find()', () => {
     it('should return null if no node found', () => {
         load('lubm-s8.json');
         assert.strictEqual(urdf.find('tag:notfound'), null);
+    });
+
+    it('should return null if node not found in given graph', () => {
+        let tag1 = 'tag:lubm-s8.json';
+        load('lubm-s8.json', tag1);
+
+        let tag2 = 'tag:thing.json';
+        load('thing.json', tag2);
+
+        let id = 'http://example.org/sensor1';
+        assert.strictEqual(urdf.find(id, tag1), null);
+        assert.ok(urdf.find(id, tag2));
     });
 });
 
@@ -131,6 +194,26 @@ describe('urdf.query()', ()=> {
     it('should correctly process triple patterns with unbound predicate', () => {
         load('thing.json');
         let [actual, expected] = query('thing-frame.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
+    it('should correctly process a query within a named graph', () => {
+        let tag1 = 'tag:lubm-s34.json';
+        load('lubm-s34.json', tag1);
+
+        let tag2 = 'tag:thing.json';
+        load('thing.json', tag2);
+
+        let [actual, expected] = query('curriculum.json', tag1);
+        assert.deepStrictEqual(actual, expected);
+
+        [actual, expected] = query('curriculum.json', tag2);
+        assert.deepStrictEqual(actual, new Set());
+
+        [actual, expected] = query('celsius-properties.json', tag1);
+        assert.deepStrictEqual(actual, new Set());
+
+        [actual, expected] = query('celsius-properties.json', tag2);
         assert.deepStrictEqual(actual, expected);
     });
 });

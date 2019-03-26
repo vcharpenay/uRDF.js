@@ -81,7 +81,7 @@ module.exports = (function() {
 	 */
 	urdf.clear = function(gid) {
 		store = store.filter(function(g) {
-			return gid !== undefined && g['@id'] === gid;
+			return gid !== undefined && g['@id'] !== gid;
 		});
 
 		return true;
