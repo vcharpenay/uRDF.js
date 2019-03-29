@@ -162,4 +162,9 @@ describe('urdf.query()', () => {
         return load('thing-graph')
         .then(() => query('sensor-graph'));
     });
+
+    it('should correctly process named graphs as variable', () => {
+        return load('thing-graph')
+        .then(() => query('sensor-unknown-graph'));
+    });
 });

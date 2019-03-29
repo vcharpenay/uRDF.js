@@ -176,10 +176,27 @@ function evaluate(pattern, mappings, gid) {
 
     switch (pattern.type) {
         case 'group':
-        case 'graph':
-            let id = pattern.name || gid;
-            omega = evaluateAll(pattern.patterns, id);
+            omega = evaluateAll(pattern.patterns, gid);
             return merge(mappings, omega);
+
+        case 'graph':
+            let names = [];
+            if (pattern.name.startsWith('?')) {
+                names = urdf.listGraphs();
+                omega = names.map(n => ({
+                    [name(pattern.name)]: {
+                        type: 'uri',
+                        value: n
+                    }
+                }));
+            } else {
+                names.push(pattern.name);
+                omega = [{}];
+            }
+            return names.reduce((m, n) => {
+                omega = evaluateAll(pattern.patterns, n);
+                return merge(m, omega);
+            }, merge(mappings, omega));
 
         case 'union':
             return pattern.patterns

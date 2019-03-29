@@ -96,6 +96,19 @@ module.exports = (function() {
 	};
 
 	/**
+	 * Lists all named graph in the µRDF store.
+	 * 
+	 * Returns a (possibly empty) list of graph identifiers.
+	 */
+	urdf.listGraphs = function() {
+		return store.map(function(g) {
+			return g['@id'];
+		}).filter(function(name) {
+			return name !== undefined
+		});
+	};
+
+	/**
 	 * Looks for a named graph with the given identifier in the µRDF store
 	 * or the default graph if no identifier is provided.
 	 * 
@@ -108,7 +121,7 @@ module.exports = (function() {
 		});
 
 		return graph === undefined ? null : graph['@graph'];
-	}
+	};
 
 	/**
 	 * Looks for the first node in the µRDF store with the given input.

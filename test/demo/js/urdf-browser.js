@@ -18597,10 +18597,9 @@ function evaluate(pattern, mappings, gid) {
     switch (pattern.type) {
         case 'group':
         case 'graph':
-            let name = pattern.name || gid;
-            return pattern.patterns.length > 0 ?
-                   evaluateAll(pattern.patterns, name) : // FIXME merge with mappings?
-                   mappings;
+            let id = pattern.name || gid;
+            omega = evaluateAll(pattern.patterns, id);
+            return merge(mappings, omega);
 
         case 'union':
             return pattern.patterns

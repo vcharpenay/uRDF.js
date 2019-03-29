@@ -1,0 +1,12 @@
+[
+    {
+        "s": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "g": {
+            "type": "uri",
+            "value": "tag:thing.json"
+        }
+    }
+]
