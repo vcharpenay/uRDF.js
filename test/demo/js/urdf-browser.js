@@ -18596,10 +18596,27 @@ function evaluate(pattern, mappings, gid) {
 
     switch (pattern.type) {
         case 'group':
-        case 'graph':
-            let id = pattern.name || gid;
-            omega = evaluateAll(pattern.patterns, id);
+            omega = evaluateAll(pattern.patterns, gid);
             return merge(mappings, omega);
+
+        case 'graph':
+            let names = [];
+            if (pattern.name.startsWith('?')) {
+                names = urdf.listGraphs();
+                omega = names.map(n => ({
+                    [name(pattern.name)]: {
+                        type: 'uri',
+                        value: n
+                    }
+                }));
+            } else {
+                names.push(pattern.name);
+                omega = [{}];
+            }
+            return names.reduce((m, n) => {
+                omega = evaluateAll(pattern.patterns, n);
+                return merge(m, omega);
+            }, merge(mappings, omega));
 
         case 'union':
             return pattern.patterns
@@ -18877,6 +18894,19 @@ module.exports = (function() {
 	};
 
 	/**
+	 * Lists all named graph in the µRDF store.
+	 * 
+	 * Returns a (possibly empty) list of graph identifiers.
+	 */
+	urdf.listGraphs = function() {
+		return store.map(function(g) {
+			return g['@id'];
+		}).filter(function(name) {
+			return name !== undefined
+		});
+	};
+
+	/**
 	 * Looks for a named graph with the given identifier in the µRDF store
 	 * or the default graph if no identifier is provided.
 	 * 
@@ -18889,7 +18919,7 @@ module.exports = (function() {
 		});
 
 		return graph === undefined ? null : graph['@graph'];
-	}
+	};
 
 	/**
 	 * Looks for the first node in the µRDF store with the given input.
@@ -19024,6 +19054,8 @@ module.exports = (function() {
 				});
 
 				if (nodes.length === 0) nodes = urdf.findGraph(gid);
+
+				if (nodes === null) return []; 
 			} else {
 				var n = urdf.find(f['@id'], gid);
 

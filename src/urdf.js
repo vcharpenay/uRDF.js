@@ -256,6 +256,8 @@ module.exports = (function() {
 				});
 
 				if (nodes.length === 0) nodes = urdf.findGraph(gid);
+
+				if (nodes === null) return []; 
 			} else {
 				var n = urdf.find(f['@id'], gid);
 
