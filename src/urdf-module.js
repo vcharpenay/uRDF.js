@@ -111,6 +111,7 @@ function load(data, opts) {
     .then(json => processor.expand(json))
 
     .then(json => {
+        // TODO put this code in urdf-core?
         json
             .filter(obj => obj['@graph'])
             .forEach(g => urdf.load(g['@graph'], g['@id']));
@@ -149,9 +150,9 @@ function merge(omega1, omega2, opt) {
  * Sequentially evaluates a list of SPARQL query patterns.
  * 
  * @param {array} patterns array of pattern objects 
- * @param {array} mappings current mappings
+ * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluateAll(patterns) {
+function evaluateAll(patterns, gid) {
     let main = patterns.filter(p => p.type != 'bind' && p.type != 'filter');
     let b = patterns.filter(p => p.type === 'bind');
     let f = patterns.filter(p => p.type === 'filter');
@@ -159,7 +160,7 @@ function evaluateAll(patterns) {
     let reordered = main.concat(b, f);
 
     return reordered.reduce((omega, p) => {
-        return evaluate(p, omega);
+        return evaluate(p, omega, gid);
     }, [{}]);
 }
 
@@ -168,19 +169,22 @@ function evaluateAll(patterns) {
  * 
  * @param {object} pattern the query pattern
  * @param {array} mappings current mappings
+ * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluate(pattern, mappings) {
+function evaluate(pattern, mappings, gid) {
     let omega = [];
 
     switch (pattern.type) {
         case 'group':
+        case 'graph':
+            let name = pattern.name || gid;
             return pattern.patterns.length > 0 ?
-                   evaluateAll(pattern.patterns) :
+                   evaluateAll(pattern.patterns, name) : // FIXME merge with mappings?
                    mappings;
 
         case 'union':
             return pattern.patterns
-                .map(p => evaluate(p, mappings))
+                .map(p => evaluate(p, mappings, gid))
                 .reduce((union, omega) => union.concat(omega));
 
         case 'optional':
@@ -188,12 +192,12 @@ function evaluate(pattern, mappings) {
                 type: 'group',
                 patterns: pattern.patterns
             };
-            omega = evaluate(g, mappings);
+            omega = evaluate(g, mappings, gid);
             return merge(mappings, omega, true);
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = urdf.query(f);
+            omega = urdf.query(f, gid);
             return merge(mappings, omega);
 
         case 'values':
@@ -221,7 +225,7 @@ function evaluate(pattern, mappings) {
                 .filter(mu => mu);
 
         case 'minus':
-            omega = evaluateAll(pattern.patterns);
+            omega = evaluateAll(pattern.patterns, gid);
             return mappings.filter(mu1 => {
                 return !omega.some(mu2 => intersect(mu1, mu2));
             });
@@ -232,13 +236,13 @@ function evaluate(pattern, mappings) {
                 case 'exists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu]).length > 0;
+                        return evaluate(p, [mu], gid).length > 0;
                     });
 
                 case 'notexists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu]).length === 0;
+                        return evaluate(p, [mu], gid).length === 0;
                     });
 
                 default:

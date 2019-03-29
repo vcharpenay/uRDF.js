@@ -1,0 +1,25 @@
+@prefix td: <http://www.w3c.org/wot/td#> .
+@prefix saref: <https://w3id.org/saref#> .
+@prefix qudt: <http://data.nasa.gov/qudt/owl/qudt#> .
+@prefix ex: <http://example.org/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<tag:thing.json> {
+    <http://example.org/sensor1>
+    a <http://www.w3.org/ns/sosa/Sensor>, <https://w3id.org/saref#TemperatureSensor> ;
+    td:hasProperty <http://example.org/sensor1/temp>, <http://example.org/sensor1/onoff> ;
+    saref:hasCommand <http://example.org/sensor1/cmd> .
+
+    <http://example.org/sensor1/temp>
+    a <http://www.w3.org/ns/ssn/Property> ;
+    qudt:unit <http://data.nasa.gov/qudt/owl/unit#DegreeCelsius> ;
+    ex:curVal 54 ;
+    ex:state [ ] .
+
+    <http://example.org/sensor1/onoff> a <http://www.w3.org/ns/ssn/Property>, saref:OnOffState .
+    <http://example.org/sensor1/cmd> saref:actsUpon <http://example.org/sensor1/onoff> .
+    saref:TemperatureSensor rdfs:subClassOf saref:Property .
+    saref:OnOffState rdfs:subClassOf saref:Property .
+    [] ex:isActive "true"^^xsd:string .
+}

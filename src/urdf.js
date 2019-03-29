@@ -15,7 +15,12 @@ module.exports = (function() {
 	/**
 	 * The µRDF store data structure.
 	 */
-	var store = [];
+	var store = [
+		{
+			// default graph
+			'@graph': []
+		}
+	];
 
 	/**
 	 * Returns the number of triples stored in the µRDF store
@@ -80,6 +85,11 @@ module.exports = (function() {
 	urdf.clear = function(gid) {
 		store = store.filter(function(g) {
 			return gid !== undefined && g['@id'] !== gid;
+		});
+
+		store.push({
+			// default graph
+			'@graph': []
 		});
 
 		return true;

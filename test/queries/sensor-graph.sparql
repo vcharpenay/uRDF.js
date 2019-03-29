@@ -1,0 +1,13 @@
+prefix xsd: <http://www.w3.org/2001/XMLSchema#>
+prefix td: <http://www.w3c.org/wot/td#>
+prefix sosa: <http://www.w3.org/ns/sosa/>
+prefix saref: <https://w3id.org/saref#>
+
+select * where {
+    graph <tag:thing.json> {
+        ?s1 a sosa:Sensor
+    }
+    optional {
+        ?s2 a sosa:Sensor
+    }
+}
