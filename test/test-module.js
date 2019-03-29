@@ -158,7 +158,7 @@ describe('urdf.query()', () => {
         .then(() => query('bind-unknown'));
     });
 
-    it.only('should correctly process pattern in named graph', () => {
+    it('should correctly process pattern in named graph', () => {
         return load('thing-graph')
         .then(() => query('sensor-graph'));
     });

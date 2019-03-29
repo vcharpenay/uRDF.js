@@ -18456,13 +18456,14 @@ function intersect(mu1, mu2) {
 }
 
 /**
- * Finds a given node and returns it.
+ * Finds a given node (optionally in some named graph) and returns it.
  * 
  * @param {string} id a node identifier (an IRI)
+ * @param {string} gid a graph identifier (an IRI)
  */
-function find(id) {
+function find(id, gid) {
     return new Promise((resolve, reject) => {
-        let node = urdf.find(id);
+        let node = urdf.find(id, gid);
 
         // TODO deal with compacted form when time comes
         // TODO return copy instead of actual object?
@@ -18474,10 +18475,12 @@ function find(id) {
 
 /**
  * Provides a Promise-based wrapper for core clear function.
+ * 
+ * @param {string} gid a graph identifier (an IRI)
  */
-function clear() {
+function clear(gid) {
     return new Promise((resolve, reject) => {
-        urdf.clear();
+        urdf.clear(gid);
         resolve();
     });
 }
@@ -18526,7 +18529,17 @@ function load(data, opts) {
 
     // TODO normalize, compact
     .then(json => processor.expand(json))
-    .then(json => urdf.load(json));
+
+    .then(json => {
+        // TODO put this code in urdf-core?
+        json
+            .filter(obj => obj['@graph'])
+            .forEach(g => urdf.load(g['@graph'], g['@id']));
+
+        urdf.load(json.filter(obj => !obj['@graph']));
+
+        return true; // TODO deal with errors (none thrown from urdf-core)
+    });
 }
 
 /**
@@ -18557,9 +18570,9 @@ function merge(omega1, omega2, opt) {
  * Sequentially evaluates a list of SPARQL query patterns.
  * 
  * @param {array} patterns array of pattern objects 
- * @param {array} mappings current mappings
+ * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluateAll(patterns) {
+function evaluateAll(patterns, gid) {
     let main = patterns.filter(p => p.type != 'bind' && p.type != 'filter');
     let b = patterns.filter(p => p.type === 'bind');
     let f = patterns.filter(p => p.type === 'filter');
@@ -18567,7 +18580,7 @@ function evaluateAll(patterns) {
     let reordered = main.concat(b, f);
 
     return reordered.reduce((omega, p) => {
-        return evaluate(p, omega);
+        return evaluate(p, omega, gid);
     }, [{}]);
 }
 
@@ -18576,19 +18589,22 @@ function evaluateAll(patterns) {
  * 
  * @param {object} pattern the query pattern
  * @param {array} mappings current mappings
+ * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluate(pattern, mappings) {
+function evaluate(pattern, mappings, gid) {
     let omega = [];
 
     switch (pattern.type) {
         case 'group':
+        case 'graph':
+            let name = pattern.name || gid;
             return pattern.patterns.length > 0 ?
-                   evaluateAll(pattern.patterns) :
+                   evaluateAll(pattern.patterns, name) : // FIXME merge with mappings?
                    mappings;
 
         case 'union':
             return pattern.patterns
-                .map(p => evaluate(p, mappings))
+                .map(p => evaluate(p, mappings, gid))
                 .reduce((union, omega) => union.concat(omega));
 
         case 'optional':
@@ -18596,12 +18612,12 @@ function evaluate(pattern, mappings) {
                 type: 'group',
                 patterns: pattern.patterns
             };
-            omega = evaluate(g, mappings);
+            omega = evaluate(g, mappings, gid);
             return merge(mappings, omega, true);
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = urdf.query(f);
+            omega = urdf.query(f, gid);
             return merge(mappings, omega);
 
         case 'values':
@@ -18629,7 +18645,7 @@ function evaluate(pattern, mappings) {
                 .filter(mu => mu);
 
         case 'minus':
-            omega = evaluateAll(pattern.patterns);
+            omega = evaluateAll(pattern.patterns, gid);
             return mappings.filter(mu1 => {
                 return !omega.some(mu2 => intersect(mu1, mu2));
             });
@@ -18640,13 +18656,13 @@ function evaluate(pattern, mappings) {
                 case 'exists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu]).length > 0;
+                        return evaluate(p, [mu], gid).length > 0;
                     });
 
                 case 'notexists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu]).length === 0;
+                        return evaluate(p, [mu], gid).length === 0;
                     });
 
                 default:
@@ -18758,6 +18774,7 @@ function query(sparql) {
 }
 
 module.exports.size = urdf.size;
+module.exports.findGraph = urdf.findGraph;
 module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;
@@ -18779,23 +18796,29 @@ module.exports = (function() {
 
 	/**
 	 * The µRDF store data structure.
-	 * 
-	 * TODO make private (in closure only)
 	 */
-	urdf.store = [];
+	var store = [
+		{
+			// default graph
+			'@graph': []
+		}
+	];
 
 	/**
-	 * Returns the number of triples stored in the µRDF store.
+	 * Returns the number of triples stored in the µRDF store
+	 * or in the given named graph.
 	 */
-	urdf.size = function() {
+	urdf.size = function(gid) {
 		var size = 0;
 		
-		urdf.store.forEach(function(n) {
-			for (var p in n) {
-				if (p !== '@id') {
-					size += n[p].length;
+		store.forEach(function(g) {
+			if (gid !== undefined && g['@id'] !== gid) return;
+
+			g['@graph'].forEach(function(n) {
+				for (var p in n) {
+					if (p !== '@id') size += n[p].length;
 				}
-			}
+			});
 		});
 		
 		return size;
@@ -18806,13 +18829,24 @@ module.exports = (function() {
 	 * 
 	 * Returns true if no error occurred, false otherwise.
 	 */
-	urdf.load = function(json) {
+	urdf.load = function(json, gid) {
 		json.forEach(function(n) {
-			var s = urdf.find(n['@id']);
+			var s = urdf.find(n['@id'], gid);
 			
 			if (s === null) {
 				// TODO copy instead
-				urdf.store.push(n);
+				var g = urdf.findGraph(gid);
+
+				if (g === null) {
+					g = [];
+
+					var container = { '@graph': g };
+					if (gid !== undefined) container['@id'] = gid;
+
+					store.push(container);
+				}
+
+				g.push(n);
 			} else {
 				for (var p in n) {
 					s[p] = n[p];
@@ -18826,23 +18860,49 @@ module.exports = (function() {
 	};
 
 	/**
-	 * Empties the content of the µRDF store.
+	 * Empties the content of the µRDF store or of a named graph, if provided.
 	 * 
 	 * Returns true.
 	 */
-	urdf.clear = function() {
-		urdf.store = [];
+	urdf.clear = function(gid) {
+		store = store.filter(function(g) {
+			return gid !== undefined && g['@id'] !== gid;
+		});
+
+		store.push({
+			// default graph
+			'@graph': []
+		});
 
 		return true;
 	};
+
+	/**
+	 * Looks for a named graph with the given identifier in the µRDF store
+	 * or the default graph if no identifier is provided.
+	 * 
+	 * Returns the graph's node list if found, the default graph otherwise.
+	 */
+	urdf.findGraph = function(gid) {
+		var graph = store.find(function(g) {
+			return gid !== undefined && g['@id'] === gid
+				|| gid === undefined && g['@id'] === undefined;
+		});
+
+		return graph === undefined ? null : graph['@graph'];
+	}
 
 	/**
 	 * Looks for the first node in the µRDF store with the given input.
 	 * 
 	 * Returns the node if found, null otherwise.
 	 */
-	urdf.find = function(id) {
-		var node = urdf.store.find(function(n) {
+	urdf.find = function(id, gid) {
+		var graph = urdf.findGraph(gid);
+
+		if (graph === null) return null;
+
+		var node = graph.find(function(n) {
 			return id === n['@id'];
 		});
 		
@@ -18852,13 +18912,15 @@ module.exports = (function() {
 	/**
 	 * Processes a flattened JSON-LD frame object,
 	 * interpreted as a query, against the µRDF store
-	 * (blank nodes = variables).
+	 * (blank nodes = variables). An optional graph
+	 * identifier can be given to reduce the scope of
+	 * querying.
 	 *
 	 * Returns solution mappings as defined by the
 	 * SPARQL results JSON format.
 	 * See https://www.w3.org/TR/sparql11-results-json/.
 	 */
-	urdf.query = function(frame) {
+	urdf.query = function(frame, gid) {
 		var _node = function(id) {
 			if (id === '@type') id = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
 			return { '@id': id };
@@ -18959,12 +19021,12 @@ module.exports = (function() {
 
 					return ids;
 				}, []).map(function(id) {
-					return urdf.find(id);
+					return urdf.find(id, gid);
 				});
 
-				if (nodes.length === 0) nodes = urdf.store;
+				if (nodes.length === 0) nodes = urdf.findGraph(gid);
 			} else {
-				var n = urdf.find(f['@id']);
+				var n = urdf.find(f['@id'], gid);
 
 				if (n === null) return [];
 				else nodes.push(n);
