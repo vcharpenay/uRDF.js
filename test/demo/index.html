@@ -25,6 +25,12 @@
 
         .code-input {
             height: 500px;
+            border: solid grey 1px;
+            margin-bottom: 20px;
+        }
+
+        .footer {
+            height: 50px;
         }
     </style>
 </head>
@@ -38,32 +44,38 @@
         <div>
             <h2>Load:</h2>
             <div id="data" class="code-input"></div>
-            <!-- <textarea id="data" rows="50"></textarea> -->
             <button  onclick="load()">Load</button>
-            <div>
-                TODO
-            </div>
+            <p id="size"></p>
         </div>
     
         <div>
             <h2>Query:</h2>
             <div id="query" class="code-input"></div>
-            <!-- <textarea id="query"></textarea> -->
             <button onclick="query()">Query</button>
-            <table id="results"></table>
+            <p>
+                <table id="results"></table>
+            </p>
         </div>
     </div>
+
+    <div class="footer"></div>
 
     <script>
         const dataEditor = ace.edit('data');
         const queryEditor = ace.edit('query');
+        const sizeField = document.getElementById('size');
         const resultsField = document.getElementById('results');
 
         function load() {
             let data = JSON.parse(dataEditor.getValue());
 
-            urdf.load(data).then(() => {
-                // TODO feedback
+            urdf.load(data)
+            .then(() => {
+                sizeField.innerText = 'Success. Total number of statements: ' + urdf.size();
+            })
+            .catch(e => {
+                sizeField.innerText = 'Error (see console)';
+                console.error(e);
             });
         }
 
@@ -92,7 +104,10 @@
 
                 resultsField.innerHTML = html;
             })
-            .catch(e => console.error(e));
+            .catch(e => {
+                resultsField.innerHTML = '<tr><td>Error (see console)</td/></tr>';
+                console.error(e);
+            });
         }
 
         // ACE boilerplate
