@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>μRDF.js Online Demo</title>
+    <script src="js/urdf-browser.js"></script>
+    <script src="js/ace.js"></script>
+    <script src="js/mode-json.js"></script>
+    <script src="js/mode-sparql.js"></script>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        .header {
+            border-bottom: rgba(0, 0, 0, 0.2) 2px solid;
+            top: 0;
+            height: 80px;
+            width: 100%;
+            position: fixed;
+            background: rgba(256, 256, 256, 0.8);
+            z-index: 10;
+        }
+
+        .header h1 {
+            margin: 0;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .content {
+            z-index: 1;
+            padding-top: 80px;
+            max-width: 960px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .control {
+            text-align: right;
+            width: 100%;
+        }
+
+        .code-input {
+            height: 500px;
+            border: solid grey 1px;
+            margin-bottom: 20px;
+        }
+
+        .code-input * {
+            z-index: 1;
+        }
+
+        table {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 5px;
+        }
+
+        tr {
+            border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
+        }
+
+        .footer {
+            height: 50px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>μRDF.js</h1>
+    </div>
+
+    <div class="content">
+        <h2><code>urdf.load(dataString, options)</code></h2>
+        <div id="data" class="code-input"></div>
+        <div class="control">
+            <select id="format">
+                <option value="application/ld+json" selected>JSON-LD</option>
+                <option value="text/turtle">Turtle</option>
+                <option value="application/trig">TriG</option>
+            </select>
+            <button  onclick="load()">Load</button>
+        </div>
+        <p id="size"></p>
+
+        <h2><code>urdf.query(queryString)</code></h2>
+        <div id="query" class="code-input"></div>
+        <div class="control">
+            <button onclick="query()">Query</button>
+        </div>
+        <p>
+            <table id="results"></table>
+        </p>
+    </div>
+
+    <div class="footer"></div>
+
+    <script>
+        const dataEditor = ace.edit('data');
+        const queryEditor = ace.edit('query');
+        const formatField = document.getElementById('format');
+        const sizeField = document.getElementById('size');
+        const resultsField = document.getElementById('results');
+
+        function load() {
+            let data = dataEditor.getValue();
+            
+            let f = formatField.value;
+            let opts = {};
+            if (f) opts.format = f; 
+
+            urdf.load(data, opts)
+            .then(() => {
+                sizeField.innerText = 'Success. Total number of statements: ' + urdf.size();
+            })
+            .catch(e => {
+                sizeField.innerText = 'Error (see console)';
+                console.error(e);
+            });
+        }
+
+        function query() {
+            let q = queryEditor.getValue();
+
+            urdf.query(q)
+            .then(results => {
+                // deal with missing values
+                let vars = results.reduce((list, res) => {
+                    for (let v in res) {
+                        if (list.indexOf(v) === -1) list.push(v);
+                    }
+                    return list;
+                }, []);
+
+                let html = '<tr>';
+                vars.forEach(v =>  html += '<th>' + v + '</th>');
+                html += '</tr>';
+
+                results.forEach(res => {
+                    html += '<tr>';
+                    vars.forEach(v => html += '<td>' + (res[v] ? res[v].value : '') + '</td>');
+                    html += '</tr>';
+                });
+
+                resultsField.innerHTML = html;
+            })
+            .catch(e => {
+                resultsField.innerHTML = '<tr><td>Error (see console)</td/></tr>';
+                console.error(e);
+            });
+        }
+
+        // ACE boilerplate
+
+        function formatListener(e) {
+            switch (formatField.value) {
+                case 'text/turtle':
+                case 'application/trig':
+                    dataEditor.session.setMode('ace/mode/turtle');
+                    break;
+
+                case 'application/ld+json':
+                default:
+                    dataEditor.session.setMode('ace/mode/json');
+                    break;
+            }
+        }
+
+        formatField.addEventListener('change', formatListener);
+
+        formatListener(null);
+        queryEditor.session.setMode('ace/mode/sparql');
+    </script>
+</body>
+
+</html>
