@@ -6,13 +6,36 @@
     <title>μRDF.js Conformance to the SPARQL 1.1 Query Language</title>
     <style>
         body {
-            max-width: 640px;
+            margin: 0;
+        }
+
+        .header {
+            border-bottom: rgba(0, 0, 0, 0.2) 2px solid;
+            top: 0;
+            height: 80px;
+            width: 100%;
+            position: fixed;
+            background: rgba(256, 256, 256, 0.8);
+            z-index: 10;
+        }
+
+        .header h1 {
+            margin: 0;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .content {
+            z-index: 1;
+            padding-top: 80px;
+            max-width: 960px;
             margin-left: auto;
             margin-right: auto;
         }
 
         table {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            border-collapse: collapse;
         }
 
         th,
@@ -20,41 +43,50 @@
             padding: 5px;
         }
 
-        thead tr {
-            background-color: tan;
-        }
-
-        tbody tr:nth-child(odd) {
-            background-color: beige;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: blanchedalmond;
+        tr {
+            border-bottom: rgba(0, 0, 0, 0.2) solid 1px;
         }
 
         tbody td.passed {
             background-color: yellowgreen;
         }
+
+        .footer {
+            height: 50px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>μRDF.js Conformance to the SPARQL 1.1 Query Language</h1>
-    <p>
-        <!-- summary -->
-    </p>
-    <table>
-        <thead>
-            <tr>
-                <th>Test name</th>
-                <th>Passed</th>
-                <th>Comment</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- rows -->
-        </tbody>
-    </table>
+    <div class="header">
+        <h1>μRDF.js</h1>
+    </div>
+
+    <div class="content">
+        <p>
+            Conformance to the SPARQL 1.1 Query Language:
+            see <a href="https://www.w3.org/2009/sparql/docs/tests/">W3C test suite</a>.
+        </p>
+        <p>
+            <!-- summary -->
+        </p>
+        <p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test name</th>
+                        <th>Passed</th>
+                        <th>Comment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- rows -->
+                </tbody>
+            </table>
+        </p>
+    </div>
+
+    <div class="footer"></div>
 </body>
 
 </html>
