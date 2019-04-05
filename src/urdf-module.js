@@ -76,25 +76,33 @@ function load(data, opts) {
     return new Promise((resolve, reject) => {
         switch (typeof data) {
             case 'string':
-                const def = { format: 'application/n-quads' };
-
-                let p = new n3.Parser(opts);
-                let w = new n3.Writer(def);
-
-                // TODO use stream API...?
-                p.parse(data, (err, quad) => {
-                    if (err) reject(err);
-
-                    else if (quad) w.addQuad(quad);
-
-                    else w.end((err, nquads) => {
+                if (opts && opts.format === 'application/ld+json') {
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (e) {
+                        reject(e);
+                    }
+                } else {
+                    const def = { format: 'application/n-quads' };
+    
+                    let p = new n3.Parser(opts);
+                    let w = new n3.Writer(def);
+    
+                    // TODO use stream API...?
+                    p.parse(data, (err, quad) => {
                         if (err) reject(err);
-
-                        else processor.fromRDF(nquads, def)
-                             .then(json => resolve(json))
-                             .catch(e => reject(e));
+    
+                        else if (quad) w.addQuad(quad);
+    
+                        else w.end((err, nquads) => {
+                            if (err) reject(err);
+    
+                            else processor.fromRDF(nquads, def)
+                                 .then(json => resolve(json))
+                                 .catch(e => reject(e));
+                        });
                     });
-                });
+                }
                 break;
 
             case 'object':
