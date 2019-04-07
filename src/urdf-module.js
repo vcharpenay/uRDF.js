@@ -116,7 +116,7 @@ function load(data, opts) {
     })
 
     // TODO normalize, compact
-    .then(json => processor.expand(json))
+    .then(json => processor.flatten(json))
 
     .then(json => {
         // TODO put this code in urdf-core?
