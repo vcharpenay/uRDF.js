@@ -134,7 +134,7 @@ module.exports = (function() {
 		if (graph === null) return null;
 
 		var node = graph.find(function(n) {
-			return id === n['@id'];
+			return n['@id'] !== undefined && n['@id'] === id;
 		});
 		
 		return node === undefined ? null : node;
