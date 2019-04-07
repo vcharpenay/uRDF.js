@@ -7,6 +7,7 @@
         "json-ld"
     ],
     "name": "urdf",
+    "version": "0.1.0",
     "main": "src/urdf-module.js",
     "dependencies": {
         "sparqljs": "2.x.x",
