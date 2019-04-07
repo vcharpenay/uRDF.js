@@ -18536,7 +18536,7 @@ function load(data, opts) {
     })
 
     // TODO normalize, compact
-    .then(json => processor.expand(json))
+    .then(json => processor.flatten(json))
 
     .then(json => {
         // TODO put this code in urdf-core?
@@ -18935,7 +18935,7 @@ module.exports = (function() {
 		if (graph === null) return null;
 
 		var node = graph.find(function(n) {
-			return id === n['@id'];
+			return n['@id'] !== undefined && n['@id'] === id;
 		});
 		
 		return node === undefined ? null : node;
