@@ -1,0 +1,8 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select * where {
+    ?p a ub:Person .
+}
+order by desc(?p)
+offset 7
+limit 3

@@ -304,6 +304,28 @@ function project(vars, mappings) {
 }
 
 /**
+ * Modifies mappings as per query directives (e.g. re-ordering or projection).
+ * 
+ * @param {object} query the AST of a SPARQL query
+ * @param {array} mappings a list of mappings
+ */
+function modify(query, mappings) {
+    let omega = project(query.variables, mappings);
+
+    if (query.order) {
+        omega.sort((mu1, mu2) => {
+            return utils.compare(mu1, mu2, query.order);
+        });
+    }
+
+    if (query.offset) omega = omega.slice(query.offset);
+
+    if (query.limit) omega = omega.slice(0, query.limit);
+
+    return omega;
+}
+
+/**
  * Rewrites in place a SPARQL query to get an equivalent, canonical form.
  * 
  * @param {object} query the AST of a SPARQL query
@@ -355,7 +377,7 @@ function query(sparql) {
 
         switch (ast.queryType) {
             case 'SELECT':
-                mappings = project(ast.variables, mappings);
+                mappings = modify(ast, mappings);
                 resolve(mappings);
 
             case 'ASK':

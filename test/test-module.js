@@ -167,4 +167,9 @@ describe('urdf.query()', () => {
         return load('thing-graph')
         .then(() => query('sensor-unknown-graph'));
     });
+
+    it.only('should correctly select an ordered subset of the solutions', () => {
+        return load('lubm-inf')
+        .then(() => query('some-persons'));
+    });
 });
