@@ -7,7 +7,7 @@ function load(f) {
     return urdf.clear().then(() => urdf.load(data));
 }
 
-function query(f) {
+function query(f, ordered) {
     let q = fs.readFileSync('test/queries/' + f + '.sparql', 'utf-8');
 
     let expected = JSON.parse(fs.readFileSync('test/results/' + f + '.json'));
@@ -16,8 +16,8 @@ function query(f) {
     }
 
     return urdf.query(q).then((actual) => {
-        if (expected instanceof Array) expected = new Set(expected);
-        if (actual instanceof Array) actual = new Set(actual);
+        if (expected instanceof Array && !ordered) expected = new Set(expected);
+        if (actual instanceof Array && !ordered) actual = new Set(actual);
 
         assert.deepStrictEqual(actual, expected);
     });
@@ -168,8 +168,13 @@ describe('urdf.query()', () => {
         .then(() => query('sensor-unknown-graph'));
     });
 
-    it.only('should correctly select an ordered subset of the solutions', () => {
+    it('should correctly select an ordered subset of the solutions', () => {
         return load('lubm-inf')
-        .then(() => query('some-persons'));
+        .then(() => query('some-persons', true));
+    });
+
+    it('should correctly return distinct solutions only', () => {
+        return load('lubm-inf')
+        .then(() => query('distinct-courses'));
     });
 });

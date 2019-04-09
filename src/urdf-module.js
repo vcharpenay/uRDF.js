@@ -304,18 +304,38 @@ function project(vars, mappings) {
 }
 
 /**
- * Modifies mappings as per query directives (e.g. re-ordering or projection).
+ * Modifies mappings as per query directives on the following aspects:
+ *  - order
+ *  - projection
+ *  - distinct
+ *  - reduced (ignored in this implementation)
+ *  - offset
+ *  - limit.
  * 
  * @param {object} query the AST of a SPARQL query
  * @param {array} mappings a list of mappings
  */
 function modify(query, mappings) {
-    let omega = project(query.variables, mappings);
+    let omega = Array.from(mappings);
 
     if (query.order) {
         omega.sort((mu1, mu2) => {
             return utils.compare(mu1, mu2, query.order);
         });
+    }
+
+    omega = project(query.variables, omega);
+
+    if (query.distinct) {
+        omega = omega.reduce((o, mu1) => {
+            let by = query.variables.map(v => ({ expression: v }));
+
+            // FIXME utils.compare() ignores datatype/lang
+            let dup = o.some(mu2 => utils.compare(mu1, mu2, by) === 0);
+            if (!dup) o.push(mu1);
+
+            return o;
+        }, []);
     }
 
     if (query.offset) omega = omega.slice(query.offset);

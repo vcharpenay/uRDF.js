@@ -1,0 +1,6 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select distinct ?c where {
+  ?p ub:takesCourse ?c .
+  ?c a ub:GraduateCourse .
+}

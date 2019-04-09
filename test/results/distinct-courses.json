@@ -1,0 +1,38 @@
+[
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse0"
+        }
+    },
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse2"
+        }
+    },
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse4"
+        }
+    },
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse5"
+        }
+    },
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse6"
+        }
+    },
+    {
+        "c": {
+            "type": "uri",
+            "value": "http://www.Department0.University0.edu/GraduateCourse7"
+        }
+    }
+]

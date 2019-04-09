@@ -199,7 +199,7 @@ function frame(bgp) {
 
 /**
  * Returns a comparison integer (-1, 0 or 1) by comparing
- * list of terms, pairwise and recursively.
+ * expressions for some mappings.
  * 
  * @param {object} mu1 first solution 
  * @param {object} mu2 second solution
