@@ -18724,6 +18724,48 @@ function project(vars, mappings) {
 }
 
 /**
+ * Modifies mappings as per query directives on the following aspects:
+ *  - order
+ *  - projection
+ *  - distinct
+ *  - reduced (ignored in this implementation)
+ *  - offset
+ *  - limit.
+ * 
+ * @param {object} query the AST of a SPARQL query
+ * @param {array} mappings a list of mappings
+ */
+function modify(query, mappings) {
+    let omega = Array.from(mappings);
+
+    if (query.order) {
+        omega.sort((mu1, mu2) => {
+            return utils.compare(mu1, mu2, query.order);
+        });
+    }
+
+    omega = project(query.variables, omega);
+
+    if (query.distinct) {
+        omega = omega.reduce((o, mu1) => {
+            let by = query.variables.map(v => ({ expression: v }));
+
+            // FIXME utils.compare() ignores datatype/lang
+            let dup = o.some(mu2 => utils.compare(mu1, mu2, by) === 0);
+            if (!dup) o.push(mu1);
+
+            return o;
+        }, []);
+    }
+
+    if (query.offset) omega = omega.slice(query.offset);
+
+    if (query.limit) omega = omega.slice(0, query.limit);
+
+    return omega;
+}
+
+/**
  * Rewrites in place a SPARQL query to get an equivalent, canonical form.
  * 
  * @param {object} query the AST of a SPARQL query
@@ -18775,7 +18817,7 @@ function query(sparql) {
 
         switch (ast.queryType) {
             case 'SELECT':
-                mappings = project(ast.variables, mappings);
+                mappings = modify(ast, mappings);
                 resolve(mappings);
 
             case 'ASK':
@@ -19401,25 +19443,53 @@ function ebv(term) {
  * @param {object} bgp a BGP pattern as object (abstract syntax tree)
  */
 function frame(bgp) {
-    return bgp.triples.reduce((f, tp) => {
-        let s = nodeOrValue(term(tp.subject));
-        let n = f.find(n => n['@id'] === s['@id']);
-        if (!n) {
-            n = s;
-            f.push(n);
-        }
+	return bgp.triples.reduce((f, tp) => {
+			let s = nodeOrValue(term(tp.subject));
+			let n = f.find(n => n['@id'] === s['@id']);
+			if (!n) {
+					n = s;
+					f.push(n);
+			}
 
-        let p = (tp.predicate === ns.rdf + 'type') ?
-				'@type' : tp.predicate;
-		if (p[0] === '?') p = '_:' + p.substring(1);
-        if (!n[p]) n[p] = [];
+			let p = (tp.predicate === ns.rdf + 'type') ?
+			'@type' : tp.predicate;
+	if (p[0] === '?') p = '_:' + p.substring(1);
+			if (!n[p]) n[p] = [];
 
-        let o = nodeOrValue(term(tp.object));
-        if (p === '@type') o = o['@id'];
-        n[p].push(o);
+			let o = nodeOrValue(term(tp.object));
+			if (p === '@type') o = o['@id'];
+			n[p].push(o);
 
-        return f;
-    }, []);
+			return f;
+	}, []);
+}
+
+/**
+ * Returns a comparison integer (-1, 0 or 1) by comparing
+ * expressions for some mappings.
+ * 
+ * @param {object} mu1 first solution 
+ * @param {object} mu2 second solution
+ * @param {array} by expressions by which to order 
+ */
+function compare(mu1, mu2, by) {
+	if (!by.length) return 0;
+
+	let head = by[0];
+	let tail = by.slice(1);
+
+	let v1 = native(evaluate(head.expression, mu1));
+	let v2 = native(evaluate(head.expression, mu2));
+
+	if (head.descending) {
+		let v = v1;
+		v1 = v2;
+		v2 = v;
+	}
+
+	if (v1 < v2) return -1;
+	else if (v1 > v2) return 1;
+  else return compare(mu1, mu2, tail);
 }
 
 /**
@@ -19875,6 +19945,7 @@ class EvaluationError extends Error {
 module.exports.term = term;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
+module.exports.compare = compare;
 module.exports.evaluate = evaluate;
 module.exports.EvaluationError = EvaluationError;
 },{}],56:[function(require,module,exports){
