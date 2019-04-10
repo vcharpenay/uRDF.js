@@ -195,7 +195,7 @@ function evaluate(pattern, mappings, gid) {
                         let mu = { [n]: { type: 'uri', value: gid } };
                         return merge([mu], evaluateAll(pattern.patterns, gid));
                     })
-                    .reduce((union, omega) => union.concat(omega));
+                    .reduce((union, omega) => union.concat(omega), []);
             } else {
                 omega = evaluateAll(pattern.patterns, pattern.name);
             }
@@ -204,7 +204,7 @@ function evaluate(pattern, mappings, gid) {
         case 'union':
             return pattern.patterns
                 .map(p => evaluate(p, mappings, gid))
-                .reduce((union, omega) => union.concat(omega));
+                .reduce((union, omega) => union.concat(omega), []);
 
         case 'optional':
             let g = {
