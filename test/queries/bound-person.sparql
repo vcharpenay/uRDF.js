@@ -1,0 +1,7 @@
+
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select (bound(?p) as ?b1) (bound(?pub) as ?b2) where {
+    ?p a ub:Person .
+    optional { ?pub ub:publicationAuthor ?p }
+}

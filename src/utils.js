@@ -627,7 +627,8 @@ function evaluate(expr, binding) {
 			let bool = native(evaluate(condition, binding));
 			return evaluate(bool ? first : second, binding);
 		} else if (expr.operator === 'bound') {
-			// TODO
+			let name = expr.args[0].substring(1);
+			return term(Boolean(binding[name]));
 		} else {
 			let op = expr.operator;
 			let args = expr.args.map(arg => evaluate(arg, binding));

@@ -1,0 +1,14 @@
+[
+    {
+        "b1": {
+            "type": "literal",
+            "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+            "value": "true"
+        },
+        "b2": {
+            "type": "literal",
+            "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+            "value": "false"
+        }
+    }
+]

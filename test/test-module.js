@@ -3,7 +3,7 @@ const fs = require('fs');
 const urdf = require('../src/urdf-module.js');
 
 function load(f) {
-    let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json', 'utf-8'));
+    let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json'));
     return urdf.clear().then(() => urdf.load(data));
 }
 
@@ -96,6 +96,11 @@ describe('urdf.query()', () => {
     it('should correctly process constructor functions in filter', () => {
         return load('thing')
         .then(() => query('property-value-cast'));
+    });
+
+    it('should correctly process the bound function', () => {
+        return load('lubm-s34')
+        .then(() => query('bound-person'));
     });
 
     it('should correctly merge solution mappings from group patterns', () => {
