@@ -5,10 +5,15 @@
 /**
  * Known namespace prefixes.
  */
-let ns = {
+const ns = {
 	rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
 	xsd: 'http://www.w3.org/2001/XMLSchema#'
 };
+
+/**
+ * Custom function registry
+ */
+const registry = {};
 
 /**
  * Transforms a N3.js representation of an RDF term
@@ -653,17 +658,31 @@ function evaluate(expr, binding) {
 					throw new Error('Operator not implemented: ' + expr.operator);
 			}
 		}
-    } else if (expr.type === 'functionCall') {
-		let fn = expr.function;
+  } else if (expr.type === 'functionCall') {
+		let name = expr.function;
 		let args = expr.args.map(arg => evaluate(arg, binding));
 
-		if (expr.function.startsWith(ns.xsd)) {
-			return evaluateConstructorFunction(fn, args);
+		if (name.startsWith(ns.xsd)) {
+			return evaluateConstructorFunction(name, args);
 		} else {
-			// TODO get registered functions and execute
-			throw new Error('Not implemented');
+			if (!registry[name]) throw new EvaluationError('Custom function not registered');
+			else return registry[name](...args);
 		}
-    }
+  }
+}
+
+/**
+ * Registers a custom SPARQL function. Callback arguments will
+ * be passed in SPARQL JSON. The function return value must be an
+ * SPARQL JSON object.
+ * 
+ * See SPARQL 1.1 Query Language, section 17.6 "Extensible Value Testing".
+ * 
+ * @param {string} name the function name (an IRI)
+ * @param {function} fn the callback function
+ */
+function register(name, fn) {
+	registry[name] = fn;
 }
 
 /**
@@ -681,4 +700,5 @@ module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.compare = compare;
 module.exports.evaluate = evaluate;
+module.exports.register = register;
 module.exports.EvaluationError = EvaluationError;

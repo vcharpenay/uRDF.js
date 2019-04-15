@@ -414,6 +414,7 @@ function query(sparql) {
     });
 }
 
+module.exports.register = utils.register;
 module.exports.size = urdf.size;
 module.exports.findGraph = urdf.findGraph;
 module.exports.find = find;

@@ -1,0 +1,13 @@
+[
+    {
+        "val": {
+            "type": "literal",
+            "value": "54",
+            "datatype": "http://www.w3.org/2001/XMLSchema#integer"
+        },
+        "pow": {
+            "type": "literal",
+            "value": "7"
+        }
+    }
+]
