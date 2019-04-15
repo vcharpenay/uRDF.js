@@ -22,8 +22,7 @@ $ npm run browserify # generates src/urdf-browser.js (optional)
 
 ### API
 
-The following snippet shows how the main API calls work: `urdf.load` and
-`urdf.query`.
+The following snippet shows how the main API calls work.
 
 ```js
 const assert = require('assert');
@@ -70,6 +69,25 @@ assert.deepStrictEqual(urdf.query(queryString), [
     "teacher": {
       "type": "uri",
       "value": "http://www.Department0.University4.edu/AssistantProfessor1"
+    }
+  }
+]);
+
+// function arguments are passed as plain JavaScript values;
+// return value can either be another plain value or a SPARQL JSON object
+urdf.register('javascript:String.prototype.charAt', (str, idx) => str.charAt(idx));
+
+const customQueryString = '\
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>\
+select (<javascript:String.prototype.charAt>(?teacher, 11) as ?idx)  where {\
+  ?teacher ub:teacherOf <http://www.Department0.University4.edu/Course8> .\
+}';
+
+assert.deepStrictEqual(urdf.query(customQueryString), [
+  {
+    "idx": {
+      "type": "literal",
+      "value": "D"
     }
   }
 ]);

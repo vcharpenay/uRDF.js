@@ -183,14 +183,8 @@ describe('urdf.query()', () => {
         .then(() => query('distinct-courses'));
     });
 
-    it.only('should correctly process custom function', () => {
-        urdf.register('javascript:Math.pow', (base, exp) => {
-            let pow = Math.pow(Number(base.value), Number(exp.value));
-            return {
-                type: 'literal',
-                value: String(pow)
-            };
-        });
+    it('should correctly process custom function', () => {
+        urdf.register('javascript:Math.pow', (base, exp) =>  Math.pow(base, exp));
 
         return load('thing')
         .then(() => query('property-value-pow'));

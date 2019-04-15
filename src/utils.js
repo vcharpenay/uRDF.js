@@ -75,6 +75,8 @@ function term(plain) {
 				type: 'variable',
 				value: name
 			}
+		} else if (typeof plain === 'object') {
+			return plain;
 		} else {
 			return {};
 		}
@@ -666,15 +668,29 @@ function evaluate(expr, binding) {
 			return evaluateConstructorFunction(name, args);
 		} else {
 			if (!registry[name]) throw new EvaluationError('Custom function not registered');
-			else return registry[name](...args);
+
+			let val = registry[name](...args.map(native));
+
+			if (typeof val === 'string') {
+				val = {
+					type: 'literal',
+					value: val
+				};
+			}
+
+			return term(val);
 		}
   }
 }
 
 /**
  * Registers a custom SPARQL function. Callback arguments will
- * be passed in SPARQL JSON. The function return value must be an
- * SPARQL JSON object.
+ * be passed as native JavaScript values. IRIs and blank nodes are
+ * converted to strings. The function return value will be
+ * converted to a SPARQL JSON form as follows:
+ *  - if it is an object, it is returned as is
+ *  - if it is a boolean or number, it is converted to a typed literal
+ *  - if it is a string, it is converted to a plain literal
  * 
  * See SPARQL 1.1 Query Language, section 17.6 "Extensible Value Testing".
  * 
