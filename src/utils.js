@@ -75,12 +75,12 @@ function term(plain) {
 				type: 'variable',
 				value: name
 			}
-		} else if (typeof plain === 'object') {
-			return plain;
-		} else {
-			return {};
 		}
+	} else if (typeof plain === 'object') {
+		return plain;
 	}
+	
+	return {};
 }
 
 /**
