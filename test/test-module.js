@@ -189,4 +189,9 @@ describe('urdf.query()', () => {
         return load('thing')
         .then(() => query('property-value-pow'));
     });
+
+    it('should correctly process filter inside an optional pattern', () => {
+        return load('thing')
+        .then(() => query('unsafe-sensor-filter'));
+    });
 });

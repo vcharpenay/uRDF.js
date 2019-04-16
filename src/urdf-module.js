@@ -131,26 +131,33 @@ function load(data, opts) {
 }
 
 /**
- * Merges solutions and returns either compatible mappings (pure join)
- * or all mappings of first input set, merged if possible (left outer join).
+ * Returns all solution mappings from the first set that is compatible
+ * with none of the mappings from the second set.
  * 
  * @param {array} omega1 first set of solution mappings
  * @param {array} omega2 second set of solution mappings
- * @param {boolean} opt optional flag for left outer join
  */
-function merge(omega1, omega2, opt) {
+function diff(omega1, omega2) {
+    return omega1.filter(mu1 => {
+        return omega2.every(mu2 => !urdf.merge(mu1, mu2));
+    });
+}
+
+/**
+ * Merges solutions and removes incompatible mappings.
+ * 
+ * @param {array} omega1 first set of solution mappings
+ * @param {array} omega2 second set of solution mappings
+ */
+function merge(omega1, omega2) {
     return omega1.reduce((omega, mu1) => {
-        let omegap = omega2.reduce((omega, mu2) => {
+        return omega2.reduce((omega, mu2) => {
             let mu = urdf.merge(mu1, mu2);
 
             if (mu) omega.push(mu);
 
             return omega;
-        }, []);
-
-        if (opt && omegap.length === 0) omegap.push(mu1);
-        
-        return omega.concat(omegap);
+        }, omega);
     }, []);
 }
 
@@ -161,13 +168,7 @@ function merge(omega1, omega2, opt) {
  * @param {string} gid graph identifier defining the scope of evaluation
  */
 function evaluateAll(patterns, gid) {
-    let main = patterns.filter(p => p.type != 'bind' && p.type != 'filter');
-    let b = patterns.filter(p => p.type === 'bind');
-    let f = patterns.filter(p => p.type === 'filter');
-
-    let reordered = main.concat(b, f);
-
-    return reordered.reduce((omega, p) => {
+    return patterns.reduce((omega, p) => {
         return evaluate(p, omega, gid);
     }, [{}]);
 }
@@ -207,12 +208,8 @@ function evaluate(pattern, mappings, gid) {
                 .reduce((union, omega) => union.concat(omega), []);
 
         case 'optional':
-            let g = {
-                type: 'group',
-                patterns: pattern.patterns
-            };
-            omega = evaluate(g, mappings, gid);
-            return merge(mappings, omega, true);
+            omega = evaluateAll(pattern.patterns, gid);
+            return merge(mappings, omega).concat(diff(mappings, omega));
 
         case 'bgp':
             let f = utils.frame(pattern);
@@ -346,6 +343,36 @@ function modify(query, mappings) {
 }
 
 /**
+ * Rewrites pattern to ensure filters have no free variable.
+ * 
+ * See:
+ *  - SPARQL 1.1 Query Language, section 18.2.2 "Converting Graph Patterns"
+ *  - The Expressive Power of SPARQL (2008)
+ * 
+ * @param {object} patterns the AST of a group of SPARQL graph patterns
+ */
+function makeSafe(patterns) {
+    let b = patterns.filter(p => p.type === 'bind');
+    let f = patterns.filter(p => p.type === 'filter');
+
+    let main = patterns
+        .filter(p => p.type != 'bind' && p.type != 'filter')
+        .map(p => {
+            if (p.type === 'optional') {
+                f = f.concat(p.patterns.filter(p => p.type === 'filter'));
+                p.patterns = p.patterns.filter(p => p.type != 'filter');
+            }
+
+            if (p.patterns) p.patterns = makeSafe(p.patterns);
+
+            return p;
+        });
+
+    let safe = main.concat(b, f);
+    return safe;
+}
+
+/**
  * Rewrites in place a SPARQL query to get an equivalent, canonical form.
  * 
  * @param {object} query the AST of a SPARQL query
@@ -378,6 +405,8 @@ function rewrite(query) {
     
         query.variables = names.concat(exprs.map(expr => expr.variable));
     }
+
+    query.where = makeSafe(query.where);
 
     return query;
 }

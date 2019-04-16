@@ -660,14 +660,16 @@ function evaluate(expr, binding) {
 					throw new Error('Operator not implemented: ' + expr.operator);
 			}
 		}
-  } else if (expr.type === 'functionCall') {
+    } else if (expr.type === 'functionCall') {
 		let name = expr.function;
 		let args = expr.args.map(arg => evaluate(arg, binding));
 
 		if (name.startsWith(ns.xsd)) {
 			return evaluateConstructorFunction(name, args);
 		} else {
-			if (!registry[name]) throw new EvaluationError('Custom function not registered');
+			if (!registry[name]) {
+				throw new EvaluationError('Custom function not registered');
+			}
 
 			let val = registry[name](...args.map(native));
 
@@ -680,7 +682,7 @@ function evaluate(expr, binding) {
 
 			return term(val);
 		}
-  }
+    }
 }
 
 /**
