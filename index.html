@@ -164,6 +164,7 @@
 
         function formatListener(e) {
             switch (formatField.value) {
+                case 'application/n-quads':
                 case 'text/turtle':
                 case 'application/trig':
                     dataEditor.session.setMode('ace/mode/turtle');
