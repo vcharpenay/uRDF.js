@@ -3,6 +3,14 @@ const jsonld = require('jsonld');
 
 const processor = jsonld.promises;
 
+/**
+ * Parses data in a given serialization format and returns
+ * JSON-LD definitions.
+ * 
+ * @param {string} dataString JSON-LD definitions or RDF triples
+ * serialialized as a string
+ * @param {object} opts options as an object (passed to N3.js)
+ */
 function parse(dataString, opts) {
     return new Promise((resolve, reject) => {
         if (opts && opts.format === 'application/ld+json') {
