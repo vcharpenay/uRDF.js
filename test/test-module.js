@@ -2,9 +2,10 @@ const assert = require('assert');
 const fs = require('fs');
 const urdf = require('../src/urdf-module.js');
 
-function load(f) {
+function load(f, append) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f + '.json'));
-    return urdf.clear().then(() => urdf.load(data));
+    return (append ? Promise.resolve() : urdf.clear())
+    .then(() => urdf.load(data));
 }
 
 function query(f, ordered) {
@@ -26,10 +27,18 @@ function query(f, ordered) {
 describe('urdf.load()', () => {
     const id = 'https://w3id.org/saref#TemperatureSensor';
     const gid = 'tag:thing.json';
+    const type = ['https://w3id.org/saref#State'];
 
     it('should correctly process arbitrary JSON-LD', () => {
         return load('thing-compact')
         .then(() => urdf.find(id));
+    });
+
+    it.only('should correctly process blank nodes', () => {
+        return load('thing')
+        .then(() => load('thing-bnode', true))
+        .then(() => urdf.find('_:b0'))
+        .then(bn => assert.deepStrictEqual(bn['@type'], type));
     });
 
     it('should correctly process JSON-LD in a named graph', () => {

@@ -64,6 +64,43 @@ function clear(gid) {
 }
 
 /**
+ * Renames all blank nodes in the graph with numeric identifiers,
+ * starting from an offset (e.g. a number higher than the size
+ * of the µRDF store, to avoid name conflicts).
+ * 
+ * @param {array} g 
+ * @param {number} offset 
+ */
+function rename(g, offset) {
+    let idx = 0;
+    let sigma = {};
+
+    g.forEach(n => {
+        let id = n['@id'];
+
+        if (id && id.startsWith('_:')) {
+            sigma[id] = '_:b' + (offset + (idx++));
+        }
+    });
+
+    // TODO copy of node object instead?
+    // TODO remove blank node id if no reference in graph?
+    return g.map(n => {
+        let id = n['@id'];
+
+        if (sigma[id]) n['@id'] = sigma[id];
+
+        for (let p in n) {
+            let pid = n[p]['@id'];
+            
+            if (sigma[pid]) n[p]['@id'] = sigma[pid];
+        }
+
+        return n;
+    });
+}
+
+/**
  * Loads the input definitions in the µRDF store.
  * 
  * @param {object | array | string} data some JSON-LD definition(s)
@@ -92,12 +129,21 @@ function load(data, opts) {
     .then(json => processor.flatten(json))
 
     .then(json => {
-        // TODO put this code in urdf-core?
-        json
+        let dataset = json
             .filter(obj => obj['@graph'])
-            .forEach(g => urdf.load(g['@graph'], g['@id']));
+            .concat({
+                // default graph
+                '@graph': json.filter(obj => !obj['@graph'])
+            });
 
-        urdf.load(json.filter(obj => !obj['@graph']));
+        dataset.forEach(g => {
+            let gid = g['@id'];
+
+            let offset = urdf.size(gid);
+            let renamed = rename(g['@graph'], offset);
+
+            urdf.load(renamed, gid);
+        });
 
         return true; // TODO deal with errors (none thrown from urdf-core)
     });

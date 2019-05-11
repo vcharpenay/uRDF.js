@@ -1,6 +1,7 @@
 [
 	{
-		"@id": "_:b0"
+		"@id": "_:b0",
+		"@type": "https://w3id.org/saref#State"
 	},
 	{
 		"http://example.org/isActive": [
