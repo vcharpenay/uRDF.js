@@ -1,11 +1,9 @@
 'use strict';
 
-const fs = require('fs');
-
 const utils = require('./utils.js');
+const io = require('./io.js');
 const urdf = require('./urdf.js');
 
-const n3 = require('n3');
 const jsonld = require('jsonld');
 const sparqljs = require('sparqljs');
 
@@ -73,47 +71,22 @@ function clear(gid) {
  * @param {object} opts options as an object (passed to N3.js)
  */
 function load(data, opts) {
-    return new Promise((resolve, reject) => {
-        switch (typeof data) {
-            case 'string':
-                if (opts && opts.format === 'application/ld+json') {
-                    try {
-                        resolve(JSON.parse(data));
-                    } catch (e) {
-                        reject(e);
-                    }
-                } else {
-                    const def = { format: 'application/n-quads' };
-    
-                    let p = new n3.Parser(opts);
-                    let w = new n3.Writer(def);
-    
-                    // TODO use stream API...?
-                    p.parse(data, (err, quad) => {
-                        if (err) reject(err);
-    
-                        else if (quad) w.addQuad(quad);
-    
-                        else w.end((err, nquads) => {
-                            if (err) reject(err);
-    
-                            else processor.fromRDF(nquads, def)
-                                 .then(json => resolve(json))
-                                 .catch(e => reject(e));
-                        });
-                    });
-                }
-                break;
+    let parsed;
+    switch (typeof data) {
+        case 'string':
+            parsed = io.parse(data, opts);
+            break;
 
-            case 'object':
-            case 'array':
-                resolve(data);
-                break;
+        case 'object':
+        case 'array':
+            parsed = Promise.resolve(data);
+            break;
 
-            default:
-                reject(new Error('Invalid JSON-LD or RDF definition'));
-        }
-    })
+        default:
+            parsed = Promise.reject(new Error('Invalid JSON-LD or RDF definition'));
+    }
+
+    return parsed
 
     // TODO normalize, compact
     .then(json => processor.flatten(json))
