@@ -34,11 +34,10 @@ describe('urdf.load()', () => {
         .then(() => urdf.find(id));
     });
 
-    it('should correctly process blank nodes', () => {
+    it.only('should correctly process blank nodes', () => {
         return load('thing')
         .then(() => load('thing-bnode', true))
-        .then(() => urdf.find('_:b0'))
-        .then(bn => assert.deepStrictEqual(bn['@type'], type));
+        .then(() => query('bnode-collision'));
     });
 
     it('should correctly process JSON-LD in a named graph', () => {

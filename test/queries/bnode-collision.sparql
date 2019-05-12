@@ -1,0 +1,15 @@
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+prefix saref: <https://w3id.org/saref#>
+
+select * where {
+    {
+        <http://example.org/sensor1> <http://example.org/state> ?s .
+        ?s a saref:Command .
+    }
+    union
+    {
+        ?s a saref:Command ;
+           rdfs:seeAlso ?other .
+        ?other a saref:Property .
+    }
+}

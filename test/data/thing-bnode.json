@@ -1,3 +1,6 @@
 {
-    "@type": "https://w3id.org/saref#Command"
+    "@type": "https://w3id.org/saref#Command",
+    "https://w3id.org/saref#actsUpon": {
+        "@type": "https://w3id.org/saref#State"
+    }
 }

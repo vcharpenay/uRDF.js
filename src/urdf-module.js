@@ -91,9 +91,11 @@ function rename(g, offset) {
         if (sigma[id]) n['@id'] = sigma[id];
 
         for (let p in n) {
-            let pid = n[p]['@id'];
-            
-            if (sigma[pid]) n[p]['@id'] = sigma[pid];
+            for (let o in n[p]) {
+                let ido = o['@id'];
+
+                if (sigma[ido]) o['@id'] = sigma[ido];
+            }
         }
 
         return n;
