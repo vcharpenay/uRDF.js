@@ -62,6 +62,12 @@ select (<javascript:String.prototype.charAt>(?teacher, 11) as ?idx)  where {\
 // return value can either be another plain value or a SPARQL JSON object
 urdf.register('javascript:String.prototype.charAt', (str, idx) => str.charAt(idx));
 
+// functions for RDF list management are available:
+//  - <javascript:urdf.indexOf>(?list, ?element)
+//  - <javascript:urdf.lastIndexOf>(?list, ?element)
+//  - <javascript:urdf.valueAt>(?list, ?index)
+//  - <javascript:urdf.length>(?list)
+
 // all API calls are Promise-based
 Promise.resolve()
 
@@ -89,6 +95,9 @@ Promise.resolve()
     // see http://www.w3.org/TR/sparql11-results-json/
     {
         "teacher": {
+            // the format was extended to ease RDF list management:
+            // lists are returned as arrays of SPARQL results of the form
+            // { "type": "list", "value": [...] }
             "type": "uri",
             "value": "http://www.Department0.University4.edu/AssistantProfessor1"
         }
