@@ -389,16 +389,29 @@ module.exports = (function() {
 	};
 
 	/**
+	 * Evaluates if the input object is a list.
+	 * 
+	 * Returns true if obj is a list object, false otherwise.
+	 */
+	urdf.isList = function(obj) {
+		return obj['@list'] !== undefined;
+	}
+
+	/**
 	 * Returns the RDF lexical form of the input object.
 	 */
 	urdf.lexicalForm = function(obj) {
 		if (urdf.isVariable(obj)) return obj['@id'].substring(2);
 		else if (urdf.isLiteral(obj)) return obj['@value'];
+		else if (urdf.isList(obj)) return obj['@list'];
 		else return obj['@id'] ? obj['@id'] : '';
 	}
 
 	/**
 	 * Returns the SPARQL JSON form of the input object.
+	 * 
+	 * The format was extended to include RDF lists, which
+	 * are not directly accessible from the µRDF store.
 	 */
 	urdf.sparqlJsonForm = function(obj) {
 		var sj = {
@@ -412,6 +425,9 @@ module.exports = (function() {
 			if (obj['@language']) sj.lang = obj['@language'];
 		} else if (urdf.isVariable(obj)) {
 			sj.type = 'bnode';
+		} else if (urdf.isList(obj)) {
+			sj.type = 'list';
+			sj.value = sj.value.map(function(o) { return urdf.sparqlJsonForm(o) });
 		} else {
 			sj.type = 'uri';
 		}

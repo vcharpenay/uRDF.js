@@ -462,6 +462,18 @@ function query(sparql) {
     });
 }
 
+/**
+ * Registry of functions to handle RDF lists.
+ */
+const listRegistry = {
+    'javascript:urdf.indexOf': (l, id) => l.indexOf(id),
+    'javascript:urdf.lastIndexOf': (l, id) => l.lastIndexOf(id),
+    'javascript:urdf.valueAt': (l, idx) => l[idx],
+    'javascript:urdf.length': (l) => l.length
+};
+
+for (let name in listRegistry) utils.register(name, listRegistry[name]);
+
 module.exports.register = utils.register;
 module.exports.size = urdf.size;
 module.exports.findGraph = urdf.findGraph;

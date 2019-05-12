@@ -34,7 +34,7 @@ describe('urdf.load()', () => {
         .then(() => urdf.find(id));
     });
 
-    it.only('should correctly process blank nodes', () => {
+    it('should correctly process blank nodes', () => {
         return load('thing')
         .then(() => load('thing-bnode', true))
         .then(() => urdf.find('_:b0'))
@@ -192,11 +192,16 @@ describe('urdf.query()', () => {
         .then(() => query('distinct-courses'));
     });
 
-    it('should correctly process custom function', () => {
+    it('should correctly process custom functions', () => {
         urdf.register('javascript:Math.pow', (base, exp) =>  Math.pow(base, exp));
 
         return load('thing')
         .then(() => query('property-value-pow'));
+    });
+
+    it('should correctly process list functions', () => {
+        return load('lubm-list')
+        .then(() => query('ordered-author-list'));
     });
 
     it('should correctly process filter inside an optional pattern', () => {

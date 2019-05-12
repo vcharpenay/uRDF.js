@@ -122,6 +122,8 @@ function native(term) {
 		return term.value;
 	} else if (term.type === 'bnode') {
 		return '_:' + term.value;
+	} else if (term.type === 'list') {
+		return term.value.map(native);
 	} else { // all literals
 		switch (term.datatype) {
 			case ns.xsd + 'boolean':
@@ -185,18 +187,18 @@ function ebv(term) {
 function frame(bgp) {
 	return bgp.triples.reduce((f, tp) => {
 			let s = nodeOrValue(term(tp.subject));
+
 			let n = f.find(n => n['@id'] === s['@id']);
-			if (!n) {
-					n = s;
-					f.push(n);
-			}
+			if (!n) { n = s; f.push(n); }
 
 			let p = (tp.predicate === ns.rdf + 'type') ?
-			'@type' : tp.predicate;
-	if (p[0] === '?') p = '_:' + p.substring(1);
+							'@type' : tp.predicate;
+							
+			if (p[0] === '?') p = '_:' + p.substring(1);
 			if (!n[p]) n[p] = [];
 
 			let o = nodeOrValue(term(tp.object));
+
 			if (p === '@type') o = o['@id'];
 			n[p].push(o);
 
@@ -671,16 +673,20 @@ function evaluate(expr, binding) {
 				throw new EvaluationError('Custom function not registered');
 			}
 
-			let val = registry[name](...args.map(native));
+			try {
+				let val = registry[name](...args.map(native));
 
-			if (typeof val === 'string') {
-				val = {
-					type: 'literal',
-					value: val
-				};
+				if (typeof val === 'string') {
+					val = {
+						type: 'literal',
+						value: val
+					};
+				}
+	
+				return term(val);
+			} catch (e) {
+				throw new EvaluationError(e);
 			}
-
-			return term(val);
 		}
     }
 }
@@ -714,6 +720,7 @@ class EvaluationError extends Error {
 }
 
 module.exports.term = term;
+module.exports.native = native;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.compare = compare;
