@@ -34,7 +34,7 @@ describe('urdf.load()', () => {
         .then(() => urdf.find(id));
     });
 
-    it('should correctly process blank nodes', () => {
+    it.only('should correctly process blank nodes', () => {
         return load('thing')
         .then(() => load('thing-bnode', true))
         .then(() => query('bnode-collision'));

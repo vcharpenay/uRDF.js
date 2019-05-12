@@ -90,13 +90,13 @@ function rename(g, offset) {
 
         if (sigma[id]) n['@id'] = sigma[id];
 
-        for (let p in n) {
-            for (let o in n[p]) {
+        urdf.signature(n).forEach(p => {
+            n[p].forEach(o => {
                 let ido = o['@id'];
 
                 if (sigma[ido]) o['@id'] = sigma[ido];
-            }
-        }
+            });
+        });
 
         return n;
     });
