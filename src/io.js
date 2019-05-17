@@ -1,5 +1,6 @@
 const n3 = require('n3');
 const jsonld = require('jsonld');
+const fetch = require('node-fetch');
 
 const processor = jsonld.promises;
 
@@ -43,9 +44,41 @@ function parse(dataString, opts) {
     });
 }
 
+/**
+ * Fetches and parses data from a remote location, then
+ * returns JSON-LD definitions.
+ * 
+ * @param {string} uri 
+ */
+function parseFrom(uri) {
+    let opts = {};
+
+    return fetch(uri, {
+        headers: { 'Accept': 'application/ld+json' },
+        redirect: 'follow'
+    })
+
+    .then(res => {
+        if (res.ok) {
+            if (res.headers.has('Content-Type')) {
+                opts.format = res.headers.get('Content-Type');
+            }
+
+            return res.text();
+        } else {
+            return Promise.reject(new Error(res));
+        }
+    })
+
+    .then(data => parse(data, opts))
+
+    .catch(e => console.error(e));
+}
+
 function serialize(data) {
     // TODO
 }
 
 module.exports.parse = parse;
+module.exports.parseFrom = parseFrom;
 module.exports.serialize = serialize;

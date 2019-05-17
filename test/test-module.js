@@ -27,7 +27,6 @@ function query(f, ordered) {
 describe('urdf.load()', () => {
     const id = 'https://w3id.org/saref#TemperatureSensor';
     const gid = 'tag:thing.json';
-    const type = ['https://w3id.org/saref#State'];
 
     it('should correctly process arbitrary JSON-LD', () => {
         return load('thing-compact')
@@ -62,6 +61,16 @@ describe('urdf.load()', () => {
         .then(() => assert.fail())
         .catch(() => true);
     });
+});
+
+describe('urdf.loadFrom()', () => {
+    const uri = 'http://vcharpenay.link/vcharpenay.jsonld';
+    const id = 'https://vcharpenay.github.io/#me';
+
+    it('should correctly load remote content from a given URI', () => {
+        urdf.loadFrom(uri)
+        .then(() => urdf.find(id))
+    })
 });
 
 describe('urdf.query()', () => {

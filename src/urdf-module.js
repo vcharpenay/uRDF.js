@@ -157,6 +157,12 @@ function load(data, opts) {
     });
 }
 
+function loadFrom(uri) {
+    return io.parseFrom(uri)
+
+    .then(json => load(json));
+}
+
 /**
  * Returns all solution mappings from the first set that is compatible
  * with none of the mappings from the second set.
@@ -471,6 +477,7 @@ function rewrite(query) {
 function query(sparql) {
     return new Promise((resolve, reject) => {
         let ast = parser.parse(sparql);
+
         let dataset = createDataset(ast);
 
         rewrite(ast);
@@ -514,4 +521,5 @@ module.exports.findGraph = store.findGraph;
 module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;
+module.exports.loadFrom = loadFrom;
 module.exports.query = query;

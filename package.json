@@ -12,7 +12,8 @@
     "dependencies": {
         "sparqljs": "2.x.x",
         "n3": "1.0.x",
-        "jsonld": "1.5.x"
+        "jsonld": "1.5.x",
+        "node-fetch": "2.6.x"
     },
     "devDependencies": {
         "mocha": "3.0.x",
