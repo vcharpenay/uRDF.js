@@ -222,7 +222,7 @@ describe('urdf.query()', () => {
         .then(() => query('sensor-dataset'));
     });
 
-    it.only('should try to fetch remote graph if not present before querying', () => {
+    it('should try to fetch remote graph if not present before querying', () => {
         return query('remote-dataset');
     });
 });
