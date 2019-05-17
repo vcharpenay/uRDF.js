@@ -116,7 +116,7 @@ function rename(g, offset) {
  */
 function load(data, opts) {
     let parsePromise;
-    
+
     switch (typeof data) {
         case 'string':
             parsePromise = io.parse(data, opts);
@@ -192,11 +192,12 @@ function merge(omega1, omega2) {
  * Sequentially evaluates a list of SPARQL query patterns.
  * 
  * @param {array} patterns array of pattern objects 
+ * @param {object} dataset the evaluation dataset
  * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluateAll(patterns, gid) {
+function evaluateAll(patterns, dataset, gid) {
     return patterns.reduce((omega, p) => {
-        return evaluate(p, omega, gid);
+        return evaluate(p, dataset, omega, gid);
     }, [{}]);
 }
 
@@ -204,43 +205,44 @@ function evaluateAll(patterns, gid) {
  * Evaluates a SPARQL query pattern and returns mappings.
  * 
  * @param {object} pattern the query pattern
+ * @param {object} dataset the evaluation dataset
  * @param {array} mappings current mappings
  * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluate(pattern, mappings, gid) {
+function evaluate(pattern, dataset, mappings, gid) {
     let omega = [];
 
     switch (pattern.type) {
         case 'group':
-            omega = evaluateAll(pattern.patterns, gid);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
             return merge(mappings, omega);
 
         case 'graph':
             if (pattern.name.startsWith('?')) {
                 let n = name(pattern.name);
-                omega = store.listGraphs()
+                omega = dataset.listGraphs()
                     .map(gid => {
                         let mu = { [n]: { type: 'uri', value: gid } };
-                        return merge([mu], evaluateAll(pattern.patterns, gid));
+                        return merge([mu], evaluateAll(pattern.patterns, dataset, gid));
                     })
                     .reduce((union, omega) => union.concat(omega), []);
             } else {
-                omega = evaluateAll(pattern.patterns, pattern.name);
+                omega = evaluateAll(pattern.patterns, dataset, pattern.name);
             }
             return merge(mappings, omega);
 
         case 'union':
             return pattern.patterns
-                .map(p => evaluate(p, mappings, gid))
+                .map(p => evaluate(p, dataset, mappings, gid))
                 .reduce((union, omega) => union.concat(omega), []);
 
         case 'optional':
-            omega = evaluateAll(pattern.patterns, gid);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
             return merge(mappings, omega).concat(diff(mappings, omega));
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = store.query(f, gid);
+            omega = dataset.query(f, gid);
             return merge(mappings, omega);
 
         case 'values':
@@ -268,7 +270,7 @@ function evaluate(pattern, mappings, gid) {
                 .filter(mu => mu);
 
         case 'minus':
-            omega = evaluateAll(pattern.patterns, gid);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
             return mappings.filter(mu1 => {
                 return !omega.some(mu2 => intersect(mu1, mu2));
             });
@@ -279,13 +281,13 @@ function evaluate(pattern, mappings, gid) {
                 case 'exists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu], gid).length > 0;
+                        return evaluate(p, dataset, [mu], gid).length > 0;
                     });
 
                 case 'notexists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu], gid).length === 0;
+                        return evaluate(p, dataset, [mu], gid).length === 0;
                     });
 
                 default:
@@ -369,6 +371,24 @@ function modify(query, mappings) {
     return omega;
 }
 
+function createDataset(query) {
+    if (!query.from) return store;
+
+    let dataset = new urdf.Store();
+
+    query.from.default.forEach(gid => {
+        let g = store.findGraph(gid);
+        if (g) dataset.load(g);
+    });
+
+    query.from.named.forEach(gid => {
+        let g = store.findGraph(gid);
+        if (g) dataset.load(g, gid);
+    });
+
+    return dataset;
+}
+
 /**
  * Rewrites pattern to ensure filters have no free variable.
  * 
@@ -446,10 +466,11 @@ function rewrite(query) {
 function query(sparql) {
     return new Promise((resolve, reject) => {
         let ast = parser.parse(sparql);
+        let dataset = createDataset(ast);
 
-       rewrite(ast);
+        rewrite(ast);
 
-        let mappings = evaluateAll(ast.where);
+        let mappings = evaluateAll(ast.where, dataset);
 
         switch (ast.queryType) {
             case 'SELECT':

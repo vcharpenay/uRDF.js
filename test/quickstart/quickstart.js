@@ -1,5 +1,5 @@
 const assert = require('assert');
-const urdf = require('../src/urdf-module.js');
+const urdf = require('../../src/urdf-module.js');
 
 // some JSON-LD definition (LUBM SPARQL benchmark)
 const data = {
