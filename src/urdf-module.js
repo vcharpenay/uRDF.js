@@ -160,7 +160,11 @@ function load(data, opts) {
 function loadFrom(uri) {
     return io.parseFrom(uri)
 
-    .then(json => load(json));
+    .then(json => {
+        // TODO detect whether graph information included in JSON
+        json['@id'] = uri;
+        return load(json);
+    });
 }
 
 /**
@@ -379,25 +383,39 @@ function modify(query, mappings) {
 
 /**
  * Creates a SPARQL dataset from the FROM clauses of the input query.
+ * If an IRI is not known from the µRDF store, it attempts to fetch it.
  * 
  * @param {object} query the AST of a SPARQL query
  */
 function createDataset(query) {
-    if (!query.from) return store;
+    if (!query.from) return Promise.resolve(store);
 
-    let dataset = new urdf.Store();
+    let list = store.listGraphs();
 
-    query.from.default.forEach(gid => {
-        let g = store.findGraph(gid);
-        if (g) dataset.load(g);
+    let promises = query.from.default
+        .concat(query.from.named)
+        .map(uri => {
+            if (!list.includes(uri)) return loadFrom(uri);
+            else return Promise.resolve();
+        });
+
+    return Promise.all(promises)
+
+    .then(() => {
+        let dataset = new urdf.Store();
+    
+        query.from.default.forEach(gid => {
+            let g = store.findGraph(gid);
+            if (g) dataset.load(g);
+        });
+    
+        query.from.named.forEach(gid => {
+            let g = store.findGraph(gid);
+            if (g) dataset.load(g, gid);
+        });
+    
+        return dataset;
     });
-
-    query.from.named.forEach(gid => {
-        let g = store.findGraph(gid);
-        if (g) dataset.load(g, gid);
-    });
-
-    return dataset;
 }
 
 /**
@@ -475,31 +493,33 @@ function rewrite(query) {
  * @param {string} sparql a SPARQL query as string
  */
 function query(sparql) {
-    return new Promise((resolve, reject) => {
-        let ast = parser.parse(sparql);
+    let ast = parser.parse(sparql);
 
-        let dataset = createDataset(ast);
-
-        rewrite(ast);
-
-        let mappings = evaluateAll(ast.where, dataset);
-
-        switch (ast.queryType) {
-            case 'SELECT':
-                mappings = modify(ast, mappings);
-                resolve(mappings);
-
-            case 'ASK':
-                // TODO stop after first mapping found
-                resolve(mappings.length > 0);
-            
-            case 'DESCRIBE':
-                // TODO use urdf.find
-
-            case 'CONSTRUCT':
-            default:
-                reject(new Error('Not implemented'));
-        }
+    return createDataset(ast)
+    
+    .then(dataset => {
+        return new Promise((resolve, reject) => {
+            rewrite(ast);
+    
+            let mappings = evaluateAll(ast.where, dataset);
+    
+            switch (ast.queryType) {
+                case 'SELECT':
+                    mappings = modify(ast, mappings);
+                    resolve(mappings);
+    
+                case 'ASK':
+                    // TODO stop after first mapping found
+                    resolve(mappings.length > 0);
+                
+                case 'DESCRIBE':
+                    // TODO use urdf.find
+    
+                case 'CONSTRUCT':
+                default:
+                    reject(new Error('Not implemented'));
+            }
+        });
     });
 }
 

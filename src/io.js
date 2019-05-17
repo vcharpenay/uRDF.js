@@ -66,7 +66,8 @@ function parseFrom(uri) {
 
             return res.text();
         } else {
-            return Promise.reject(new Error(res));
+            // silently ignore failed attempt
+            console.error(res);
         }
     })
 

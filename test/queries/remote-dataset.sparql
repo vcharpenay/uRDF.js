@@ -1,0 +1,8 @@
+prefix s: <http://schema.org/>
+
+select ?me
+from <http://vcharpenay.link/vcharpenay.jsonld>
+where {
+    ?me s:givenName "Victor" ;
+        s:familyName "Charpenay" .
+}
