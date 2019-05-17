@@ -1,6 +1,6 @@
 const assert = require('assert');
 const fs = require('fs');
-const urdf = require('../src/urdf.js');
+const urdf = require('../src/urdf.js').Store();
 
 function load(f, id) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f));

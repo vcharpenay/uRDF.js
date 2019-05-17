@@ -1,6 +1,109 @@
 'use strict';
 
-module.exports = (function() {
+/**
+ * Merges two solution mappings.
+ *
+ * Returns a new mapping object with entries of both input objects
+ * if mappings are compatible, null otherwise.
+ */
+function merge(μ1, μ2) {
+	var μ = {};
+
+	// TODO datatype, lang
+	
+	for (var v in μ1) {
+		if (μ2[v] !== undefined && μ2[v].value !== μ1[v].value) {
+			return null;
+		}
+
+		μ[v] = μ1[v];
+	}
+
+	for (var v in μ2) {
+		if (μ[v] === undefined) μ[v] = μ2[v];
+	}
+	
+	return μ;
+};
+
+/**
+ * Returns the signature of the input node
+ * (the list of its properties, excluding @-properties).
+ * 
+ * TODO bitmap as in the original impl?
+ */
+function signature(obj) {
+	var fn = function(p) { return p[0] !== '@' };
+	return Object.keys(obj).filter(fn);
+}
+
+/**
+ * Evaluates if the input object is a variable
+ * (i.e. a blank node).
+ *
+ * Returns true if obj is a variable, false otherwise.
+ */
+function isVariable(obj) {
+	return obj['@id'] !== undefined && obj['@id'].indexOf('_:') === 0;
+};
+
+/**
+ * Evaluates if the input object is a literal.
+ *
+ * Returns true if obj is a literal, false otherwise.
+ */
+function isLiteral(obj) {
+	return obj['@value'] !== undefined;
+};
+
+/**
+ * Evaluates if the input object is a list.
+ * 
+ * Returns true if obj is a list object, false otherwise.
+ */
+function isList(obj) {
+	return obj['@list'] !== undefined;
+}
+
+/**
+ * Returns the RDF lexical form of the input object.
+ */
+function lexicalForm(obj) {
+	if (isVariable(obj)) return obj['@id'].substring(2);
+	else if (isLiteral(obj)) return obj['@value'];
+	else if (isList(obj)) return obj['@list'];
+	else return obj['@id'] ? obj['@id'] : '';
+}
+
+/**
+ * Returns the SPARQL JSON form of the input object.
+ * 
+ * The format was extended to include RDF lists, which
+ * are not directly accessible from the µRDF store.
+ */
+function sparqlJsonForm(obj) {
+	var sj = {
+		value: lexicalForm(obj)
+	};
+
+	if (isLiteral(obj)) {
+		sj.type = 'literal';
+
+		if (obj['@type']) sj.datatype = obj['@type'];
+		if (obj['@language']) sj.lang = obj['@language'];
+	} else if (isVariable(obj)) {
+		sj.type = 'bnode';
+	} else if (isList(obj)) {
+		sj.type = 'list';
+		sj.value = sj.value.map(function(o) { return sparqlJsonForm(o) });
+	} else {
+		sj.type = 'uri';
+	}
+
+	return sj;
+}
+
+function Store() {
 	/**
 	 * Namespace declaration.
 	 */
@@ -159,7 +262,7 @@ module.exports = (function() {
 
 		var _binding = function(f, n) {
 			return {
-				[urdf.lexicalForm(f)]: urdf.sparqlJsonForm(n)
+				[lexicalForm(f)]: sparqlJsonForm(n)
 			};
 		};
 
@@ -174,10 +277,10 @@ module.exports = (function() {
 		var _query = function(f, n, Ω) {
 			if (!urdf.match(f, n)) {
 				return [];
-			} else if (urdf.isLiteral(f)) {
+			} else if (isLiteral(f)) {
 				return Ω;
 			} else {
-				if (urdf.isVariable(f)) {
+				if (isVariable(f)) {
 					// TODO exclude from result if no bnode label
 					Ω = _merge(Ω, [_binding(f, n)]);
 				}
@@ -186,7 +289,7 @@ module.exports = (function() {
 					var types = n['@type'].map(_node);
 
 					var Ωt = f['@type'].filter(function(t) {
-						return urdf.isVariable(_node(t))
+						return isVariable(_node(t))
 					}).reduce(function(Ωt, t) {
 						return _queryAll(_node(t), types, Ωt);
 					}, [{}]);
@@ -195,9 +298,9 @@ module.exports = (function() {
 				}
 
 				// TODO take 'require all' flag into account (default: true)
-				return urdf.signature(f).reduce(function(Ω, p) {
-					if (urdf.isVariable(_node(p))) {
-						return urdf.signature(n).map(function(p2) {
+				return signature(f).reduce(function(Ω, p) {
+					if (isVariable(_node(p))) {
+						return signature(n).map(function(p2) {
 							return {
 								'@id': f['@id'],
 								[p2]: f[p]
@@ -209,7 +312,7 @@ module.exports = (function() {
 							})
 						}]).reduce(function(Ω2, f2) {
 							var Ω3 = _query(f2, n, Ω);
-							var p2 = urdf.signature(f2)[0] || '@type';
+							var p2 = signature(f2)[0] || '@type';
 
 							Ω3 = _merge(Ω3, [_binding(_node(p), _node(p2))]);
 
@@ -227,7 +330,7 @@ module.exports = (function() {
 		var _merge = function(Ω1, Ω2) {
 			return Ω1.reduce(function(Ω, μ1) {
 				return Ω2.reduce(function(Ω, μ2) {
-					var μ = urdf.merge(μ1, μ2);
+					var μ = merge(μ1, μ2);
 
 					if (μ !== null) { Ω.push(μ); }
 
@@ -239,8 +342,8 @@ module.exports = (function() {
 		return frame.reduce(function(Ω, f) {
 			var nodes = [];
 
-			if (urdf.isVariable(f)) {
-				var name = urdf.lexicalForm(f);
+			if (isVariable(f)) {
+				var name = lexicalForm(f);
 
 				nodes = Ω.reduce(function(ids, μ) {
 					if (μ[name] !== undefined) {
@@ -282,7 +385,7 @@ module.exports = (function() {
 	 * matches q (types and properties), false otherwise.
 	 */
 	urdf.match = function(q, n, all) {
-		if (urdf.isLiteral(q)) {
+		if (isLiteral(q)) {
 			var v = q['@value'];
 			var t = q['@type'] || null;
 			var l = q['@language'] || null;
@@ -293,7 +396,7 @@ module.exports = (function() {
 				&& (n['@type'] === t || t === null)
 				&& (n['@language'] === l || l === null);
 		} else {
-			if (!urdf.isVariable(q) && q['@id'] !== n['@id']) {
+			if (!isVariable(q) && q['@id'] !== n['@id']) {
 				return false;
 			}
 
@@ -304,7 +407,7 @@ module.exports = (function() {
 					return false;
 				} else {
 					return a.some(function(elem) {
-						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+						return isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
 					});
 				}
 			};
@@ -320,120 +423,21 @@ module.exports = (function() {
 					return false;
 				} else {
 					return a.every(function(elem) {
-						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+						return isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
 					});
 				}
 			};
 
-			var sq = urdf.signature(q);
-			var sn = urdf.signature(n);
+			var sq = signature(q);
+			var sn = signature(n);
 
 			return all === false ? _interects(sq, sn) : _isSubset(sq, sn);
 		}
 	};
-
-	/**
-	 * Merges two solution mappings.
-	 *
-	 * Returns a new mapping object with entries of both input objects
-	 * if mappings are compatible, null otherwise.
-	 */
-	urdf.merge = function(μ1, μ2) {
-		var μ = {};
-
-		// TODO datatype, lang
-		
-		for (var v in μ1) {
-			if (μ2[v] !== undefined && μ2[v].value !== μ1[v].value) {
-				return null;
-			}
-
-			μ[v] = μ1[v];
-		}
-
-		for (var v in μ2) {
-			if (μ[v] === undefined) μ[v] = μ2[v];
-		}
-		
-		return μ;
-	};
-
-	/**
-	 * Returns the signature of the input node
-	 * (the list of its properties, excluding @-properties).
-	 * 
-	 * TODO bitmap as in the original impl?
-	 */
-	urdf.signature = function(obj) {
-		var fn = function(p) { return p[0] !== '@' };
-		return Object.keys(obj).filter(fn);
-	}
-
-	/**
-	 * Evaluates if the input object is a variable
-	 * (i.e. a blank node).
-	 *
-	 * Returns true if obj is a variable, false otherwise.
-	 */
-	urdf.isVariable = function(obj) {
-		return obj['@id'] !== undefined && obj['@id'].indexOf('_:') === 0;
-	};
-
-	/**
-	 * Evaluates if the input object is a literal.
-	 *
-	 * Returns true if obj is a literal, false otherwise.
-	 */
-	urdf.isLiteral = function(obj) {
-		return obj['@value'] !== undefined;
-	};
-
-	/**
-	 * Evaluates if the input object is a list.
-	 * 
-	 * Returns true if obj is a list object, false otherwise.
-	 */
-	urdf.isList = function(obj) {
-		return obj['@list'] !== undefined;
-	}
-
-	/**
-	 * Returns the RDF lexical form of the input object.
-	 */
-	urdf.lexicalForm = function(obj) {
-		if (urdf.isVariable(obj)) return obj['@id'].substring(2);
-		else if (urdf.isLiteral(obj)) return obj['@value'];
-		else if (urdf.isList(obj)) return obj['@list'];
-		else return obj['@id'] ? obj['@id'] : '';
-	}
-
-	/**
-	 * Returns the SPARQL JSON form of the input object.
-	 * 
-	 * The format was extended to include RDF lists, which
-	 * are not directly accessible from the µRDF store.
-	 */
-	urdf.sparqlJsonForm = function(obj) {
-		var sj = {
-			value: urdf.lexicalForm(obj)
-		};
-
-		if (urdf.isLiteral(obj)) {
-			sj.type = 'literal';
-
-			if (obj['@type']) sj.datatype = obj['@type'];
-			if (obj['@language']) sj.lang = obj['@language'];
-		} else if (urdf.isVariable(obj)) {
-			sj.type = 'bnode';
-		} else if (urdf.isList(obj)) {
-			sj.type = 'list';
-			sj.value = sj.value.map(function(o) { return urdf.sparqlJsonForm(o) });
-		} else {
-			sj.type = 'uri';
-		}
-
-		return sj;
-	}
 	
 	return urdf;
-})();
+}
+
+module.exports.Store = Store;
+module.exports.merge = merge;
+module.exports.signature = signature;

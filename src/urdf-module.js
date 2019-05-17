@@ -4,6 +4,11 @@ const utils = require('./utils.js');
 const io = require('./io.js');
 const urdf = require('./urdf.js');
 
+/**
+ * main instance of the µRDF store.
+ */
+const store = urdf.Store();
+
 const jsonld = require('jsonld');
 const sparqljs = require('sparqljs');
 
@@ -41,7 +46,7 @@ function intersect(mu1, mu2) {
  */
 function find(id, gid) {
     return new Promise((resolve, reject) => {
-        let node = urdf.find(id, gid);
+        let node = store.find(id, gid);
 
         // TODO deal with compacted form when time comes
         // TODO return copy instead of actual object?
@@ -58,7 +63,7 @@ function find(id, gid) {
  */
 function clear(gid) {
     return new Promise((resolve, reject) => {
-        urdf.clear(gid);
+        store.clear(gid);
         resolve();
     });
 }
@@ -141,10 +146,10 @@ function load(data, opts) {
         dataset.forEach(g => {
             let gid = g['@id'];
 
-            let offset = urdf.size(gid);
+            let offset = store.size(gid);
             let renamed = rename(g['@graph'], offset);
 
-            urdf.load(renamed, gid);
+            store.load(renamed, gid);
         });
 
         return true; // TODO deal with errors (none thrown from urdf-core)
@@ -212,7 +217,7 @@ function evaluate(pattern, mappings, gid) {
         case 'graph':
             if (pattern.name.startsWith('?')) {
                 let n = name(pattern.name);
-                omega = urdf.listGraphs()
+                omega = store.listGraphs()
                     .map(gid => {
                         let mu = { [n]: { type: 'uri', value: gid } };
                         return merge([mu], evaluateAll(pattern.patterns, gid));
@@ -234,7 +239,7 @@ function evaluate(pattern, mappings, gid) {
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = urdf.query(f, gid);
+            omega = store.query(f, gid);
             return merge(mappings, omega);
 
         case 'values':
@@ -477,8 +482,8 @@ const listRegistry = {
 for (let name in listRegistry) utils.register(name, listRegistry[name]);
 
 module.exports.register = utils.register;
-module.exports.size = urdf.size;
-module.exports.findGraph = urdf.findGraph;
+module.exports.size = store.size;
+module.exports.findGraph = store.findGraph;
 module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;
