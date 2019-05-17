@@ -371,6 +371,11 @@ function modify(query, mappings) {
     return omega;
 }
 
+/**
+ * Creates a SPARQL dataset from the FROM clauses of the input query.
+ * 
+ * @param {object} query the AST of a SPARQL query
+ */
 function createDataset(query) {
     if (!query.from) return store;
 
