@@ -1,11 +1,13 @@
 const assert = require('assert');
 const fs = require('fs');
-const urdf = require('../src/urdf.js').Store();
+const urdf = require('../src/urdf.js');
+
+const store = new urdf.Store();
 
 function load(f, id) {
     let data = JSON.parse(fs.readFileSync('test/data/' + f));
-    urdf.clear(id);
-    urdf.load(data, id);
+    store.clear(id);
+    store.load(data, id);
 }
 
 function query(f, id) {
@@ -16,11 +18,11 @@ function query(f, id) {
         res = res.results.bindings;
     }
 
-    return [new Set(urdf.query(q, id)), new Set(res)];
+    return [new Set(store.query(q, id)), new Set(res)];
 }
 
 before(() => {
-    urdf.clear();
+    store.clear();
 });
 
 describe('urdf.findGraph()', () => {
@@ -31,8 +33,8 @@ describe('urdf.findGraph()', () => {
         let tag2 = 'tag:lubm-s34.json';
         load('lubm-s34.json', tag2);
 
-        let g1 = urdf.findGraph(tag1);
-        let g2 = urdf.findGraph(tag2);
+        let g1 = store.findGraph(tag1);
+        let g2 = store.findGraph(tag2);
         assert.notDeepStrictEqual(g1, g2);
     });
 });
@@ -40,8 +42,8 @@ describe('urdf.findGraph()', () => {
 describe('urdf.clear()', () => {
     it('should delete all nodes', () => {
         load('thing.json');
-        urdf.clear();
-        assert.strictEqual(urdf.size(), 0);
+        store.clear();
+        assert.strictEqual(store.size(), 0);
     });
     
     it('should clear named graph only if identifier given', () => {
@@ -51,9 +53,9 @@ describe('urdf.clear()', () => {
         let tag2 = 'tag:lubm-s34.json';
         load('lubm-s34.json', tag2);
 
-        urdf.clear(tag1);
+        store.clear(tag1);
 
-        assert.strictEqual(urdf.size(), 34);
+        assert.strictEqual(store.size(), 34);
     });
 });
 
@@ -64,8 +66,8 @@ describe('urdf.size()', () => {
           .forEach((f) => {
               load(f);
               let size = Number.parseInt(f.match(/\d+/)[0]);
-              assert.strictEqual(urdf.size(), size);
-              urdf.clear();
+              assert.strictEqual(store.size(), size);
+              store.clear();
           });
     });
 
@@ -77,7 +79,7 @@ describe('urdf.size()', () => {
               return size += Number.parseInt(f.match(/\d+/)[0]);
           }, 0);
 
-        assert.strictEqual(urdf.size(), size);
+        assert.strictEqual(store.size(), size);
     });
 
     it('should return the number of triples for named graph only if identifier given', () => {
@@ -91,7 +93,7 @@ describe('urdf.size()', () => {
           }, {});
 
         for (let id in sizes) {
-            assert.strictEqual(urdf.size(id), sizes[id]);
+            assert.strictEqual(store.size(id), sizes[id]);
         }
     });
 });
@@ -101,14 +103,14 @@ describe('urdf.find()', () => {
 
     it('should return the correct node', () => {
         load('lubm-s8.json');
-        let n = urdf.find(uri);
+        let n = store.find(uri);
         assert.ok(n);
         assert.strictEqual(n['@id'], uri);
     });
 
     it('should return null if no node found', () => {
         load('lubm-s8.json');
-        assert.strictEqual(urdf.find('tag:notfound'), null);
+        assert.strictEqual(store.find('tag:notfound'), null);
     });
 
     it('should return null if node not found in given graph', () => {
@@ -119,8 +121,8 @@ describe('urdf.find()', () => {
         load('thing.json', tag2);
 
         let id = 'http://example.org/sensor1';
-        assert.strictEqual(urdf.find(id, tag1), null);
-        assert.ok(urdf.find(id, tag2));
+        assert.strictEqual(store.find(id, tag1), null);
+        assert.ok(store.find(id, tag2));
     });
 });
 

@@ -7,7 +7,7 @@ const urdf = require('./urdf.js');
 /**
  * main instance of the µRDF store.
  */
-const store = urdf.Store();
+const store = new urdf.Store();
 
 const jsonld = require('jsonld');
 const sparqljs = require('sparqljs');
@@ -115,22 +115,23 @@ function rename(g, offset) {
  * @param {object} opts options as an object (passed to N3.js)
  */
 function load(data, opts) {
-    let parsed;
+    let parsePromise;
+    
     switch (typeof data) {
         case 'string':
-            parsed = io.parse(data, opts);
+            parsePromise = io.parse(data, opts);
             break;
 
         case 'object':
         case 'array':
-            parsed = Promise.resolve(data);
+            parsePromise = Promise.resolve(data);
             break;
 
         default:
-            parsed = Promise.reject(new Error('Invalid JSON-LD or RDF definition'));
+            parsePromise = Promise.reject(new Error('Invalid JSON-LD or RDF definition'));
     }
 
-    return parsed
+    return parsePromise
 
     // TODO normalize, compact
     .then(json => processor.flatten(json))
