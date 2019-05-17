@@ -25,7 +25,7 @@ before(() => {
     store.clear();
 });
 
-describe('urdf.findGraph()', () => {
+describe('urdf.Store.findGraph()', () => {
     it('should return a named graph only if identifier given', () => {
         let tag1 = 'tag:things.json';
         load('thing.json', tag1);
@@ -39,7 +39,7 @@ describe('urdf.findGraph()', () => {
     });
 });
 
-describe('urdf.clear()', () => {
+describe('urdf.Store.clear()', () => {
     it('should delete all nodes', () => {
         load('thing.json');
         store.clear();
@@ -59,7 +59,7 @@ describe('urdf.clear()', () => {
     });
 });
 
-describe('urdf.size()', () => {
+describe('urdf.Store.size()', () => {
     it('should return the correct number of triples', () => {
         fs.readdirSync('test/data')
           .filter(f => /lubm-s\d+\.json/.test(f))
@@ -98,7 +98,7 @@ describe('urdf.size()', () => {
     });
 });
 
-describe('urdf.find()', () => {
+describe('urdf.Store.find()', () => {
     const uri = 'http://www.Department0.University4.edu/AssistantProfessor1';
 
     it('should return the correct node', () => {
@@ -126,7 +126,7 @@ describe('urdf.find()', () => {
     });
 });
 
-describe('urdf.query()', ()=> {
+describe('urdf.Store.query()', ()=> {
     it('should correctly process a single triple pattern', () => {
         load('thing.json');
         let [actual, expected] = query('unit.json');
@@ -220,7 +220,7 @@ describe('urdf.query()', ()=> {
     });
 });
 
-describe('urdf', () => {
+describe('urdf.Store', () => {
     it('should correctly process all LUBM benchmark queries', () => {
         load('lubm-inf.json');
         let report = [];

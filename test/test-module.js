@@ -207,4 +207,9 @@ describe('urdf.query()', () => {
         return load('thing')
         .then(() => query('unsafe-sensor-filter'));
     });
+
+    it('should correctly limit query evaluation to the input dataset', () => {
+        return load('thing-graph')
+        .then(() => query('sensor-dataset'));
+    });
 });

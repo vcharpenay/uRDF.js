@@ -1,0 +1,12 @@
+[
+    {
+        "s1": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "s2": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        }
+    }
+]
