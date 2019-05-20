@@ -132,7 +132,7 @@ module.exports = jsonld => {
 // TODO: move `NQuads` to its own package
 module.exports = require('rdf-canonize').NQuads;
 
-},{"rdf-canonize":48}],5:[function(require,module,exports){
+},{"rdf-canonize":49}],5:[function(require,module,exports){
 /*
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -274,7 +274,7 @@ function getXMLSerializerClass() {
   return XMLSerializer;
 }
 
-},{"./constants":8,"xmldom":58}],6:[function(require,module,exports){
+},{"./constants":8,"xmldom":60}],6:[function(require,module,exports){
 /*
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -2719,7 +2719,7 @@ function _request(request, options) {
   });
 }
 
-},{"../JsonLdError":2,"../RequestQueue":6,"../constants":8,"../util":22,"http":58,"request":58}],11:[function(require,module,exports){
+},{"../JsonLdError":2,"../RequestQueue":6,"../constants":8,"../util":22,"http":60,"request":60}],11:[function(require,module,exports){
 /*
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -5942,7 +5942,7 @@ wrapper(factory);
 module.exports = factory;
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./JsonLdError":2,"./JsonLdProcessor":3,"./NQuads":4,"./Rdfa":5,"./RequestQueue":6,"./compact":7,"./context":9,"./documentLoaders/node":10,"./documentLoaders/xhr":11,"./expand":12,"./flatten":13,"./frame":14,"./fromRdf":15,"./graphTypes":16,"./nodeMap":18,"./toRdf":19,"./types":20,"./url":21,"./util":22,"_process":68,"rdf-canonize":48}],18:[function(require,module,exports){
+},{"./JsonLdError":2,"./JsonLdProcessor":3,"./NQuads":4,"./Rdfa":5,"./RequestQueue":6,"./compact":7,"./context":9,"./documentLoaders/node":10,"./documentLoaders/xhr":11,"./expand":12,"./flatten":13,"./frame":14,"./fromRdf":15,"./graphTypes":16,"./nodeMap":18,"./toRdf":19,"./types":20,"./url":21,"./util":22,"_process":70,"rdf-canonize":49}],18:[function(require,module,exports){
 /*
  * Copyright (c) 2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -7376,7 +7376,7 @@ function _labelBlankNodes(issuer, element) {
 }
 
 }).call(this,require('_process'),require("timers").setImmediate)
-},{"./JsonLdError":2,"./graphTypes":16,"./types":20,"_process":68,"rdf-canonize":48,"timers":85}],23:[function(require,module,exports){
+},{"./JsonLdError":2,"./graphTypes":16,"./types":20,"_process":70,"rdf-canonize":49,"timers":87}],23:[function(require,module,exports){
 module.exports = {
   DataFactory:  require('./lib/N3DataFactory'),
   Lexer:        require('./lib/N3Lexer'),
@@ -8252,7 +8252,7 @@ N3Lexer.prototype = {
 module.exports = N3Lexer;
 
 }).call(this,require("buffer").Buffer,require("timers").setImmediate)
-},{"./IRIs":24,"buffer":59,"timers":85}],27:[function(require,module,exports){
+},{"./IRIs":24,"buffer":61,"timers":87}],27:[function(require,module,exports){
 // **N3Parser** parses N3 documents.
 var N3Lexer = require('./N3Lexer'),
     DataFactory = require('./N3DataFactory'),
@@ -9947,7 +9947,7 @@ N3StreamParser.prototype.import = function (stream) {
 // ## Exports
 module.exports = N3StreamParser;
 
-},{"./N3Parser.js":27,"stream":84,"util":88}],30:[function(require,module,exports){
+},{"./N3Parser.js":27,"stream":86,"util":90}],30:[function(require,module,exports){
 // **N3StreamWriter** serializes a quad stream into a text stream.
 var Transform = require('stream').Transform,
     util = require('util'),
@@ -9988,7 +9988,7 @@ N3StreamWriter.prototype.import = function (stream) {
 // ## Exports
 module.exports = N3StreamWriter;
 
-},{"./N3Writer.js":32,"stream":84,"util":88}],31:[function(require,module,exports){
+},{"./N3Writer.js":32,"stream":86,"util":90}],31:[function(require,module,exports){
 // **N3Util** provides N3 utility functions.
 
 var DataFactory = require('./N3DataFactory');
@@ -10399,6 +10399,32 @@ SerializedTerm.prototype.equals = function () { return false; };
 module.exports = N3Writer;
 
 },{"./IRIs":24,"./N3DataFactory":25}],33:[function(require,module,exports){
+(function (global){
+"use strict";
+
+// ref: https://github.com/tc39/proposal-global
+var getGlobal = function () {
+	// the only reliable means to get the global object is
+	// `Function('return this')()`
+	// However, this causes CSP violations in Chrome apps.
+	if (typeof self !== 'undefined') { return self; }
+	if (typeof window !== 'undefined') { return window; }
+	if (typeof global !== 'undefined') { return global; }
+	throw new Error('unable to locate global object');
+}
+
+var global = getGlobal();
+
+module.exports = exports = global.fetch;
+
+// Needed for TypeScript and Webpack.
+exports.default = global.fetch.bind(global);
+
+exports.Headers = global.Headers;
+exports.Request = global.Request;
+exports.Response = global.Response;
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{}],34:[function(require,module,exports){
 (function (Buffer){
 /**
  * Base-N/Base-X encoding/decoding functions.
@@ -10588,7 +10614,7 @@ function _encodeWithByteBuffer(input, alphabet) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"buffer":58}],34:[function(require,module,exports){
+},{"buffer":60}],35:[function(require,module,exports){
 /**
  * Node.js module for Forge.
  *
@@ -10603,7 +10629,7 @@ module.exports = {
   }
 };
 
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * Node.js module for Forge message digests.
  *
@@ -10616,7 +10642,7 @@ var forge = require('./forge');
 module.exports = forge.md = forge.md || {};
 forge.md.algorithms = forge.md.algorithms || {};
 
-},{"./forge":34}],36:[function(require,module,exports){
+},{"./forge":35}],37:[function(require,module,exports){
 /**
  * Secure Hash Algorithm with 160-bit digest (SHA-1) implementation.
  *
@@ -10937,7 +10963,7 @@ function _update(s, w, bytes) {
   }
 }
 
-},{"./forge":34,"./md":35,"./util":38}],37:[function(require,module,exports){
+},{"./forge":35,"./md":36,"./util":39}],38:[function(require,module,exports){
 /**
  * Secure Hash Algorithm with 256-bit digest (SHA-256) implementation.
  *
@@ -11266,7 +11292,7 @@ function _update(s, w, bytes) {
   }
 }
 
-},{"./forge":34,"./md":35,"./util":38}],38:[function(require,module,exports){
+},{"./forge":35,"./md":36,"./util":39}],39:[function(require,module,exports){
 (function (process,global,Buffer,__argument0,__argument1,__argument2,__argument3,setImmediate){
 /**
  * Utility functions for web applications.
@@ -14263,7 +14289,7 @@ util.estimateCores = function(options, callback) {
 };
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("buffer").Buffer,arguments[3],arguments[4],arguments[5],arguments[6],require("timers").setImmediate)
-},{"./baseN":33,"./forge":34,"_process":68,"buffer":58,"timers":85}],39:[function(require,module,exports){
+},{"./baseN":34,"./forge":35,"_process":70,"buffer":60,"timers":87}],40:[function(require,module,exports){
 /**
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -14392,7 +14418,7 @@ module.exports = class AsyncAlgorithm {
   }
 };
 
-},{"./util":49}],40:[function(require,module,exports){
+},{"./util":50}],41:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -14465,7 +14491,7 @@ module.exports = class IdentifierIssuer {
   }
 };
 
-},{"./util":49}],41:[function(require,module,exports){
+},{"./util":50}],42:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -14495,7 +14521,7 @@ module.exports = class MessageDigest {
   }
 };
 
-},{"node-forge/lib/forge":34,"node-forge/lib/md":35,"node-forge/lib/sha1":36,"node-forge/lib/sha256":37}],42:[function(require,module,exports){
+},{"node-forge/lib/forge":35,"node-forge/lib/md":36,"node-forge/lib/sha1":37,"node-forge/lib/sha256":38}],43:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -14876,7 +14902,7 @@ function _unescape(s) {
   });
 }
 
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -14963,7 +14989,7 @@ module.exports = class Permutator {
 };
 
 
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -15528,7 +15554,7 @@ module.exports = class URDNA2015 extends AsyncAlgorithm {
   }
 };
 
-},{"./AsyncAlgorithm":39,"./IdentifierIssuer":40,"./MessageDigest":41,"./NQuads":42,"./Permutator":43,"./util":49}],45:[function(require,module,exports){
+},{"./AsyncAlgorithm":40,"./IdentifierIssuer":41,"./MessageDigest":42,"./NQuads":43,"./Permutator":44,"./util":50}],46:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Digital Bazaar, Inc. All rights reserved.
  */
@@ -16020,7 +16046,7 @@ module.exports = class URDNA2015Sync {
   }
 };
 
-},{"./IdentifierIssuer":40,"./MessageDigest":41,"./NQuads":42,"./Permutator":43,"./util":49}],46:[function(require,module,exports){
+},{"./IdentifierIssuer":41,"./MessageDigest":42,"./NQuads":43,"./Permutator":44,"./util":50}],47:[function(require,module,exports){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
  */
@@ -16109,7 +16135,7 @@ module.exports = class URDNA2012 extends URDNA2015 {
   }
 };
 
-},{"./URDNA2015":44,"./util":49}],47:[function(require,module,exports){
+},{"./URDNA2015":45,"./util":50}],48:[function(require,module,exports){
 /*
  * Copyright (c) 2016 Digital Bazaar, Inc. All rights reserved.
  */
@@ -16195,7 +16221,7 @@ module.exports = class URDNA2012Sync extends URDNA2015Sync {
   }
 };
 
-},{"./URDNA2015Sync":45,"./util":49}],48:[function(require,module,exports){
+},{"./URDNA2015Sync":46,"./util":50}],49:[function(require,module,exports){
 /**
  * An implementation of the RDF Dataset Normalization specification.
  * This library works in the browser and node.js.
@@ -16357,7 +16383,7 @@ api.canonizeSync = function(dataset, options) {
     'Invalid RDF Dataset Canonicalization algorithm: ' + options.algorithm);
 };
 
-},{"./IdentifierIssuer":40,"./NQuads":42,"./URDNA2015":44,"./URDNA2015Sync":45,"./URGNA2012":46,"./URGNA2012Sync":47,"./util":49,"rdf-canonize-native":58}],49:[function(require,module,exports){
+},{"./IdentifierIssuer":41,"./NQuads":43,"./URDNA2015":45,"./URDNA2015Sync":46,"./URGNA2012":47,"./URGNA2012Sync":48,"./util":50,"rdf-canonize-native":60}],50:[function(require,module,exports){
 (function (process,setImmediate){
 /*
  * Copyright (c) 2016-2017 Digital Bazaar, Inc. All rights reserved.
@@ -16471,7 +16497,7 @@ function _invokeCallback(callback, err, result) {
 }
 
 }).call(this,require('_process'),require("timers").setImmediate)
-},{"_process":68,"timers":85}],50:[function(require,module,exports){
+},{"_process":70,"timers":87}],51:[function(require,module,exports){
 var XSD_INTEGER = 'http://www.w3.org/2001/XMLSchema#integer';
 
 function Generator(options, prefixes) {
@@ -16850,7 +16876,7 @@ module.exports = function SparqlGenerator(options) {
   };
 };
 
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (process){
 /* parser generated by jison 0.4.18 */
 /*
@@ -18387,7 +18413,7 @@ if (typeof module !== 'undefined' && require.main === module) {
 }
 }
 }).call(this,require('_process'))
-},{"_process":68,"fs":56,"path":66}],52:[function(require,module,exports){
+},{"_process":70,"fs":58,"path":68}],53:[function(require,module,exports){
 var Parser = require('./lib/SparqlParser').Parser;
 var Generator = require('./lib/SparqlGenerator');
 
@@ -18417,15 +18443,104 @@ module.exports = {
   Generator: Generator,
 };
 
-},{"./lib/SparqlGenerator":50,"./lib/SparqlParser":51}],53:[function(require,module,exports){
+},{"./lib/SparqlGenerator":51,"./lib/SparqlParser":52}],54:[function(require,module,exports){
+const n3 = require('n3');
+const jsonld = require('jsonld');
+const fetch = require('node-fetch');
+
+const processor = jsonld.promises;
+
+/**
+ * Parses data in a given serialization format and returns
+ * JSON-LD definitions.
+ * 
+ * @param {string} dataString JSON-LD definitions or RDF triples
+ * serialialized as a string
+ * @param {object} opts options as an object (passed to N3.js)
+ */
+function parse(dataString, opts) {
+    return new Promise((resolve, reject) => {
+        if (opts && opts.format === 'application/ld+json') {
+            try {
+                resolve(JSON.parse(dataString));
+            } catch (e) {
+                reject(e);
+            }
+        } else {
+            const def = { format: 'application/n-quads' };
+
+            let p = new n3.Parser(opts);
+            let w = new n3.Writer(def);
+
+            // TODO use stream API...?
+            p.parse(dataString, (err, quad) => {
+                if (err) reject(err);
+
+                else if (quad) w.addQuad(quad);
+
+                else w.end((err, nquads) => {
+                    if (err) reject(err);
+
+                    else processor.fromRDF(nquads, def)
+                        .then(json => resolve(json))
+                        .catch(e => reject(e));
+                });
+            });
+        }
+    });
+}
+
+/**
+ * Fetches and parses data from a remote location, then
+ * returns JSON-LD definitions.
+ * 
+ * @param {string} uri 
+ */
+function parseFrom(uri) {
+    let opts = {};
+
+    return fetch(uri, {
+        headers: { 'Accept': 'application/ld+json' },
+        redirect: 'follow'
+    })
+
+    .then(res => {
+        if (res.ok) {
+            if (res.headers.has('Content-Type')) {
+                opts.format = res.headers.get('Content-Type');
+            }
+
+            return res.text();
+        } else {
+            // silently ignore failed attempt
+            console.error(res);
+        }
+    })
+
+    .then(data => parse(data, opts))
+
+    .catch(e => console.error(e));
+}
+
+function serialize(data) {
+    // TODO
+}
+
+module.exports.parse = parse;
+module.exports.parseFrom = parseFrom;
+module.exports.serialize = serialize;
+},{"jsonld":17,"n3":23,"node-fetch":33}],55:[function(require,module,exports){
 'use strict';
 
-const fs = require('fs');
-
 const utils = require('./utils.js');
+const io = require('./io.js');
 const urdf = require('./urdf.js');
 
-const n3 = require('n3');
+/**
+ * main instance of the µRDF store.
+ */
+const store = new urdf.Store();
+
 const jsonld = require('jsonld');
 const sparqljs = require('sparqljs');
 
@@ -18463,7 +18578,7 @@ function intersect(mu1, mu2) {
  */
 function find(id, gid) {
     return new Promise((resolve, reject) => {
-        let node = urdf.find(id, gid);
+        let node = store.find(id, gid);
 
         // TODO deal with compacted form when time comes
         // TODO return copy instead of actual object?
@@ -18480,8 +18595,47 @@ function find(id, gid) {
  */
 function clear(gid) {
     return new Promise((resolve, reject) => {
-        urdf.clear(gid);
+        store.clear(gid);
         resolve();
+    });
+}
+
+/**
+ * Renames all blank nodes in the graph with numeric identifiers,
+ * starting from an offset (e.g. a number higher than the size
+ * of the µRDF store, to avoid name conflicts).
+ * 
+ * @param {array} g 
+ * @param {number} offset 
+ */
+function rename(g, offset) {
+    let idx = 0;
+    let sigma = {};
+
+    g.forEach(n => {
+        let id = n['@id'];
+
+        if (id && id.startsWith('_:')) {
+            sigma[id] = '_:b' + (offset + (idx++));
+        }
+    });
+
+    // TODO copy of node object instead?
+    // TODO remove blank node id if no reference in graph?
+    return g.map(n => {
+        let id = n['@id'];
+
+        if (sigma[id]) n['@id'] = sigma[id];
+
+        urdf.signature(n).forEach(p => {
+            n[p].forEach(o => {
+                let ido = o['@id'];
+
+                if (sigma[ido]) o['@id'] = sigma[ido];
+            });
+        });
+
+        return n;
     });
 }
 
@@ -18493,84 +18647,86 @@ function clear(gid) {
  * @param {object} opts options as an object (passed to N3.js)
  */
 function load(data, opts) {
-    return new Promise((resolve, reject) => {
-        switch (typeof data) {
-            case 'string':
-                if (opts && opts.format === 'application/ld+json') {
-                    try {
-                        resolve(JSON.parse(data));
-                    } catch (e) {
-                        reject(e);
-                    }
-                } else {
-                    const def = { format: 'application/n-quads' };
-    
-                    let p = new n3.Parser(opts);
-                    let w = new n3.Writer(def);
-    
-                    // TODO use stream API...?
-                    p.parse(data, (err, quad) => {
-                        if (err) reject(err);
-    
-                        else if (quad) w.addQuad(quad);
-    
-                        else w.end((err, nquads) => {
-                            if (err) reject(err);
-    
-                            else processor.fromRDF(nquads, def)
-                                 .then(json => resolve(json))
-                                 .catch(e => reject(e));
-                        });
-                    });
-                }
-                break;
+    let parsePromise;
 
-            case 'object':
-            case 'array':
-                resolve(data);
-                break;
+    switch (typeof data) {
+        case 'string':
+            parsePromise = io.parse(data, opts);
+            break;
 
-            default:
-                reject(new Error('Invalid JSON-LD or RDF definition'));
-        }
-    })
+        case 'object':
+        case 'array':
+            parsePromise = Promise.resolve(data);
+            break;
+
+        default:
+            parsePromise = Promise.reject(new Error('Invalid JSON-LD or RDF definition'));
+    }
+
+    return parsePromise
 
     // TODO normalize, compact
     .then(json => processor.flatten(json))
 
     .then(json => {
-        // TODO put this code in urdf-core?
-        json
+        let dataset = json
             .filter(obj => obj['@graph'])
-            .forEach(g => urdf.load(g['@graph'], g['@id']));
+            .concat({
+                // default graph
+                '@graph': json.filter(obj => !obj['@graph'])
+            });
 
-        urdf.load(json.filter(obj => !obj['@graph']));
+        dataset.forEach(g => {
+            let gid = g['@id'];
+
+            let offset = store.size(gid);
+            let renamed = rename(g['@graph'], offset);
+
+            store.load(renamed, gid);
+        });
 
         return true; // TODO deal with errors (none thrown from urdf-core)
     });
 }
 
+function loadFrom(uri) {
+    return io.parseFrom(uri)
+
+    .then(json => {
+        // TODO detect whether graph information included in JSON
+        json['@id'] = uri;
+        return load(json);
+    });
+}
+
 /**
- * Merges solutions and returns either compatible mappings (pure join)
- * or all mappings of first input set, merged if possible (left outer join).
+ * Returns all solution mappings from the first set that is compatible
+ * with none of the mappings from the second set.
  * 
  * @param {array} omega1 first set of solution mappings
  * @param {array} omega2 second set of solution mappings
- * @param {boolean} opt optional flag for left outer join
  */
-function merge(omega1, omega2, opt) {
+function diff(omega1, omega2) {
+    return omega1.filter(mu1 => {
+        return omega2.every(mu2 => !urdf.merge(mu1, mu2));
+    });
+}
+
+/**
+ * Merges solutions and removes incompatible mappings.
+ * 
+ * @param {array} omega1 first set of solution mappings
+ * @param {array} omega2 second set of solution mappings
+ */
+function merge(omega1, omega2) {
     return omega1.reduce((omega, mu1) => {
-        let omegap = omega2.reduce((omega, mu2) => {
+        return omega2.reduce((omega, mu2) => {
             let mu = urdf.merge(mu1, mu2);
 
             if (mu) omega.push(mu);
 
             return omega;
-        }, []);
-
-        if (opt && omegap.length === 0) omegap.push(mu1);
-        
-        return omega.concat(omegap);
+        }, omega);
     }, []);
 }
 
@@ -18578,17 +18734,12 @@ function merge(omega1, omega2, opt) {
  * Sequentially evaluates a list of SPARQL query patterns.
  * 
  * @param {array} patterns array of pattern objects 
+ * @param {object} dataset the evaluation dataset
  * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluateAll(patterns, gid) {
-    let main = patterns.filter(p => p.type != 'bind' && p.type != 'filter');
-    let b = patterns.filter(p => p.type === 'bind');
-    let f = patterns.filter(p => p.type === 'filter');
-
-    let reordered = main.concat(b, f);
-
-    return reordered.reduce((omega, p) => {
-        return evaluate(p, omega, gid);
+function evaluateAll(patterns, dataset, gid) {
+    return patterns.reduce((omega, p) => {
+        return evaluate(p, dataset, omega, gid);
     }, [{}]);
 }
 
@@ -18596,47 +18747,44 @@ function evaluateAll(patterns, gid) {
  * Evaluates a SPARQL query pattern and returns mappings.
  * 
  * @param {object} pattern the query pattern
+ * @param {object} dataset the evaluation dataset
  * @param {array} mappings current mappings
  * @param {string} gid graph identifier defining the scope of evaluation
  */
-function evaluate(pattern, mappings, gid) {
+function evaluate(pattern, dataset, mappings, gid) {
     let omega = [];
 
     switch (pattern.type) {
         case 'group':
-            omega = evaluateAll(pattern.patterns, gid);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
             return merge(mappings, omega);
 
         case 'graph':
             if (pattern.name.startsWith('?')) {
                 let n = name(pattern.name);
-                omega = urdf.listGraphs()
+                omega = dataset.listGraphs()
                     .map(gid => {
                         let mu = { [n]: { type: 'uri', value: gid } };
-                        return merge([mu], evaluateAll(pattern.patterns, gid));
+                        return merge([mu], evaluateAll(pattern.patterns, dataset, gid));
                     })
                     .reduce((union, omega) => union.concat(omega), []);
             } else {
-                omega = evaluateAll(pattern.patterns, pattern.name);
+                omega = evaluateAll(pattern.patterns, dataset, pattern.name);
             }
             return merge(mappings, omega);
 
         case 'union':
             return pattern.patterns
-                .map(p => evaluate(p, mappings, gid))
+                .map(p => evaluate(p, dataset, mappings, gid))
                 .reduce((union, omega) => union.concat(omega), []);
 
         case 'optional':
-            let g = {
-                type: 'group',
-                patterns: pattern.patterns
-            };
-            omega = evaluate(g, mappings, gid);
-            return merge(mappings, omega, true);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
+            return merge(mappings, omega).concat(diff(mappings, omega));
 
         case 'bgp':
             let f = utils.frame(pattern);
-            omega = urdf.query(f, gid);
+            omega = dataset.query(f, gid);
             return merge(mappings, omega);
 
         case 'values':
@@ -18664,7 +18812,7 @@ function evaluate(pattern, mappings, gid) {
                 .filter(mu => mu);
 
         case 'minus':
-            omega = evaluateAll(pattern.patterns, gid);
+            omega = evaluateAll(pattern.patterns, dataset, gid);
             return mappings.filter(mu1 => {
                 return !omega.some(mu2 => intersect(mu1, mu2));
             });
@@ -18675,13 +18823,13 @@ function evaluate(pattern, mappings, gid) {
                 case 'exists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu], gid).length > 0;
+                        return evaluate(p, dataset, [mu], gid).length > 0;
                     });
 
                 case 'notexists':
                     return mappings.filter(mu => {
                         let p = pattern.expression.args[0];
-                        return evaluate(p, [mu], gid).length === 0;
+                        return evaluate(p, dataset, [mu], gid).length === 0;
                     });
 
                 default:
@@ -18766,6 +18914,73 @@ function modify(query, mappings) {
 }
 
 /**
+ * Creates a SPARQL dataset from the FROM clauses of the input query.
+ * If an IRI is not known from the µRDF store, it attempts to fetch it.
+ * 
+ * @param {object} query the AST of a SPARQL query
+ */
+function createDataset(query) {
+    if (!query.from) return Promise.resolve(store);
+
+    let list = store.listGraphs();
+
+    let promises = query.from.default
+        .concat(query.from.named)
+        .map(uri => {
+            if (!list.includes(uri)) return loadFrom(uri);
+            else return Promise.resolve();
+        });
+
+    return Promise.all(promises)
+
+    .then(() => {
+        let dataset = new urdf.Store();
+    
+        query.from.default.forEach(gid => {
+            let g = store.findGraph(gid);
+            if (g) dataset.load(g);
+        });
+    
+        query.from.named.forEach(gid => {
+            let g = store.findGraph(gid);
+            if (g) dataset.load(g, gid);
+        });
+    
+        return dataset;
+    });
+}
+
+/**
+ * Rewrites pattern to ensure filters have no free variable.
+ * 
+ * See:
+ *  - SPARQL 1.1 Query Language, section 18.2.2 "Converting Graph Patterns"
+ *  - The Expressive Power of SPARQL (2008)
+ * 
+ * @param {object} patterns the AST of a group of SPARQL graph patterns
+ */
+function makeSafe(patterns) {
+    let b = patterns.filter(p => p.type === 'bind');
+    let f = patterns.filter(p => p.type === 'filter');
+
+    let main = patterns
+        .filter(p => p.type != 'bind' && p.type != 'filter')
+        .map(p => {
+            if (p.type === 'optional') {
+                f = f.concat(p.patterns.filter(p => p.type === 'filter'));
+                p.patterns = p.patterns.filter(p => p.type != 'filter');
+            }
+
+            if (p.patterns) p.patterns = makeSafe(p.patterns);
+
+            return p;
+        });
+
+    let safe = main.concat(b, f);
+    return safe;
+}
+
+/**
  * Rewrites in place a SPARQL query to get an equivalent, canonical form.
  * 
  * @param {object} query the AST of a SPARQL query
@@ -18799,6 +19014,8 @@ function rewrite(query) {
         query.variables = names.concat(exprs.map(expr => expr.variable));
     }
 
+    query.where = makeSafe(query.where);
+
     return query;
 }
 
@@ -18808,55 +19025,472 @@ function rewrite(query) {
  * @param {string} sparql a SPARQL query as string
  */
 function query(sparql) {
-    return new Promise((resolve, reject) => {
-        let ast = parser.parse(sparql);
+    let ast = parser.parse(sparql);
 
-       rewrite(ast);
-
-        let mappings = evaluateAll(ast.where);
-
-        switch (ast.queryType) {
-            case 'SELECT':
-                mappings = modify(ast, mappings);
-                resolve(mappings);
-
-            case 'ASK':
-                // TODO stop after first mapping found
-                resolve(mappings.length > 0);
-            
-            case 'DESCRIBE':
-                // TODO use urdf.find
-
-            case 'CONSTRUCT':
-            default:
-                reject(new Error('Not implemented'));
-        }
+    return createDataset(ast)
+    
+    .then(dataset => {
+        return new Promise((resolve, reject) => {
+            rewrite(ast);
+    
+            let mappings = evaluateAll(ast.where, dataset);
+    
+            switch (ast.queryType) {
+                case 'SELECT':
+                    mappings = modify(ast, mappings);
+                    resolve(mappings);
+    
+                case 'ASK':
+                    // TODO stop after first mapping found
+                    resolve(mappings.length > 0);
+                
+                case 'DESCRIBE':
+                    // TODO use urdf.find
+    
+                case 'CONSTRUCT':
+                default:
+                    reject(new Error('Not implemented'));
+            }
+        });
     });
 }
 
-module.exports.size = urdf.size;
-module.exports.findGraph = urdf.findGraph;
+/**
+ * Registry of functions to handle RDF lists.
+ */
+const listRegistry = {
+    'javascript:urdf.indexOf': (l, id) => l.indexOf(id),
+    'javascript:urdf.lastIndexOf': (l, id) => l.lastIndexOf(id),
+    'javascript:urdf.valueAt': (l, idx) => l[idx],
+    'javascript:urdf.length': (l) => l.length
+};
+
+for (let name in listRegistry) utils.register(name, listRegistry[name]);
+
+module.exports.register = utils.register;
+module.exports.size = store.size;
+module.exports.findGraph = store.findGraph;
 module.exports.find = find;
 module.exports.clear = clear;
 module.exports.load = load;
+module.exports.loadFrom = loadFrom;
 module.exports.query = query;
-},{"./urdf.js":54,"./utils.js":55,"fs":56,"jsonld":17,"n3":23,"sparqljs":52}],54:[function(require,module,exports){
+},{"./io.js":54,"./urdf.js":56,"./utils.js":57,"jsonld":17,"sparqljs":53}],56:[function(require,module,exports){
 'use strict';
 
-module.exports = (function() {
-	/**
-	 * Namespace declaration.
-	 */
-	var urdf = {};
+/**
+ * See Store.size(). 
+ */
+function size(store, gid) {
+	var size = 0;
 	
+	store.forEach(function(g) {
+		if (gid !== undefined && g['@id'] !== gid) return;
+
+		g['@graph'].forEach(function(n) {
+			for (var p in n) {
+				if (p !== '@id') size += n[p].length;
+			}
+		});
+	});
+	
+	return size;
+};
+
+/**
+ * See Store.load().
+ */
+function load(store, json, gid) {
+	json.forEach(function(n) {
+		var s = find(store, n['@id'], gid);
+		
+		if (s === null) {
+			// TODO copy instead
+			var g = findGraph(store, gid);
+
+			if (g === null) {
+				g = [];
+
+				var container = { '@graph': g };
+				if (gid !== undefined) container['@id'] = gid;
+
+				store.push(container);
+			}
+
+			g.push(n);
+		} else {
+			for (var p in n) {
+				s[p] = n[p];
+			}
+		}
+	});
+	
+	// TODO include object nodes in the store array
+	
+	return true;
+};
+
+/**
+ * See Store.clear().
+ */
+function clear(store, gid) {
+	if (gid !== undefined) {
+		var idx = store.findIndex(function(g) {
+			return g['@id'] === gid;
+		});
+
+		if (idx < 0) return false;
+
+		store.splice(idx, 1);
+	} else {
+		store.splice(0);
+
+		store.push({
+			// default graph
+			'@graph': []
+		});
+	}
+
+	return true;
+};
+
+/**
+ * See Store.listGraphs().
+ */
+function listGraphs(store) {
+	return store.map(function(g) {
+		return g['@id'];
+	}).filter(function(name) {
+		return name !== undefined
+	});
+};
+
+/**
+ * See Store.findGraph().
+ */
+function findGraph(store, gid) {
+	var graph = store.find(function(g) {
+		return gid !== undefined && g['@id'] === gid
+			|| gid === undefined && g['@id'] === undefined;
+	});
+
+	return graph === undefined ? null : graph['@graph'];
+};
+
+/**
+ * See Store.find().
+ */
+function find(store, id, gid) {
+	var graph = findGraph(store, gid);
+
+	if (graph === null) return null;
+
+	var node = graph.find(function(n) {
+		return n['@id'] !== undefined && n['@id'] === id;
+	});
+	
+	return node === undefined ? null : node;
+};
+
+/**
+ * See Store.query().
+ */
+function query(store, frame, gid) {
+	var _node = function(id) {
+		if (id === '@type') id = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
+		return { '@id': id };
+	};
+
+	var _binding = function(f, n) {
+		return {
+			[lexicalForm(f)]: sparqlJsonForm(n)
+		};
+	};
+
+	var _queryAll = function(f, list, Ω) {
+		return list.map(function(n) {
+			return _query(f, n, Ω);
+		}).reduce(function(Ωp, Ωn) {
+			return Ωp.concat(Ωn);
+		}, []);
+	};
+
+	var _query = function(f, n, Ω) {
+		if (!match(f, n)) {
+			return [];
+		} else if (isLiteral(f)) {
+			return Ω;
+		} else {
+			if (isVariable(f)) {
+				// TODO exclude from result if no bnode label
+				Ω = _merge(Ω, [_binding(f, n)]);
+			}
+
+			if (f['@type'] !== undefined) {
+				var types = n['@type'].map(_node);
+
+				var Ωt = f['@type'].filter(function(t) {
+					return isVariable(_node(t))
+				}).reduce(function(Ωt, t) {
+					return _queryAll(_node(t), types, Ωt);
+				}, [{}]);
+
+				Ω = _merge(Ω, Ωt);
+			}
+
+			// TODO take 'require all' flag into account (default: true)
+			return signature(f).reduce(function(Ω, p) {
+				if (isVariable(_node(p))) {
+					return signature(n).map(function(p2) {
+						return {
+							'@id': f['@id'],
+							[p2]: f[p]
+						};
+					}).concat([{
+						'@id': f['@id'],
+						'@type': f[p].map(function(t) {
+							return t['@id'];
+						})
+					}]).reduce(function(Ω2, f2) {
+						var Ω3 = _query(f2, n, Ω);
+						var p2 = signature(f2)[0] || '@type';
+
+						Ω3 = _merge(Ω3, [_binding(_node(p), _node(p2))]);
+
+						return Ω2.concat(Ω3);
+					}, []);
+				} else {
+					return f[p].reduce(function(Ω2, f2) {
+						return _queryAll(f2, n[p], Ω2);
+					}, Ω);
+				}
+			}, Ω);
+		}
+	};
+
+	var _merge = function(Ω1, Ω2) {
+		return Ω1.reduce(function(Ω, μ1) {
+			return Ω2.reduce(function(Ω, μ2) {
+				var μ = merge(μ1, μ2);
+
+				if (μ !== null) { Ω.push(μ); }
+
+				return Ω;
+			}, Ω);
+		}, []);
+	};
+
+	return frame.reduce(function(Ω, f) {
+		var nodes = [];
+
+		if (isVariable(f)) {
+			var name = lexicalForm(f);
+
+			nodes = Ω.reduce(function(ids, μ) {
+				if (μ[name] !== undefined) {
+					var t = μ[name].type;
+					var v = μ[name].value;
+
+					if (t === 'uri' && ids.indexOf(v) == -1) ids.push(v);
+				};
+
+				return ids;
+			}, []).map(function(id) {
+				return find(store, id, gid);
+			});
+
+			if (nodes.length === 0) nodes = findGraph(store, gid);
+
+			if (nodes === null) return []; 
+		} else {
+			var n = find(store, f['@id'], gid);
+
+			if (n === null) return [];
+			else nodes.push(n);
+		}
+
+		return _queryAll(f, nodes, Ω);
+	}, [{}]);
+};
+
+/**
+ * Compares the two input objects in terms of identifiers
+ * and signatures (list of types and list of properties).
+ * The last parameter is a 'require all' flag, specifying
+ * whether all of the properties of n should match those of
+ * q (all = true) or at least one (all = false). If not
+ * provided, all = true. For type signatures, 'require
+ * all' is always false.
+ * 
+ * Returns true if the identifier and the signatures of n
+ * matches q (types and properties), false otherwise.
+ */
+function match(q, n, all) {
+	if (isLiteral(q)) {
+		var v = q['@value'];
+		var t = q['@type'] || null;
+		var l = q['@language'] || null;
+
+		// TODO support {}
+		// TODO support range (i.e. arrays) in q
+		return (n['@value'] === v)
+			&& (n['@type'] === t || t === null)
+			&& (n['@language'] === l || l === null);
+	} else {
+		if (!isVariable(q) && q['@id'] !== n['@id']) {
+			return false;
+		}
+
+		var _intersects = function(a, b) {
+			if (a === undefined) {
+				return true;
+			} else if (b === undefined && a.length > 0) {
+				return false;
+			} else {
+				return a.some(function(elem) {
+					return isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+				});
+			}
+		};
+
+		if (!_intersects(q['@type'], n['@type'])) {
+			return false;
+		}
+
+		var _isSubset = function(a, b) {
+			if (a === undefined) {
+				return true;
+			} else if (b === undefined && a.length > 0) {
+				return false;
+			} else {
+				return a.every(function(elem) {
+					return isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
+				});
+			}
+		};
+
+		var sq = signature(q);
+		var sn = signature(n);
+
+		return all === false ? _interects(sq, sn) : _isSubset(sq, sn);
+	}
+};
+
+/**
+ * Merges two solution mappings.
+ *
+ * Returns a new mapping object with entries of both input objects
+ * if mappings are compatible, null otherwise.
+ */
+function merge(μ1, μ2) {
+	var μ = {};
+
+	// TODO datatype, lang
+	
+	for (var v in μ1) {
+		if (μ2[v] !== undefined && μ2[v].value !== μ1[v].value) {
+			return null;
+		}
+
+		μ[v] = μ1[v];
+	}
+
+	for (var v in μ2) {
+		if (μ[v] === undefined) μ[v] = μ2[v];
+	}
+	
+	return μ;
+};
+
+/**
+ * Returns the signature of the input node
+ * (the list of its properties, excluding @-properties).
+ * 
+ * TODO bitmap as in the original impl?
+ */
+function signature(obj) {
+	var fn = function(p) { return p[0] !== '@' };
+	return Object.keys(obj).filter(fn);
+}
+
+/**
+ * Evaluates if the input object is a variable
+ * (i.e. a blank node).
+ *
+ * Returns true if obj is a variable, false otherwise.
+ */
+function isVariable(obj) {
+	return obj['@id'] !== undefined && obj['@id'].indexOf('_:') === 0;
+};
+
+/**
+ * Evaluates if the input object is a literal.
+ *
+ * Returns true if obj is a literal, false otherwise.
+ */
+function isLiteral(obj) {
+	return obj['@value'] !== undefined;
+};
+
+/**
+ * Evaluates if the input object is a list.
+ * 
+ * Returns true if obj is a list object, false otherwise.
+ */
+function isList(obj) {
+	return obj['@list'] !== undefined;
+}
+
+/**
+ * Returns the RDF lexical form of the input object.
+ */
+function lexicalForm(obj) {
+	if (isVariable(obj)) return obj['@id'].substring(2);
+	else if (isLiteral(obj)) return obj['@value'];
+	else if (isList(obj)) return obj['@list'];
+	else return obj['@id'] ? obj['@id'] : '';
+}
+
+/**
+ * Returns the SPARQL JSON form of the input object.
+ * 
+ * The format was extended to include RDF lists, which
+ * are not directly accessible from the µRDF store.
+ */
+function sparqlJsonForm(obj) {
+	var sj = {
+		value: lexicalForm(obj)
+	};
+
+	if (isLiteral(obj)) {
+		sj.type = 'literal';
+
+		if (obj['@type']) sj.datatype = obj['@type'];
+		if (obj['@language']) sj.lang = obj['@language'];
+	} else if (isVariable(obj)) {
+		sj.type = 'bnode';
+	} else if (isList(obj)) {
+		sj.type = 'list';
+		sj.value = sj.value.map(function(o) { return sparqlJsonForm(o) });
+	} else {
+		sj.type = 'uri';
+	}
+
+	return sj;
+}
+
+/**
+ * Single instance of the µRDF store, with its own dataset.
+ */
+function Store() {
 	/**
 	 * A JSON-LD context URI providing mappings
 	 * from JSON keys to RDF IRIs.
 	 */
-	urdf.context = '';
+	this.context = '';
 
 	/**
-	 * The µRDF store data structure.
+	 * The µRDF store data structure (private member).
 	 */
 	var store = [
 		{
@@ -18869,87 +19503,28 @@ module.exports = (function() {
 	 * Returns the number of triples stored in the µRDF store
 	 * or in the given named graph.
 	 */
-	urdf.size = function(gid) {
-		var size = 0;
-		
-		store.forEach(function(g) {
-			if (gid !== undefined && g['@id'] !== gid) return;
-
-			g['@graph'].forEach(function(n) {
-				for (var p in n) {
-					if (p !== '@id') size += n[p].length;
-				}
-			});
-		});
-		
-		return size;
-	};
+	this.size = function(gid) { return size(store, gid); };
 
 	/**
 	 * Loads a flattened (and compacted) JSON-LD document into the µRDF store.
 	 * 
 	 * Returns true if no error occurred, false otherwise.
 	 */
-	urdf.load = function(json, gid) {
-		json.forEach(function(n) {
-			var s = urdf.find(n['@id'], gid);
-			
-			if (s === null) {
-				// TODO copy instead
-				var g = urdf.findGraph(gid);
-
-				if (g === null) {
-					g = [];
-
-					var container = { '@graph': g };
-					if (gid !== undefined) container['@id'] = gid;
-
-					store.push(container);
-				}
-
-				g.push(n);
-			} else {
-				for (var p in n) {
-					s[p] = n[p];
-				}
-			}
-		});
-		
-		// TODO include object nodes in the store array
-		
-		return true;
-	};
+	this.load = function(json, gid) { return load(store, json, gid); };
 
 	/**
 	 * Empties the content of the µRDF store or of a named graph, if provided.
 	 * 
 	 * Returns true.
 	 */
-	urdf.clear = function(gid) {
-		store = store.filter(function(g) {
-			return gid !== undefined && g['@id'] !== gid;
-		});
-
-		store.push({
-			// default graph
-			'@graph': []
-		});
-
-		return true;
-	};
+	this.clear = function(gid) { return clear(store, gid); };
 
 	/**
 	 * Lists all named graph in the µRDF store.
 	 * 
 	 * Returns a (possibly empty) list of graph identifiers.
 	 */
-	urdf.listGraphs = function() {
-		return store.map(function(g) {
-			return g['@id'];
-		}).filter(function(name) {
-			return name !== undefined
-		});
-	};
+	this.listGraphs = function() { return listGraphs(store); };
 
 	/**
 	 * Looks for a named graph with the given identifier in the µRDF store
@@ -18957,31 +19532,14 @@ module.exports = (function() {
 	 * 
 	 * Returns the graph's node list if found, the default graph otherwise.
 	 */
-	urdf.findGraph = function(gid) {
-		var graph = store.find(function(g) {
-			return gid !== undefined && g['@id'] === gid
-				|| gid === undefined && g['@id'] === undefined;
-		});
-
-		return graph === undefined ? null : graph['@graph'];
-	};
+	this.findGraph = function(gid) { return findGraph(store, gid); };
 
 	/**
 	 * Looks for the first node in the µRDF store with the given input.
 	 * 
 	 * Returns the node if found, null otherwise.
 	 */
-	urdf.find = function(id, gid) {
-		var graph = urdf.findGraph(gid);
-
-		if (graph === null) return null;
-
-		var node = graph.find(function(n) {
-			return n['@id'] !== undefined && n['@id'] === id;
-		});
-		
-		return node === undefined ? null : node;
-	};
+	this.find = function(id, gid) { return find(store, id, gid); };
 
 	/**
 	 * Processes a flattened JSON-LD frame object,
@@ -18994,277 +19552,13 @@ module.exports = (function() {
 	 * SPARQL results JSON format.
 	 * See https://www.w3.org/TR/sparql11-results-json/.
 	 */
-	urdf.query = function(frame, gid) {
-		var _node = function(id) {
-			if (id === '@type') id = 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type';
-			return { '@id': id };
-		};
+	this.query = function(frame, gid) { return query(store, frame, gid); };
+}
 
-		var _binding = function(f, n) {
-			return {
-				[urdf.lexicalForm(f)]: urdf.sparqlJsonForm(n)
-			};
-		};
-
-		var _queryAll = function(f, list, Ω) {
-			return list.map(function(n) {
-				return _query(f, n, Ω);
-			}).reduce(function(Ωp, Ωn) {
-				return Ωp.concat(Ωn);
-			}, []);
-		};
-
-		var _query = function(f, n, Ω) {
-			if (!urdf.match(f, n)) {
-				return [];
-			} else if (urdf.isLiteral(f)) {
-				return Ω;
-			} else {
-				if (urdf.isVariable(f)) {
-					// TODO exclude from result if no bnode label
-					Ω = _merge(Ω, [_binding(f, n)]);
-				}
-
-				if (f['@type'] !== undefined) {
-					var types = n['@type'].map(_node);
-
-					var Ωt = f['@type'].filter(function(t) {
-						return urdf.isVariable(_node(t))
-					}).reduce(function(Ωt, t) {
-						return _queryAll(_node(t), types, Ωt);
-					}, [{}]);
-
-					Ω = _merge(Ω, Ωt);
-				}
-
-				// TODO take 'require all' flag into account (default: true)
-				return urdf.signature(f).reduce(function(Ω, p) {
-					if (urdf.isVariable(_node(p))) {
-						return urdf.signature(n).map(function(p2) {
-							return {
-								'@id': f['@id'],
-								[p2]: f[p]
-							};
-						}).concat([{
-							'@id': f['@id'],
-							'@type': f[p].map(function(t) {
-								return t['@id'];
-							})
-						}]).reduce(function(Ω2, f2) {
-							var Ω3 = _query(f2, n, Ω);
-							var p2 = urdf.signature(f2)[0] || '@type';
-
-							Ω3 = _merge(Ω3, [_binding(_node(p), _node(p2))]);
-
-							return Ω2.concat(Ω3);
-						}, []);
-					} else {
-						return f[p].reduce(function(Ω2, f2) {
-							return _queryAll(f2, n[p], Ω2);
-						}, Ω);
-					}
-				}, Ω);
-			}
-		};
-
-		var _merge = function(Ω1, Ω2) {
-			return Ω1.reduce(function(Ω, μ1) {
-				return Ω2.reduce(function(Ω, μ2) {
-					var μ = urdf.merge(μ1, μ2);
-
-					if (μ !== null) { Ω.push(μ); }
-
-					return Ω;
-				}, Ω);
-			}, []);
-		};
-
-		return frame.reduce(function(Ω, f) {
-			var nodes = [];
-
-			if (urdf.isVariable(f)) {
-				var name = urdf.lexicalForm(f);
-
-				nodes = Ω.reduce(function(ids, μ) {
-					if (μ[name] !== undefined) {
-						var t = μ[name].type;
-						var v = μ[name].value;
-
-						if (t === 'uri' && ids.indexOf(v) == -1) ids.push(v);
-					};
-
-					return ids;
-				}, []).map(function(id) {
-					return urdf.find(id, gid);
-				});
-
-				if (nodes.length === 0) nodes = urdf.findGraph(gid);
-
-				if (nodes === null) return []; 
-			} else {
-				var n = urdf.find(f['@id'], gid);
-
-				if (n === null) return [];
-				else nodes.push(n);
-			}
-
-			return _queryAll(f, nodes, Ω);
-		}, [{}]);
-	};
-
-	/**
-	 * Compares the two input objects in terms of identifiers
-	 * and signatures (list of types and list of properties).
-	 * The last parameter is a 'require all' flag, specifying
-	 * whether all of the properties of n should match those of
-	 * q (all = true) or at least one (all = false). If not
-	 * provided, all = true. For type signatures, 'require
-	 * all' is always false.
-	 * 
-	 * Returns true if the identifier and the signatures of n
-	 * matches q (types and properties), false otherwise.
-	 */
-	urdf.match = function(q, n, all) {
-		if (urdf.isLiteral(q)) {
-			var v = q['@value'];
-			var t = q['@type'] || null;
-			var l = q['@language'] || null;
-
-			// TODO support {}
-			// TODO support range (i.e. arrays) in q
-			return (n['@value'] === v)
-				&& (n['@type'] === t || t === null)
-				&& (n['@language'] === l || l === null);
-		} else {
-			if (!urdf.isVariable(q) && q['@id'] !== n['@id']) {
-				return false;
-			}
-
-			var _intersects = function(a, b) {
-				if (a === undefined) {
-					return true;
-				} else if (b === undefined && a.length > 0) {
-					return false;
-				} else {
-					return a.some(function(elem) {
-						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
-					});
-				}
-			};
-
-			if (!_intersects(q['@type'], n['@type'])) {
-				return false;
-			}
-
-			var _isSubset = function(a, b) {
-				if (a === undefined) {
-					return true;
-				} else if (b === undefined && a.length > 0) {
-					return false;
-				} else {
-					return a.every(function(elem) {
-						return urdf.isVariable({ '@id': elem }) || b.indexOf(elem) > -1;
-					});
-				}
-			};
-
-			var sq = urdf.signature(q);
-			var sn = urdf.signature(n);
-
-			return all === false ? _interects(sq, sn) : _isSubset(sq, sn);
-		}
-	};
-
-	/**
-	 * Merges two solution mappings.
-	 *
-	 * Returns a new mapping object with entries of both input objects
-	 * if mappings are compatible, null otherwise.
-	 */
-	urdf.merge = function(μ1, μ2) {
-		var μ = {};
-
-		// TODO datatype, lang
-		
-		for (var v in μ1) {
-			if (μ2[v] !== undefined && μ2[v].value !== μ1[v].value) {
-				return null;
-			}
-
-			μ[v] = μ1[v];
-		}
-
-		for (var v in μ2) {
-			if (μ[v] === undefined) μ[v] = μ2[v];
-		}
-		
-		return μ;
-	};
-
-	/**
-	 * Returns the signature of the input node
-	 * (the list of its properties, excluding @-properties).
-	 * 
-	 * TODO bitmap as in the original impl?
-	 */
-	urdf.signature = function(obj) {
-		var fn = function(p) { return p[0] !== '@' };
-		return Object.keys(obj).filter(fn);
-	}
-
-	/**
-	 * Evaluates if the input object is a variable
-	 * (i.e. a blank node).
-	 *
-	 * Returns true if obj is a variable, false otherwise.
-	 */
-	urdf.isVariable = function(obj) {
-		return obj['@id'] !== undefined && obj['@id'].indexOf('_:') === 0;
-	};
-
-	/**
-	 * Evaluates if the input object is a literal.
-	 *
-	 * Returns true if obj is a literal, false otherwise.
-	 */
-	urdf.isLiteral = function(obj) {
-		return obj['@value'] !== undefined;
-	};
-
-	/**
-	 * Returns the RDF lexical form of the input object.
-	 */
-	urdf.lexicalForm = function(obj) {
-		if (urdf.isVariable(obj)) return obj['@id'].substring(2);
-		else if (urdf.isLiteral(obj)) return obj['@value'];
-		else return obj['@id'] ? obj['@id'] : '';
-	}
-
-	/**
-	 * Returns the SPARQL JSON form of the input object.
-	 */
-	urdf.sparqlJsonForm = function(obj) {
-		var sj = {
-			value: urdf.lexicalForm(obj)
-		};
-
-		if (urdf.isLiteral(obj)) {
-			sj.type = 'literal';
-
-			if (obj['@type']) sj.datatype = obj['@type'];
-			if (obj['@language']) sj.lang = obj['@language'];
-		} else if (urdf.isVariable(obj)) {
-			sj.type = 'bnode';
-		} else {
-			sj.type = 'uri';
-		}
-
-		return sj;
-	}
-	
-	return urdf;
-})();
-},{}],55:[function(require,module,exports){
+module.exports.Store = Store;
+module.exports.merge = merge;
+module.exports.signature = signature;
+},{}],57:[function(require,module,exports){
 'use strict';
 
 // TODO derived from https://github.com/vcharpenay/STTL.js, avoid duplicates?
@@ -19272,10 +19566,15 @@ module.exports = (function() {
 /**
  * Known namespace prefixes.
  */
-let ns = {
+const ns = {
 	rdf: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
 	xsd: 'http://www.w3.org/2001/XMLSchema#'
 };
+
+/**
+ * Custom function registry
+ */
+const registry = {};
 
 /**
  * Transforms a N3.js representation of an RDF term
@@ -19337,10 +19636,12 @@ function term(plain) {
 				type: 'variable',
 				value: name
 			}
-		} else {
-			return {};
 		}
+	} else if (typeof plain === 'object') {
+		return plain;
 	}
+	
+	return {};
 }
 
 /**
@@ -19382,6 +19683,8 @@ function native(term) {
 		return term.value;
 	} else if (term.type === 'bnode') {
 		return '_:' + term.value;
+	} else if (term.type === 'list') {
+		return term.value.map(native);
 	} else { // all literals
 		switch (term.datatype) {
 			case ns.xsd + 'boolean':
@@ -19445,18 +19748,18 @@ function ebv(term) {
 function frame(bgp) {
 	return bgp.triples.reduce((f, tp) => {
 			let s = nodeOrValue(term(tp.subject));
+
 			let n = f.find(n => n['@id'] === s['@id']);
-			if (!n) {
-					n = s;
-					f.push(n);
-			}
+			if (!n) { n = s; f.push(n); }
 
 			let p = (tp.predicate === ns.rdf + 'type') ?
-			'@type' : tp.predicate;
-	if (p[0] === '?') p = '_:' + p.substring(1);
+							'@type' : tp.predicate;
+							
+			if (p[0] === '?') p = '_:' + p.substring(1);
 			if (!n[p]) n[p] = [];
 
 			let o = nodeOrValue(term(tp.object));
+
 			if (p === '@type') o = o['@id'];
 			n[p].push(o);
 
@@ -19921,16 +20224,50 @@ function evaluate(expr, binding) {
 			}
 		}
     } else if (expr.type === 'functionCall') {
-		let fn = expr.function;
+		let name = expr.function;
 		let args = expr.args.map(arg => evaluate(arg, binding));
 
-		if (expr.function.startsWith(ns.xsd)) {
-			return evaluateConstructorFunction(fn, args);
+		if (name.startsWith(ns.xsd)) {
+			return evaluateConstructorFunction(name, args);
 		} else {
-			// TODO get registered functions and execute
-			throw new Error('Not implemented');
+			if (!registry[name]) {
+				throw new EvaluationError('Custom function not registered');
+			}
+
+			try {
+				let val = registry[name](...args.map(native));
+
+				if (typeof val === 'string') {
+					val = {
+						type: 'literal',
+						value: val
+					};
+				}
+	
+				return term(val);
+			} catch (e) {
+				throw new EvaluationError(e);
+			}
 		}
     }
+}
+
+/**
+ * Registers a custom SPARQL function. Callback arguments will
+ * be passed as native JavaScript values. IRIs and blank nodes are
+ * converted to strings. The function return value will be
+ * converted to a SPARQL JSON form as follows:
+ *  - if it is an object, it is returned as is
+ *  - if it is a boolean or number, it is converted to a typed literal
+ *  - if it is a string, it is converted to a plain literal
+ * 
+ * See SPARQL 1.1 Query Language, section 17.6 "Extensible Value Testing".
+ * 
+ * @param {string} name the function name (an IRI)
+ * @param {function} fn the callback function
+ */
+function register(name, fn) {
+	registry[name] = fn;
 }
 
 /**
@@ -19944,14 +20281,16 @@ class EvaluationError extends Error {
 }
 
 module.exports.term = term;
+module.exports.native = native;
 module.exports.ebv = ebv;
 module.exports.frame = frame;
 module.exports.compare = compare;
 module.exports.evaluate = evaluate;
+module.exports.register = register;
 module.exports.EvaluationError = EvaluationError;
-},{}],56:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 
-},{}],57:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -20104,9 +20443,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],58:[function(require,module,exports){
-arguments[4][56][0].apply(exports,arguments)
-},{"dup":56}],59:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
+arguments[4][58][0].apply(exports,arguments)
+},{"dup":58}],61:[function(require,module,exports){
 (function (Buffer){
 /*!
  * The buffer module from node.js, for the browser.
@@ -21887,7 +22226,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"base64-js":57,"buffer":59,"ieee754":62}],60:[function(require,module,exports){
+},{"base64-js":59,"buffer":61,"ieee754":64}],62:[function(require,module,exports){
 (function (Buffer){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -21998,7 +22337,7 @@ function objectToString(o) {
 }
 
 }).call(this,{"isBuffer":require("../../is-buffer/index.js")})
-},{"../../is-buffer/index.js":64}],61:[function(require,module,exports){
+},{"../../is-buffer/index.js":66}],63:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -22523,7 +22862,7 @@ function functionBindPolyfill(context) {
   };
 }
 
-},{}],62:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = (nBytes * 8) - mLen - 1
@@ -22609,7 +22948,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],63:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -22634,7 +22973,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],64:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 /*!
  * Determine if an object is a Buffer
  *
@@ -22657,14 +22996,14 @@ function isSlowBuffer (obj) {
   return typeof obj.readFloatLE === 'function' && typeof obj.slice === 'function' && isBuffer(obj.slice(0, 0))
 }
 
-},{}],65:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],66:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function (process){
 // .dirname, .basename, and .extname methods are extracted from Node.js v8.11.1,
 // backported and transplited with Babel, with backwards-compat fixes
@@ -22970,7 +23309,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":68}],67:[function(require,module,exports){
+},{"_process":70}],69:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -23018,7 +23357,7 @@ function nextTick(fn, arg1, arg2, arg3) {
 
 
 }).call(this,require('_process'))
-},{"_process":68}],68:[function(require,module,exports){
+},{"_process":70}],70:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -23204,10 +23543,10 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = require('./lib/_stream_duplex.js');
 
-},{"./lib/_stream_duplex.js":70}],70:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":72}],72:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -23339,7 +23678,7 @@ Duplex.prototype._destroy = function (err, cb) {
 
   pna.nextTick(cb, err);
 };
-},{"./_stream_readable":72,"./_stream_writable":74,"core-util-is":60,"inherits":63,"process-nextick-args":67}],71:[function(require,module,exports){
+},{"./_stream_readable":74,"./_stream_writable":76,"core-util-is":62,"inherits":65,"process-nextick-args":69}],73:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -23387,7 +23726,7 @@ function PassThrough(options) {
 PassThrough.prototype._transform = function (chunk, encoding, cb) {
   cb(null, chunk);
 };
-},{"./_stream_transform":73,"core-util-is":60,"inherits":63}],72:[function(require,module,exports){
+},{"./_stream_transform":75,"core-util-is":62,"inherits":65}],74:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -24409,7 +24748,7 @@ function indexOf(xs, x) {
   return -1;
 }
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./_stream_duplex":70,"./internal/streams/BufferList":75,"./internal/streams/destroy":76,"./internal/streams/stream":77,"_process":68,"core-util-is":60,"events":61,"inherits":63,"isarray":65,"process-nextick-args":67,"safe-buffer":83,"string_decoder/":78,"util":58}],73:[function(require,module,exports){
+},{"./_stream_duplex":72,"./internal/streams/BufferList":77,"./internal/streams/destroy":78,"./internal/streams/stream":79,"_process":70,"core-util-is":62,"events":63,"inherits":65,"isarray":67,"process-nextick-args":69,"safe-buffer":85,"string_decoder/":80,"util":60}],75:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -24624,7 +24963,7 @@ function done(stream, er, data) {
 
   return stream.push(null);
 }
-},{"./_stream_duplex":70,"core-util-is":60,"inherits":63}],74:[function(require,module,exports){
+},{"./_stream_duplex":72,"core-util-is":62,"inherits":65}],76:[function(require,module,exports){
 (function (process,global,setImmediate){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -25314,7 +25653,7 @@ Writable.prototype._destroy = function (err, cb) {
   cb(err);
 };
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {},require("timers").setImmediate)
-},{"./_stream_duplex":70,"./internal/streams/destroy":76,"./internal/streams/stream":77,"_process":68,"core-util-is":60,"inherits":63,"process-nextick-args":67,"safe-buffer":83,"timers":85,"util-deprecate":86}],75:[function(require,module,exports){
+},{"./_stream_duplex":72,"./internal/streams/destroy":78,"./internal/streams/stream":79,"_process":70,"core-util-is":62,"inherits":65,"process-nextick-args":69,"safe-buffer":85,"timers":87,"util-deprecate":88}],77:[function(require,module,exports){
 'use strict';
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25394,7 +25733,7 @@ if (util && util.inspect && util.inspect.custom) {
     return this.constructor.name + ' ' + obj;
   };
 }
-},{"safe-buffer":83,"util":58}],76:[function(require,module,exports){
+},{"safe-buffer":85,"util":60}],78:[function(require,module,exports){
 'use strict';
 
 /*<replacement>*/
@@ -25469,10 +25808,10 @@ module.exports = {
   destroy: destroy,
   undestroy: undestroy
 };
-},{"process-nextick-args":67}],77:[function(require,module,exports){
+},{"process-nextick-args":69}],79:[function(require,module,exports){
 module.exports = require('events').EventEmitter;
 
-},{"events":61}],78:[function(require,module,exports){
+},{"events":63}],80:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -25769,10 +26108,10 @@ function simpleWrite(buf) {
 function simpleEnd(buf) {
   return buf && buf.length ? this.write(buf) : '';
 }
-},{"safe-buffer":83}],79:[function(require,module,exports){
+},{"safe-buffer":85}],81:[function(require,module,exports){
 module.exports = require('./readable').PassThrough
 
-},{"./readable":80}],80:[function(require,module,exports){
+},{"./readable":82}],82:[function(require,module,exports){
 exports = module.exports = require('./lib/_stream_readable.js');
 exports.Stream = exports;
 exports.Readable = exports;
@@ -25781,13 +26120,13 @@ exports.Duplex = require('./lib/_stream_duplex.js');
 exports.Transform = require('./lib/_stream_transform.js');
 exports.PassThrough = require('./lib/_stream_passthrough.js');
 
-},{"./lib/_stream_duplex.js":70,"./lib/_stream_passthrough.js":71,"./lib/_stream_readable.js":72,"./lib/_stream_transform.js":73,"./lib/_stream_writable.js":74}],81:[function(require,module,exports){
+},{"./lib/_stream_duplex.js":72,"./lib/_stream_passthrough.js":73,"./lib/_stream_readable.js":74,"./lib/_stream_transform.js":75,"./lib/_stream_writable.js":76}],83:[function(require,module,exports){
 module.exports = require('./readable').Transform
 
-},{"./readable":80}],82:[function(require,module,exports){
+},{"./readable":82}],84:[function(require,module,exports){
 module.exports = require('./lib/_stream_writable.js');
 
-},{"./lib/_stream_writable.js":74}],83:[function(require,module,exports){
+},{"./lib/_stream_writable.js":76}],85:[function(require,module,exports){
 /* eslint-disable node/no-deprecated-api */
 var buffer = require('buffer')
 var Buffer = buffer.Buffer
@@ -25851,7 +26190,7 @@ SafeBuffer.allocUnsafeSlow = function (size) {
   return buffer.SlowBuffer(size)
 }
 
-},{"buffer":59}],84:[function(require,module,exports){
+},{"buffer":61}],86:[function(require,module,exports){
 // Copyright Joyent, Inc. and other Node contributors.
 //
 // Permission is hereby granted, free of charge, to any person obtaining a
@@ -25980,7 +26319,7 @@ Stream.prototype.pipe = function(dest, options) {
   return dest;
 };
 
-},{"events":61,"inherits":63,"readable-stream/duplex.js":69,"readable-stream/passthrough.js":79,"readable-stream/readable.js":80,"readable-stream/transform.js":81,"readable-stream/writable.js":82}],85:[function(require,module,exports){
+},{"events":63,"inherits":65,"readable-stream/duplex.js":71,"readable-stream/passthrough.js":81,"readable-stream/readable.js":82,"readable-stream/transform.js":83,"readable-stream/writable.js":84}],87:[function(require,module,exports){
 (function (setImmediate,clearImmediate){
 var nextTick = require('process/browser.js').nextTick;
 var apply = Function.prototype.apply;
@@ -26059,7 +26398,7 @@ exports.clearImmediate = typeof clearImmediate === "function" ? clearImmediate :
   delete immediateIds[id];
 };
 }).call(this,require("timers").setImmediate,require("timers").clearImmediate)
-},{"process/browser.js":68,"timers":85}],86:[function(require,module,exports){
+},{"process/browser.js":70,"timers":87}],88:[function(require,module,exports){
 (function (global){
 
 /**
@@ -26130,14 +26469,14 @@ function config (name) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],87:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = function isBuffer(arg) {
   return arg && typeof arg === 'object'
     && typeof arg.copy === 'function'
     && typeof arg.fill === 'function'
     && typeof arg.readUInt8 === 'function';
 }
-},{}],88:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 (function (process,global){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -26727,5 +27066,5 @@ function hasOwnProperty(obj, prop) {
 }
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./support/isBuffer":87,"_process":68,"inherits":63}]},{},[53])(53)
+},{"./support/isBuffer":89,"_process":70,"inherits":65}]},{},[55])(55)
 });
