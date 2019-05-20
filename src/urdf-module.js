@@ -108,6 +108,26 @@ function rename(g, offset) {
 }
 
 /**
+ * Returns a default graph object from the input definition.
+ * 
+ * @param {object} json a JSON-LD definition
+ */
+function getDefaultGraph(json) {
+    let g = {};
+
+    // TODO use the JsonLdProcessor instead?
+    if (json instanceof Array) {
+        g['@graph'] = json.filter(obj => !obj['graph']);
+    } else {
+        if (!json['@graph']) g['@graph'] = [json];
+        else if (!json['@id']) g = json;
+        else g['@graph'] = [];
+    }
+
+    return g;
+}
+
+/**
  * Loads the input definitions in the µRDF store.
  * 
  * @param {object | array | string} data some JSON-LD definition(s)
@@ -139,10 +159,7 @@ function load(data, opts) {
     .then(json => {
         let dataset = json
             .filter(obj => obj['@graph'])
-            .concat({
-                // default graph
-                '@graph': json.filter(obj => !obj['@graph'])
-            });
+            .concat(getDefaultGraph(json));
 
         dataset.forEach(g => {
             let gid = g['@id'];
@@ -161,8 +178,9 @@ function loadFrom(uri) {
     return io.parseFrom(uri)
 
     .then(json => {
-        // TODO detect whether graph information included in JSON
+        json = getDefaultGraph(json);
         json['@id'] = uri;
+
         return load(json);
     });
 }

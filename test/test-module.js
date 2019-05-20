@@ -64,10 +64,18 @@ describe('urdf.load()', () => {
 });
 
 describe('urdf.loadFrom()', () => {
-    const uri = 'http://vcharpenay.link/vcharpenay.jsonld';
-    const id = 'https://vcharpenay.github.io/#me';
+    it('should correctly load remote JSON-LD content', () => {
+        const id = 'https://vcharpenay.github.io/#me';
+        const uri = 'http://www.vcharpenay.link/vcharpenay.jsonld';
 
-    it.only('should correctly load remote content from a given URI', () => {
+        return urdf.loadFrom(uri)
+        .then(() => urdf.find(id, uri))
+    });
+
+    it('should correctly load remote content in Turtle', () => {
+        const id = 'http://www.wikidata.org/entity/Q61093889';
+        const uri = id + '.ttl';
+
         return urdf.loadFrom(uri)
         .then(() => urdf.find(id, uri))
     });
