@@ -14,7 +14,7 @@ const processor = jsonld.promises;
  */
 function parse(dataString, opts) {
     return new Promise((resolve, reject) => {
-        if (opts && opts.format === 'application/ld+json') {
+        if (opts && opts.format.startsWith('application/ld+json')) {
             try {
                 resolve(JSON.parse(dataString));
             } catch (e) {
