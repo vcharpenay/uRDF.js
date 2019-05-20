@@ -12,6 +12,14 @@ micro-controller platforms using [JerryScript](http://jerryscript.net/).
 The easiest way to start with µRDF.js is to try its
 [online demo](https://vcharpenay.github.io/uRDF.js/).
 
+### Command-Line Interface
+
+A CLI is also available (after building the project, see below).
+
+```sh
+npm run urdf query <filename>
+```
+
 ### Build
 
 ```sh
