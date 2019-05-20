@@ -67,10 +67,10 @@ describe('urdf.loadFrom()', () => {
     const uri = 'http://vcharpenay.link/vcharpenay.jsonld';
     const id = 'https://vcharpenay.github.io/#me';
 
-    it('should correctly load remote content from a given URI', () => {
-        urdf.loadFrom(uri)
-        .then(() => urdf.find(id))
-    })
+    it.only('should correctly load remote content from a given URI', () => {
+        return urdf.loadFrom(uri)
+        .then(() => urdf.find(id, uri))
+    });
 });
 
 describe('urdf.query()', () => {
