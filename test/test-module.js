@@ -220,6 +220,11 @@ describe('urdf.query()', () => {
         .then(() => query('ordered-author-list'));
     });
 
+    it('should correctly process list functions with joins', () => {
+        return load('lubm-list')
+        .then(() => query('publication-author-class'));
+    });
+
     it('should correctly process filter inside an optional pattern', () => {
         return load('thing')
         .then(() => query('unsafe-sensor-filter'));

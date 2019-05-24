@@ -7,7 +7,9 @@
                 "@id": "http://www.Department0.University1.edu/GraduateStudent14"
             },
             {
-                "@id": "http://www.Department0.University1.edu/GraduateStudent6"
+                "@type": [
+                    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent"
+                ]
             },
             {
                 "@id": "http://www.Department0.University1.edu/FullProfessor0"

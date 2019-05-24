@@ -1,0 +1,8 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select ?pub ?cl where {
+    ?pub a ub:Publication ;
+         ub:publicationAuthor ?l .
+    bind (<javascript:urdf.valueAt>(?l, 1) as ?a)
+    ?a a ?cl
+}

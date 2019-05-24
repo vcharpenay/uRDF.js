@@ -57,7 +57,7 @@ function term(plain) {
 				type: 'uri',
 				value: plain
 			};
-		} else if (capture = plain.match(/(\w*):(.*)/)) {
+		} else if (capture = plain.match(/([A-Za-z0-9]+):(.*)/)) {
 			let [str, prefix, name] = capture; 
 			return {
 				type: 'uri',

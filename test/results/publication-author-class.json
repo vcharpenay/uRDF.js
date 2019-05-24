@@ -1,0 +1,12 @@
+[
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "cl": {
+            "type": "uri",
+            "value": "http://swat.cse.lehigh.edu/onto/univ-bench.owl#GraduateStudent"
+        }
+    }
+]

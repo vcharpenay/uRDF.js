@@ -1,6 +1,6 @@
 prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
 
-select * where {
+select ?pub ?first ?last where {
     ?pub a ub:Publication ;
          ub:publicationAuthor ?l .
     bind (<javascript:urdf.indexOf>(?l, <http://www.Department0.University1.edu/GraduateStudent14>) as ?first)
