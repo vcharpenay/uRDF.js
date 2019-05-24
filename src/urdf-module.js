@@ -73,8 +73,8 @@ function clear(gid) {
  * starting from an offset (e.g. a number higher than the size
  * of the µRDF store, to avoid name conflicts).
  * 
- * @param {array} g 
- * @param {number} offset 
+ * @param {array} g a JSON-LD graph (list of node objects)
+ * @param {number} offset a number taken as offset for numbering
  */
 function rename(g, offset) {
     let idx = 0;

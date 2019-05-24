@@ -1,0 +1,24 @@
+[
+    {
+        "@id": "http://example.org/sensor1/temp",
+        "http://example.org/state": [
+            {
+                "@id": "_:s"
+            }
+        ]
+    },
+    {
+        "@id": "_:s",
+        "@type": [
+            "_:cl"
+        ]
+    },
+    {
+        "@id": "_:cl",
+        "_:p": [
+            {
+                "@id": "_:o"
+            }
+        ]
+    }
+]

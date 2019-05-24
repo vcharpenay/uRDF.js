@@ -175,6 +175,12 @@ describe('urdf.Store.query()', ()=> {
         assert.deepStrictEqual(actual, expected);
     });
 
+    it('should silently ignore non-existing subject-object joins', () => {
+        load('thing.json');
+        let [actual, expected] = query('state-class-missing.json');
+        assert.deepStrictEqual(actual, expected);
+    });
+
     it('should correctly process graph-shaped BGPs', () => {
         load('thing.json');
         let [actual, expected] = query('cmd-property.json');

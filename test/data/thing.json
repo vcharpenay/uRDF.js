@@ -1,7 +1,9 @@
 [
 	{
 		"@id": "_:b0",
-		"@type": "https://w3id.org/saref#State",
+		"@type": [
+			"https://w3id.org/saref#State"
+		],
 		"http://www.w3.org/2000/01/rdf-schema#seeAlso": {
 			"@id": "_:b1",
 			"@type": "https://w3id.org/saref#Property"

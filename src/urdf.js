@@ -47,8 +47,6 @@ function load(store, json, gid) {
 		}
 	});
 	
-	// TODO include object nodes in the store array
-	
 	return true;
 };
 
@@ -218,7 +216,7 @@ function query(store, frame, gid) {
 
 				return ids;
 			}, []).map(function(id) {
-				return find(store, id, gid);
+				return find(store, id, gid) || { '@id': id };
 			});
 
 			if (nodes.length === 0) nodes = findGraph(store, gid);
