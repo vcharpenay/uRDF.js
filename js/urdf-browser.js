@@ -18460,7 +18460,7 @@ const processor = jsonld.promises;
  */
 function parse(dataString, opts) {
     return new Promise((resolve, reject) => {
-        if (opts && opts.format === 'application/ld+json') {
+        if (opts && opts.format.startsWith('application/ld+json')) {
             try {
                 resolve(JSON.parse(dataString));
             } catch (e) {
@@ -18605,8 +18605,8 @@ function clear(gid) {
  * starting from an offset (e.g. a number higher than the size
  * of the µRDF store, to avoid name conflicts).
  * 
- * @param {array} g 
- * @param {number} offset 
+ * @param {array} g a JSON-LD graph (list of node objects)
+ * @param {number} offset a number taken as offset for numbering
  */
 function rename(g, offset) {
     let idx = 0;
@@ -18637,6 +18637,26 @@ function rename(g, offset) {
 
         return n;
     });
+}
+
+/**
+ * Returns a default graph object from the input definition.
+ * 
+ * @param {object} json a JSON-LD definition
+ */
+function getDefaultGraph(json) {
+    let g = {};
+
+    // TODO use the JsonLdProcessor instead?
+    if (json instanceof Array) {
+        g['@graph'] = json.filter(obj => !obj['graph']);
+    } else {
+        if (!json['@graph']) g['@graph'] = [json];
+        else if (!json['@id']) g = json;
+        else g['@graph'] = [];
+    }
+
+    return g;
 }
 
 /**
@@ -18671,10 +18691,7 @@ function load(data, opts) {
     .then(json => {
         let dataset = json
             .filter(obj => obj['@graph'])
-            .concat({
-                // default graph
-                '@graph': json.filter(obj => !obj['@graph'])
-            });
+            .concat(getDefaultGraph(json));
 
         dataset.forEach(g => {
             let gid = g['@id'];
@@ -18693,8 +18710,9 @@ function loadFrom(uri) {
     return io.parseFrom(uri)
 
     .then(json => {
-        // TODO detect whether graph information included in JSON
+        json = getDefaultGraph(json);
         json['@id'] = uri;
+
         return load(json);
     });
 }
@@ -19061,7 +19079,7 @@ function query(sparql) {
 const listRegistry = {
     'javascript:urdf.indexOf': (l, id) => l.indexOf(id),
     'javascript:urdf.lastIndexOf': (l, id) => l.lastIndexOf(id),
-    'javascript:urdf.valueAt': (l, idx) => l[idx],
+    'javascript:urdf.valueAt': (l, idx) => utils.term(l[idx]),
     'javascript:urdf.length': (l) => l.length
 };
 
@@ -19124,8 +19142,6 @@ function load(store, json, gid) {
 			}
 		}
 	});
-	
-	// TODO include object nodes in the store array
 	
 	return true;
 };
@@ -19296,7 +19312,7 @@ function query(store, frame, gid) {
 
 				return ids;
 			}, []).map(function(id) {
-				return find(store, id, gid);
+				return find(store, id, gid) || { '@id': id };
 			});
 
 			if (nodes.length === 0) nodes = findGraph(store, gid);
@@ -19618,7 +19634,7 @@ function term(plain) {
 				type: 'uri',
 				value: plain
 			};
-		} else if (capture = plain.match(/(\w*):(.*)/)) {
+		} else if (capture = plain.match(/([A-Za-z0-9]+):(.*)/)) {
 			let [str, prefix, name] = capture; 
 			return {
 				type: 'uri',
