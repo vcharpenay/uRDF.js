@@ -446,11 +446,10 @@ function createDataset(query) {
  * @param {object} patterns the AST of a group of SPARQL graph patterns
  */
 function makeSafe(patterns) {
-    let b = patterns.filter(p => p.type === 'bind');
     let f = patterns.filter(p => p.type === 'filter');
 
     let main = patterns
-        .filter(p => p.type != 'bind' && p.type != 'filter')
+        .filter(p => f.indexOf(p) < 0)
         .map(p => {
             if (p.type === 'optional') {
                 f = f.concat(p.patterns.filter(p => p.type === 'filter'));
@@ -462,7 +461,7 @@ function makeSafe(patterns) {
             return p;
         });
 
-    let safe = main.concat(b, f);
+    let safe = main.concat(f);
     return safe;
 }
 
