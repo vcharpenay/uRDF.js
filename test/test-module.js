@@ -65,7 +65,7 @@ describe('urdf.load()', () => {
 
 describe('urdf.loadFrom()', () => {
     it('should correctly load remote JSON-LD content', () => {
-        const id = 'https://vcharpenay.github.io/#me';
+        const id = 'https://www.vcharpenay.link/#me';
         const uri = 'http://www.vcharpenay.link/vcharpenay.jsonld';
 
         return urdf.loadFrom(uri)

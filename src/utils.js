@@ -41,8 +41,8 @@ function term(plain) {
 	} else if (typeof plain === 'string') {
 		let capture = null;
 
-		if (capture = plain.match(/"([^]*)"(@.*)?(\^\^(.*))?/)) {
-			let [str, lit, lang, suffix, datatype] = capture;
+		if (capture = plain.match(/"([^]*)"(@(.*))?(\^\^(.*))?/)) {
+			let [str, lit, at, lang, roof, datatype] = capture;
 			let t = {
 				type: 'literal',
 				value: lit
