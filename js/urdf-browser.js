@@ -19579,6 +19579,38 @@ module.exports.signature = signature;
 // TODO derived from https://github.com/vcharpenay/STTL.js, avoid duplicates?
 
 /**
+ * Known URI schemes. See https://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml.
+ */
+const schemes = [
+	'about',
+	'coap',
+	'coap+tcp',
+	'coap+ws',
+	'coaps',
+	'coaps+tcp',
+	'coaps+ws',
+	'data',
+	'did',
+	'file',
+	'ftp',
+	'go',
+	'http',
+	'https',
+	'info',
+	'iotdisco',
+	'mailto',
+	'ni',
+	'nih',
+	'tag',
+	'tel',
+	'urn',
+	'ws',
+	'wss',
+	'xmpp',
+	'xri'
+];
+
+/**
  * Known namespace prefixes.
  */
 const ns = {
@@ -19617,8 +19649,8 @@ function term(plain) {
 	} else if (typeof plain === 'string') {
 		let capture = null;
 
-		if (capture = plain.match(/"([^]*)"(@.*)?(\^\^(.*))?/)) {
-			let [str, lit, lang, suffix, datatype] = capture;
+		if (capture = plain.match(/"([^]*)"(@(.*))?(\^\^(.*))?/)) {
+			let [str, lit, at, lang, roof, datatype] = capture;
 			let t = {
 				type: 'literal',
 				value: lit
@@ -19628,7 +19660,7 @@ function term(plain) {
 			if (datatype) t.datatype = datatype;
 
 			return t;
-		} else if (plain.match(/^(([^:\/?#]+):)(\/\/([^\/?#]*))([^?#]*)(\?([^#]*))?(#(.*))?/)) {
+		} else if (schemes.some(s => plain.startsWith(s + ':'))) {
 			return {
 				type: 'uri',
 				value: plain
