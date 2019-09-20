@@ -79,6 +79,14 @@ describe('urdf.loadFrom()', () => {
         return urdf.loadFrom(uri)
         .then(() => urdf.find(id, uri))
     });
+
+    it('should correctly process relative URIs in remote JSON-LD content', () => {
+        // TODO
+    });
+
+    it('should correctly process relative URIs in remote Turtle content', () => {
+        // TODO
+    });
 });
 
 describe('urdf.query()', () => {

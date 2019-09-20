@@ -117,7 +117,7 @@ function getDefaultGraph(json) {
 
     // TODO use the JsonLdProcessor instead?
     if (json instanceof Array) {
-        g['@graph'] = json.filter(obj => !obj['graph']);
+        g['@graph'] = json.filter(obj => !obj['@graph']);
     } else {
         if (!json['@graph']) g['@graph'] = [json];
         else if (!json['@id']) g = json;
@@ -125,6 +125,16 @@ function getDefaultGraph(json) {
     }
 
     return g;
+}
+
+/**
+ * Returns whether the input context definition includes a base URI or no.
+ * 
+ * @param {object | array} ctx a JSON-LD context definition
+ */
+function hasBase(ctx) {
+    if (ctx instanceof Array) return ctx.some(hasBase);
+    else return ctx && ctx['@base'];
 }
 
 /**
@@ -174,12 +184,27 @@ function load(data, opts) {
     });
 }
 
+/**
+ * Loads the remote JSON-LD or RDF definition in the µRDF store, in its own
+ * named graph.
+ * 
+ * @param {string} uri a dereferenceable URI
+ */
 function loadFrom(uri) {
     return io.parseFrom(uri)
 
     .then(json => {
         json = getDefaultGraph(json);
         json['@id'] = uri;
+
+        let ctx = json['@context'];
+        if (!ctx) ctx = [];
+        else if (!(ctx instanceof Array)) ctx = [ctx];
+
+        if (!hasBase(ctx)) {
+            ctx.push({ '@base': uri });
+            json['@context'] = ctx;
+        }
 
         return load(json);
     });

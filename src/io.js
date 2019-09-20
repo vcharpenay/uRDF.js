@@ -51,7 +51,7 @@ function parse(dataString, opts) {
  * @param {string} uri 
  */
 function parseFrom(uri) {
-    let opts = {};
+    let opts = { baseIRI: uri };
 
     return fetch(uri, {
         headers: { 'Accept': 'application/ld+json' },
