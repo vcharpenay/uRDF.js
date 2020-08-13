@@ -107,6 +107,12 @@ function term(plain) {
 				type: 'variable',
 				value: name
 			}
+		} else {
+			// TODO because of @list items that may be plain JS terms?
+			return {
+				type: 'literal',
+				value: name
+			};
 		}
 	} else if (typeof plain === 'object') {
 		return plain;
