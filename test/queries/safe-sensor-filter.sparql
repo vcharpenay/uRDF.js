@@ -1,0 +1,9 @@
+prefix qudt: <http://data.nasa.gov/qudt/owl/qudt#>
+prefix td: <http://www.w3c.org/wot/td#>
+select * where {
+    ?s td:hasProperty ?p .
+    optional {
+        ?p qudt:unit ?u .
+        filter(strends(str(?u), "DegreeCelsius"))
+    }
+}

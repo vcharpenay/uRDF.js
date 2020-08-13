@@ -471,23 +471,19 @@ function createDataset(query) {
  * @param {object} patterns the AST of a group of SPARQL graph patterns
  */
 function makeSafe(patterns) {
-    let f = patterns.filter(p => p.type === 'filter');
+    return patterns.reduce((safe, p) => {
+        if (p.patterns) p.patterns = makeSafe(p.patterns);
 
-    let main = patterns
-        .filter(p => f.indexOf(p) < 0)
-        .map(p => {
-            if (p.type === 'optional') {
-                f = f.concat(p.patterns.filter(p => p.type === 'filter'));
-                p.patterns = p.patterns.filter(p => p.type != 'filter');
-            }
+        if (p.type === 'optional') {
+            // TODO duplicate patterns => query should be optimized
+            // e.g. with named sub-queries and cached intermediary bindings
+            p.patterns = safe.concat(p.patterns);
+        }
 
-            if (p.patterns) p.patterns = makeSafe(p.patterns);
+        safe.push(p);
 
-            return p;
-        });
-
-    let safe = main.concat(f);
-    return safe;
+        return safe;
+    }, []);
 }
 
 /**

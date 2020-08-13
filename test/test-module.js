@@ -73,8 +73,8 @@ describe('urdf.loadFrom()', () => {
     });
 
     it('should correctly load remote content in Turtle', () => {
-        const id = 'http://www.wikidata.org/entity/Q61093889';
-        const uri = id + '.ttl';
+        const id = 'http://www.w3.org/ns/sosa/Sensor';
+        const uri = 'http://www.w3.org/ns/sosa/sosa.ttl';
 
         return urdf.loadFrom(uri)
         .then(() => urdf.find(id, uri))
@@ -233,9 +233,14 @@ describe('urdf.query()', () => {
         .then(() => query('publication-author-class'));
     });
 
-    it('should correctly process filter inside an optional pattern', () => {
+    it('should correctly process unsafe filter inside an optional pattern', () => {
         return load('thing')
         .then(() => query('unsafe-sensor-filter'));
+    });
+
+    it('should correctly process safe filter inside an optional pattern', () => {
+        return load('thing')
+        .then(() => query('safe-sensor-filter'));
     });
 
     it('should correctly limit query evaluation to the input dataset', () => {

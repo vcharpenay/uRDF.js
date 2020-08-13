@@ -1,0 +1,26 @@
+[
+    {
+        "s": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/temp"
+        },
+        "u": {
+            "type": "uri",
+            "value": "http://data.nasa.gov/qudt/owl/unit#DegreeCelsius"
+        }
+    },
+    {
+        "s": {
+            "type": "uri",
+            "value": "http://example.org/sensor1"
+        },
+        "p": {
+            "type": "uri",
+            "value": "http://example.org/sensor1/onoff"
+        }
+    }
+]
