@@ -15,5 +15,12 @@
                 "@id": "http://www.Department0.University1.edu/FullProfessor0"
             }
         ]
+    },
+    "http://swat.cse.lehigh.edu/onto/univ-bench.owl#publicationKeyword": {
+        "@list": [
+            "kw1",
+            "kw2",
+            "kw3"
+        ]
     }
 }

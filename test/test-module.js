@@ -228,6 +228,11 @@ describe('urdf.query()', () => {
         .then(() => query('ordered-author-list'));
     });
 
+    it('should correctly process list functions for literal lists', () => {
+        return load('lubm-list')
+        .then(() => query('publication-keyword-list'));
+    });
+
     it('should correctly process list functions with joins', () => {
         return load('lubm-list')
         .then(() => query('publication-author-class'));

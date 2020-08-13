@@ -1,0 +1,8 @@
+prefix ub: <http://swat.cse.lehigh.edu/onto/univ-bench.owl#>
+
+select ?pub ?first ?last where {
+    ?pub a ub:Publication ;
+         ub:publicationKeyword ?l .
+    bind (<javascript:urdf.indexOf>(?l, "kw1") as ?first)
+    bind (<javascript:urdf.valueAt>(?l, <javascript:urdf.length>(?l) - 1) as ?last)
+}

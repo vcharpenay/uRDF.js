@@ -107,12 +107,6 @@ function term(plain) {
 				type: 'variable',
 				value: name
 			}
-		} else {
-			// TODO because of @list items that may be plain JS terms?
-			return {
-				type: 'literal',
-				value: name
-			};
 		}
 	} else if (typeof plain === 'object') {
 		return plain;
@@ -713,15 +707,17 @@ function evaluate(expr, binding) {
 
 			try {
 				let val = registry[name](...args.map(native));
+				let t = term(val);
 
-				if (typeof val === 'string') {
-					val = {
+				if (!t.value) {
+					// assuming plain literal
+					t = {
 						type: 'literal',
 						value: val
 					};
 				}
 	
-				return term(val);
+				return t;
 			} catch (e) {
 				throw new EvaluationError(e);
 			}

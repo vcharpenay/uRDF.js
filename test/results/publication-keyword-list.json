@@ -1,0 +1,17 @@
+[
+    {
+        "pub": {
+            "type": "uri",
+            "value": "http://www.Department0.University1.edu/FullProfessor0/Publication2"
+        },
+        "first": {
+            "type": "literal",
+            "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+            "value": "0"
+        },
+        "last": {
+            "type": "literal",
+            "value": "kw3"
+        }
+    }
+]

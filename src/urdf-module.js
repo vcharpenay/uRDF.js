@@ -567,7 +567,7 @@ function query(sparql) {
 const listRegistry = {
     'javascript:urdf.indexOf': (l, id) => l.indexOf(id),
     'javascript:urdf.lastIndexOf': (l, id) => l.lastIndexOf(id),
-    'javascript:urdf.valueAt': (l, idx) => utils.term(l[idx]),
+    'javascript:urdf.valueAt': (l, idx) => l[idx],
     'javascript:urdf.length': (l) => l.length
 };
 
