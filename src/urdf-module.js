@@ -164,7 +164,7 @@ function load(data, opts) {
     return parsePromise
 
     // TODO normalize, compact
-    .then(json => processor.flatten(json))
+    .then(json => processor.flatten(json, null, opts))
 
     .then(json => {
         let dataset = json
@@ -197,16 +197,19 @@ function loadFrom(uri) {
         json = getDefaultGraph(json);
         json['@id'] = uri;
 
-        let ctx = json['@context'];
-        if (!ctx) ctx = [];
-        else if (!(ctx instanceof Array)) ctx = [ctx];
+        // let ctx = json['@context'];
+        // if (!ctx) ctx = [];
+        // else if (!(ctx instanceof Array)) ctx = [ctx];
 
-        if (!hasBase(ctx)) {
-            ctx.push({ '@base': uri });
-            json['@context'] = ctx;
-        }
+        // if (!hasBase(ctx)) {
+        //     ctx.push({ '@base': uri });
+        //     json['@context'] = ctx;
+        // }
 
-        return load(json);
+        // FIXME properly test base URI injection
+        let opts = { base: uri };
+
+        return load(json, opts);
     });
 }
 
