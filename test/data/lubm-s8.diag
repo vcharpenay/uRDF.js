@@ -1,0 +1,37 @@
+[
+	{
+		0: "http://www.Department0.University4.edu/AssistantProfessor1",
+		5: [
+			{
+				0: "http://www.Department0.University4.edu/GraduateCourse8"
+			},
+			{
+				0: "http://www.Department0.University4.edu/Course8"
+			}
+		],
+		1: [
+			6,
+			7
+		],
+		8: [
+			{
+				0: "http://www.University4.edu"
+			}
+		],
+		9: [
+			{
+				0: "http://www.University501.edu"
+			}
+		],
+		10: [
+			{
+				0: "http://www.Department0.University4.edu/AssistantProfessor1"
+			}
+		],
+		11: [
+			{
+				0: "http://www.University4.edu"
+			}
+		]
+	}
+]
