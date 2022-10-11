@@ -12,7 +12,7 @@
     "dependencies": {
         "sparqljs": "2.x.x",
         "n3": "1.0.x",
-        "jsonld": "1.5.x",
+        "jsonld": "8.1.x",
         "node-fetch": "2.6.x",
         "arg": "4.1.x"
     },
