@@ -17,7 +17,7 @@
         "arg": "4.1.x"
     },
     "devDependencies": {
-        "mocha": "3.0.x",
+        "mocha": "3.5.x",
         "xml-js": "1.6.x"
     },
     "scripts": {
